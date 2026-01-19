@@ -58,7 +58,7 @@ export function HomePage({ config, packageName }: HomePageProps) {
 
             {homepage?.features && homepage.features.length > 0 && (
               <section id="features">
-                <div className="border-t">
+                <div className="border-y">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                     {homepage.features.map((feature, index) => (
                       <div
