@@ -11,7 +11,7 @@ function HomePage() {
 
   return (
     <HomeLayout config={config}>
-      <main className="container">
+      <main className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <InstallBlock
           title={homepage?.hero?.title ?? config.title}
           description={homepage?.hero?.description ?? config.description}

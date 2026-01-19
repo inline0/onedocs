@@ -30,8 +30,5 @@ export function createBaseOptions(config: OnedocsConfig): BaseLayoutProps {
       title: config.title,
     },
     links,
-    githubUrl: config.nav?.github
-      ? `https://github.com/${config.nav.github}`
-      : undefined,
   };
 }

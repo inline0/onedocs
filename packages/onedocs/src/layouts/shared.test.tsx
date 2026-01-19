@@ -62,29 +62,6 @@ describe("createBaseOptions", () => {
     });
   });
 
-  it("should set githubUrl when github is provided", () => {
-    const config: OnedocsConfig = {
-      title: "Test Project",
-      nav: {
-        github: "user/repo",
-      },
-    };
-
-    const options = createBaseOptions(config);
-
-    expect(options.githubUrl).toBe("https://github.com/user/repo");
-  });
-
-  it("should not set githubUrl when github is not provided", () => {
-    const config: OnedocsConfig = {
-      title: "Test Project",
-    };
-
-    const options = createBaseOptions(config);
-
-    expect(options.githubUrl).toBeUndefined();
-  });
-
   it("should combine nav links and github link", () => {
     const config: OnedocsConfig = {
       title: "Test Project",
