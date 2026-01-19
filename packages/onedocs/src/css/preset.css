@@ -1,21 +1,23 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "@fontsource-variable/inter";
 
 @source "../../dist/**/*.js";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
   body {
     font-feature-settings: "calt", "cv02", "cv03", "cv04", "cv11", "ss07", "ss08";
   }
-}
 
-@layer base {
+  #nd-home-layout > header > div:first-child {
+    @apply mx-auto max-w-(--fd-layout-width) border-x;
+  }
+
   @media (min-width: 1024px) {
     [data-orientation="horizontal"] > ul:last-child {
       display: none !important;

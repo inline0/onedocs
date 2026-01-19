@@ -2,8 +2,3 @@
 
 @source "./routes/**/*.tsx";
 @source "../content/**/*.mdx";
-
-/* Custom styles for lined layout */
-#nd-home-layout > header > div:first-child {
-  @apply mx-auto max-w-(--fd-layout-width) border-x;
-}

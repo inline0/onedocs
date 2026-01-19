@@ -34,6 +34,7 @@
     "prepublishOnly": "bun run build"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
     "fumadocs-core": "^16.4.7",
     "fumadocs-mdx": "^14.2.5",
     "fumadocs-ui": "^16.4.7",
