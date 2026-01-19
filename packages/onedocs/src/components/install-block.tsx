@@ -26,24 +26,24 @@ export function InstallBlock({
       )}
       <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} className="!mb-0">
         <Tab value="npm">
-          <code className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            npm i {packageName}
-          </code>
+          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
+            <code>npm i {packageName}</code>
+          </pre>
         </Tab>
         <Tab value="yarn">
-          <code className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            yarn add {packageName}
-          </code>
+          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
+            <code>yarn add {packageName}</code>
+          </pre>
         </Tab>
         <Tab value="pnpm">
-          <code className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            pnpm add {packageName}
-          </code>
+          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
+            <code>pnpm add {packageName}</code>
+          </pre>
         </Tab>
         <Tab value="bun">
-          <code className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            bun add {packageName}
-          </code>
+          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
+            <code>bun add {packageName}</code>
+          </pre>
         </Tab>
       </Tabs>
       {children && (
