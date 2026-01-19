@@ -18,7 +18,7 @@
     "fumadocs-mdx": "^14.2.6",
     "fumadocs-ui": "^16.4.7",
     "lucide-react": "^0.562.0",
-    "nitro": "^3.0.1-alpha.1",
+    "nitro": "npm:nitro-nightly@latest",
     "onedocs": "workspace:*",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
