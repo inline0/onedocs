@@ -1,4 +1,5 @@
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import type { ReactNode } from "react";
 
 interface InstallBlockProps {
@@ -25,25 +26,17 @@ export function InstallBlock({
         <p className="text-fd-muted-foreground mb-6 text-balance">{description}</p>
       )}
       <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} className="!mb-0">
-        <Tab value="npm">
-          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            <code>npm i {packageName}</code>
-          </pre>
+        <Tab value="npm" className="!py-0 !px-4">
+          <DynamicCodeBlock lang="bash" code={`npm i ${packageName}`} codeblock={{ className: "!my-0" }} />
         </Tab>
-        <Tab value="yarn">
-          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            <code>yarn add {packageName}</code>
-          </pre>
+        <Tab value="yarn" className="!py-0 !px-4">
+          <DynamicCodeBlock lang="bash" code={`yarn add ${packageName}`} codeblock={{ className: "!my-0" }} />
         </Tab>
-        <Tab value="pnpm">
-          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            <code>pnpm add {packageName}</code>
-          </pre>
+        <Tab value="pnpm" className="!py-0 !px-4">
+          <DynamicCodeBlock lang="bash" code={`pnpm add ${packageName}`} codeblock={{ className: "!my-0" }} />
         </Tab>
-        <Tab value="bun">
-          <pre className="block rounded bg-fd-secondary px-3 py-2 text-sm">
-            <code>bun add {packageName}</code>
-          </pre>
+        <Tab value="bun" className="!py-0 !px-4">
+          <DynamicCodeBlock lang="bash" code={`bun add ${packageName}`} codeblock={{ className: "!my-0" }} />
         </Tab>
       </Tabs>
       {children && (

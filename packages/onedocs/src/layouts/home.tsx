@@ -2,6 +2,7 @@ import { HomeLayout as FumaHomeLayout } from "fumadocs-ui/layouts/home";
 import type { OnedocsConfig } from "../config";
 import { createBaseOptions } from "./shared";
 import { InstallBlock } from "../components/install-block";
+import { Button } from "../components/button";
 
 interface HomeLayoutProps {
   config: OnedocsConfig;
@@ -39,7 +40,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                     heroLeft
                   ) : (
                     <>
-                      <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tight">
+                      <h1 className="text-left text-4xl font-medium leading-tight text-fd-foreground sm:text-5xl">
                         {homepage?.hero?.title ?? config.title}
                       </h1>
                       <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
@@ -51,19 +52,16 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                             <InstallBlock packageName={packageName} />
                           </div>
                         )}
-                        <a
-                          href={homepage?.hero?.cta?.href ?? "/docs"}
-                          className="inline-flex h-10 items-center justify-center rounded-lg bg-fd-primary px-6 text-sm font-medium text-fd-primary-foreground shadow transition-colors hover:bg-fd-primary/90 whitespace-nowrap"
-                        >
+                        <Button href={homepage?.hero?.cta?.href ?? "/docs"}>
                           {homepage?.hero?.cta?.label ?? "Get Started"}
-                        </a>
+                        </Button>
                       </div>
                     </>
                   )}
                 </div>
                 <div className="lg:col-span-2 hidden lg:block">
                   {heroRight ? (
-                    <div className="flex h-full items-start p-6 lg:p-12">
+                    <div className="flex h-full items-center p-6 lg:p-12">
                       {heroRight}
                     </div>
                   ) : null}

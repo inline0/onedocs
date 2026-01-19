@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Button } from "./button";
 
 interface CTASectionProps {
   title: string;
@@ -22,12 +23,9 @@ export function CTASection({ title, description, cta, children }: CTASectionProp
             {description}
           </p>
         )}
-        <a
-          href={cta.href}
-          className="mt-6 inline-flex h-10 items-center justify-center rounded-lg bg-fd-primary px-6 text-sm font-medium text-fd-primary-foreground shadow transition-colors hover:bg-fd-primary/90"
-        >
+        <Button href={cta.href} className="mt-6">
           {cta.label}
-        </a>
+        </Button>
         {children}
       </div>
     </section>
