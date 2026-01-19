@@ -25,9 +25,10 @@ export function HomePage({ config, packageName }: HomePageProps) {
 
   return (
     <HomeLayout config={config}>
-      <main className="flex-1 flex flex-col">
-        <div className="flex-1 relative mx-auto container max-w-(--fd-layout-width)">
-          <div className="h-full border-x flex flex-col">
+      <main className="flex-1 flex flex-col min-h-[calc(100vh-var(--fd-nav-height))]">
+        <div className="flex-1 relative mx-auto w-full max-w-(--fd-layout-width)">
+          <div className="absolute inset-0 border-x pointer-events-none" />
+          <div className="relative">
             <section id="hero">
               <div className="grid grid-cols-1 lg:grid-cols-4">
                 <div className="lg:col-span-2 p-6 lg:p-12">
@@ -81,12 +82,10 @@ export function HomePage({ config, packageName }: HomePageProps) {
                 </div>
               </section>
             )}
-
-            <div className="flex-1 border-t" />
           </div>
         </div>
 
-        <footer className="relative mx-auto container max-w-(--fd-layout-width)">
+        <footer className="relative mx-auto w-full max-w-(--fd-layout-width)">
           <div className="border-x border-t px-6 py-4">
             <p className="text-sm text-fd-muted-foreground">
               © {currentYear} {config.title}
