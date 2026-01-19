@@ -27,7 +27,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
   return (
     <HomeLayout config={config}>
       <main className="flex-1 flex flex-col min-h-[calc(100vh-var(--fd-nav-height))]">
-        <div className="flex-1 relative mx-auto w-full max-w-(--fd-layout-width)">
+        <div className="flex-1 flex flex-col relative mx-auto w-full max-w-(--fd-layout-width)">
           <div className="absolute inset-0 border-x pointer-events-none" />
           <div className="relative">
             <section id="hero">
