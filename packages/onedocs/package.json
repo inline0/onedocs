@@ -2,6 +2,26 @@
   "name": "onedocs",
   "version": "0.1.0",
   "type": "module",
+  "description": "Zero-config documentation for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inline0/onedocs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inline0/onedocs/issues"
+  },
+  "homepage": "https://github.com/inline0/onedocs#readme",
+  "keywords": [
+    "documentation",
+    "docs",
+    "tanstack",
+    "tanstack-start",
+    "fumadocs",
+    "mdx",
+    "markdown",
+    "react"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
@@ -30,12 +50,24 @@
     },
     "./css/preset.css": "./src/css/preset.css"
   },
-  "files": ["dist", "src/css", "src/fonts"],
+  "files": [
+    "dist",
+    "src/css",
+    "src/fonts",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "bun test",
-    "prepublishOnly": "bun run build"
+    "prepack": "bun run build"
   },
   "dependencies": {
     "fumadocs-core": "^16.4.7",
