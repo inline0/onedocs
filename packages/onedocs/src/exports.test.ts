@@ -159,5 +159,11 @@ describe("package exports", () => {
       expect(createLLMsFullHandler).toBeDefined();
       expect(typeof createLLMsFullHandler).toBe("function");
     });
+
+    it("should export createLLMsSource", async () => {
+      const { createLLMsSource } = await import("./llms/index");
+      expect(createLLMsSource).toBeDefined();
+      expect(typeof createLLMsSource).toBe("function");
+    });
   });
 });

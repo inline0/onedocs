@@ -1,4 +1,4 @@
-import { RootProvider } from "fumadocs-ui/provider/tanstack";
+import { RootLayout } from "onedocs";
 import {
   createRootRoute,
   HeadContent,
@@ -23,9 +23,9 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <RootProvider>
+    <RootLayout>
       <Outlet />
-    </RootProvider>
+    </RootLayout>
   );
 }
 

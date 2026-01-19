@@ -17,5 +17,9 @@ export default defineConfig({
     "react-dom",
     "@tanstack/react-router",
     "@tanstack/start",
+    "fumadocs-core",
+    "fumadocs-mdx",
+    "fumadocs-ui",
+    "lucide-react",
   ],
 });

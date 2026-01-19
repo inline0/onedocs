@@ -1,6 +1,6 @@
 import { HomePage, CTASection } from "onedocs";
 import { createFileRoute } from "@tanstack/react-router";
-import config from "../../onedocs.config.tsx";
+import config from "../../onedocs.config";
 
 export const Route = createFileRoute("/")({"component": Home,
 });

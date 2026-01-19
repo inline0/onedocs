@@ -18,7 +18,7 @@ import { File, Folder, Files } from "fumadocs-ui/components/files";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import { Suspense } from "react";
 import { DocsLayout } from "onedocs";
-import config from "../../../onedocs.config.tsx";
+import config from "../../../onedocs.config";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -79,7 +79,7 @@ function Page() {
 
   return (
     <DocsLayout config={config} pageTree={data.pageTree}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={null}>
         {clientLoader.useContent(data.path)}
       </Suspense>
     </DocsLayout>
