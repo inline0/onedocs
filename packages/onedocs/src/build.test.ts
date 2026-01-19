@@ -57,6 +57,16 @@ describe("build output", () => {
     });
   });
 
+  describe("seo entry files", () => {
+    it("should have seo/index.js", () => {
+      expect(existsSync(join(distPath, "seo", "index.js"))).toBe(true);
+    });
+
+    it("should have seo/index.d.ts", () => {
+      expect(existsSync(join(distPath, "seo", "index.d.ts"))).toBe(true);
+    });
+  });
+
   describe("built exports resolve correctly", () => {
     it("should import from dist/index.js", async () => {
       const mod = await import("../dist/index.js");

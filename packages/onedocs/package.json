@@ -1,6 +1,6 @@
 {
   "name": "onedocs",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "type": "module",
   "description": "Zero-config documentation for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.",
   "license": "MIT",
@@ -45,6 +45,10 @@
       "types": "./dist/llms/index.d.ts",
       "import": "./dist/llms/index.js"
     },
+    "./seo": {
+      "types": "./dist/seo/index.d.ts",
+      "import": "./dist/seo/index.js"
+    },
     "./css/preset.css": "./src/css/preset.css"
   },
   "files": [
@@ -61,8 +65,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "build": "bun run clean && tsc -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json",
     "test": "bun test",
     "prepack": "bun run build"
   },
@@ -70,7 +75,7 @@
     "@tanstack/react-router": "^1.0.0",
     "@tanstack/start": "^1.0.0",
     "fumadocs-core": "^16.4.7",
-    "fumadocs-mdx": "^14.2.5",
+    "fumadocs-mdx": "^14.2.6",
     "fumadocs-ui": "^16.4.7",
     "lucide-react": "^0.562.0",
     "react": "^18.0.0 || ^19.0.0",
@@ -83,11 +88,10 @@
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "fumadocs-core": "^16.4.7",
-    "fumadocs-mdx": "^14.2.5",
+    "fumadocs-mdx": "^14.2.6",
     "fumadocs-ui": "^16.4.7",
     "jsdom": "^27.4.0",
     "lucide-react": "^0.562.0",
-    "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   }
 }

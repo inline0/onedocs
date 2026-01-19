@@ -166,4 +166,18 @@ describe("package exports", () => {
       expect(typeof createLLMsSource).toBe("function");
     });
   });
+
+  describe("seo entry (onedocs/seo)", () => {
+    it("should export createRobotsHandler", async () => {
+      const { createRobotsHandler } = await import("./seo/index");
+      expect(createRobotsHandler).toBeDefined();
+      expect(typeof createRobotsHandler).toBe("function");
+    });
+
+    it("should export createDocsSitemapHandler", async () => {
+      const { createDocsSitemapHandler } = await import("./seo/index");
+      expect(createDocsSitemapHandler).toBeDefined();
+      expect(typeof createDocsSitemapHandler).toBe("function");
+    });
+  });
 });

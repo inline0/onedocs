@@ -19,12 +19,6 @@ export default defineConfig({
   resolve: {
     dedupe: ["react", "react-dom"],
   },
-  server: {
-    host: "127.0.0.1",
-  },
-  preview: {
-    host: "127.0.0.1",
-  },
   ssr: {
     noExternal: ["fumadocs-ui", "fumadocs-core", "fumadocs-mdx", "onedocs"],
   },

@@ -8,6 +8,7 @@ export default defineConfig({
     "src/components/install-block.tsx",
     "src/source/index.ts",
     "src/llms/index.ts",
+    "src/seo/index.ts",
   ],
   format: ["esm"],
   dts: true,

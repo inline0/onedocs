@@ -6,9 +6,11 @@ export interface NavLink {
 }
 
 export interface HeroConfig {
-  title?: string;
-  description?: string;
+  title?: ReactNode;
+  description?: ReactNode;
   cta?: { label: string; href: string };
+  left?: ReactNode;
+  right?: ReactNode;
 }
 
 export interface FeatureConfig {

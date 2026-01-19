@@ -22,6 +22,8 @@ interface HomePageProps {
 
 export function HomePage({ config, packageName, children }: HomePageProps) {
   const { homepage } = config;
+  const heroLeft = homepage?.hero?.left;
+  const heroRight = homepage?.hero?.right;
   const currentYear = new Date().getFullYear();
 
   return (
@@ -33,27 +35,39 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
             <section id="hero">
               <div className="grid grid-cols-1 lg:grid-cols-4">
                 <div className="lg:col-span-2 p-6 lg:p-12">
-                  <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tight">
-                    {homepage?.hero?.title ?? config.title}
-                  </h1>
-                  <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
-                    {homepage?.hero?.description ?? config.description}
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 mt-8 w-full">
-                    {packageName && (
-                      <div className="flex-1">
-                        <InstallBlock packageName={packageName} />
+                  {heroLeft ? (
+                    heroLeft
+                  ) : (
+                    <>
+                      <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tight">
+                        {homepage?.hero?.title ?? config.title}
+                      </h1>
+                      <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
+                        {homepage?.hero?.description ?? config.description}
+                      </p>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 mt-8 w-full">
+                        {packageName && (
+                          <div className="flex-1">
+                            <InstallBlock packageName={packageName} />
+                          </div>
+                        )}
+                        <a
+                          href={homepage?.hero?.cta?.href ?? "/docs"}
+                          className="inline-flex h-10 items-center justify-center rounded-lg bg-fd-primary px-6 text-sm font-medium text-fd-primary-foreground shadow transition-colors hover:bg-fd-primary/90 whitespace-nowrap"
+                        >
+                          {homepage?.hero?.cta?.label ?? "Get Started"}
+                        </a>
                       </div>
-                    )}
-                    <a
-                      href={homepage?.hero?.cta?.href ?? "/docs"}
-                      className="inline-flex h-10 items-center justify-center rounded-lg bg-fd-primary px-6 text-sm font-medium text-fd-primary-foreground shadow transition-colors hover:bg-fd-primary/90 whitespace-nowrap"
-                    >
-                      {homepage?.hero?.cta?.label ?? "Get Started"}
-                    </a>
-                  </div>
+                    </>
+                  )}
                 </div>
-                <div className="lg:col-span-2 hidden lg:block" />
+                <div className="lg:col-span-2 hidden lg:block">
+                  {heroRight ? (
+                    <div className="flex h-full items-start p-6 lg:p-12">
+                      {heroRight}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </section>
 
