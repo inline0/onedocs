@@ -140,4 +140,24 @@ describe("package exports", () => {
       expect(typeof loader).toBe("function");
     });
   });
+
+  describe("llms entry (onedocs/llms)", () => {
+    it("should export getLLMText", async () => {
+      const { getLLMText } = await import("./llms/index");
+      expect(getLLMText).toBeDefined();
+      expect(typeof getLLMText).toBe("function");
+    });
+
+    it("should export createLLMsHandler", async () => {
+      const { createLLMsHandler } = await import("./llms/index");
+      expect(createLLMsHandler).toBeDefined();
+      expect(typeof createLLMsHandler).toBe("function");
+    });
+
+    it("should export createLLMsFullHandler", async () => {
+      const { createLLMsFullHandler } = await import("./llms/index");
+      expect(createLLMsFullHandler).toBeDefined();
+      expect(typeof createLLMsFullHandler).toBe("function");
+    });
+  });
 });
