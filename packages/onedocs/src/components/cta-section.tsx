@@ -12,7 +12,7 @@ interface CTASectionProps {
 
 export function CTASection({ title, description, cta, children }: CTASectionProps) {
   return (
-    <section className="border-t">
+    <section>
       <div className="flex flex-col items-center justify-center text-center py-16 px-6">
         <h2 className="text-2xl font-semibold text-fd-foreground sm:text-3xl">
           {title}
