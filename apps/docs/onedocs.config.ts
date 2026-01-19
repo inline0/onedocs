@@ -1,14 +1,14 @@
 import { defineConfig } from "onedocs/config";
 
 export default defineConfig({
-  title: "onedocs",
+  title: "Onedocs",
   description: "Zero-config documentation for TanStack Start + Fumadocs",
   nav: {
     github: "inline0/onedocs",
   },
   homepage: {
     hero: {
-      title: "onedocs",
+      title: "Onedocs",
       description:
         "Install one dependency, write markdown, ship docs. A zero-config wrapper around TanStack Start and Fumadocs.",
       cta: { label: "Get Started", href: "/docs" },
@@ -17,7 +17,7 @@ export default defineConfig({
       {
         title: "One Dependency",
         description:
-          "onedocs bundles TanStack Start, Fumadocs UI, and MDX handling. Just add onedocs and start writing.",
+          "Onedocs bundles TanStack Start, Fumadocs UI, and MDX handling. Just add onedocs and start writing.",
       },
       {
         title: "Zero Config",
