@@ -47,6 +47,7 @@
   "devDependencies": {
     "@onedocs/tsconfig": "workspace:*",
     "@testing-library/react": "^16.3.1",
+    "@types/bun": "^1.3.6",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "jsdom": "^27.4.0",

@@ -61,7 +61,7 @@ describe("defineConfig", () => {
 
     expect(config.nav?.github).toBe("user/repo");
     expect(config.nav?.links).toHaveLength(1);
-    expect(config.nav?.links?.[0].label).toBe("Blog");
+    expect(config.nav?.links?.[0]?.label).toBe("Blog");
   });
 
   it("should handle homepage configuration", () => {

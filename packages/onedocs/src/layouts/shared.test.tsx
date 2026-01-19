@@ -74,7 +74,7 @@ describe("createBaseOptions", () => {
     const options = createBaseOptions(config);
 
     expect(options.links).toHaveLength(2);
-    expect(options.links?.[0].type).toBe("main");
-    expect(options.links?.[1].type).toBe("icon");
+    expect(options.links?.[0]?.type).toBe("main");
+    expect(options.links?.[1]?.type).toBe("icon");
   });
 });

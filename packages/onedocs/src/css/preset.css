@@ -3,3 +3,21 @@
 @import "fumadocs-ui/css/preset.css";
 
 @source "../../dist/**/*.js";
+
+@layer base {
+  @media (min-width: 1024px) {
+    [data-orientation="horizontal"] > ul:last-child {
+      display: none !important;
+    }
+  }
+}
+
+.dark *, .dark *::before, .dark *::after {
+  border-color: hsl(0 0% 20%);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) *, html:not(.light) *::before, html:not(.light) *::after {
+    border-color: hsl(0 0% 20%);
+  }
+}

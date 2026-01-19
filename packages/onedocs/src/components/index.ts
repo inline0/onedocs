@@ -9,3 +9,5 @@ export { TypeTable } from "fumadocs-ui/components/type-table";
 export { File, Folder, Files } from "fumadocs-ui/components/files";
 
 export { InstallBlock } from "./install-block";
+export { DarkModeFix } from "./dark-mode-fix";
+export { Logo } from "./logo";

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "bun:test";
-import { existsSync } from "fs";
-import { join } from "path";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 const distPath = join(import.meta.dir, "..", "dist");
 

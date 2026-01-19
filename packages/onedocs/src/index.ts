@@ -10,3 +10,4 @@ export type { OnedocsConfig } from "./config";
 export { createSource, loader } from "./source";
 
 export { InstallBlock } from "./components/install-block";
+export { Logo } from "./components/logo";
