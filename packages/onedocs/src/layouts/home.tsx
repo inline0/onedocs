@@ -89,7 +89,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
         </div>
 
         <footer className="relative mx-auto w-full max-w-(--fd-layout-width)">
-          <div className="border-x border-t px-6 py-4">
+          <div className="border-x px-6 py-4">
             <p className="text-sm text-fd-muted-foreground">
               © {currentYear} {config.title}
             </p>
