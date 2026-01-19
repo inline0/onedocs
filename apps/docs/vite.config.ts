@@ -20,6 +20,6 @@ export default defineConfig({
     dedupe: ["react", "react-dom"],
   },
   ssr: {
-    noExternal: ["fumadocs-ui", "fumadocs-core"],
+    noExternal: ["fumadocs-ui", "fumadocs-core", "fumadocs-mdx"],
   },
 });

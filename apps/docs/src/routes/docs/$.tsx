@@ -1,56 +1,90 @@
-import { DocsPage, DocsBody } from "onedocs";
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { createServerFn } from "@tanstack/react-start";
-import { use, cache } from "react";
-import browserCollections from "../../../.source/browser";
+import { source } from "@/lib/source";
+import browserCollections from "fumadocs-mdx:collections/browser";
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+} from "fumadocs-ui/layouts/docs/page";
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Card, Cards } from "fumadocs-ui/components/card";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+import { File, Folder, Files } from "fumadocs-ui/components/files";
+import { useFumadocsLoader } from "fumadocs-core/source/client";
+import { Suspense } from "react";
+import config from "../../../onedocs.config";
 
-const getPageMeta = createServerFn()
-  .validator((slugs: string[]) => slugs)
+export const Route = createFileRoute("/docs/$")({
+  component: Page,
+  loader: async ({ params }) => {
+    const slugs = params._splat?.split("/") ?? [];
+    const data = await serverLoader({ data: slugs });
+    await clientLoader.preload(data.path);
+    return data;
+  },
+});
+
+const serverLoader = createServerFn({
+  method: "GET",
+})
+  .inputValidator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }) => {
-    const { getSource } = await import("../../lib/source");
-    const source = await getSource();
     const page = source.getPage(slugs);
-    if (!page) return null;
+    if (!page) throw notFound();
+
     return {
-      title: page.data.title,
-      description: page.data.description,
-      toc: page.data.toc,
-      filePath: page.file.path,
+      path: page.path,
+      pageTree: await source.serializePageTree(source.getPageTree()),
     };
   });
 
-const loadContent = cache(async (filePath: string) => {
-  const content = await browserCollections.docs.get(filePath);
-  return content?.body;
-});
+const mdxComponents = {
+  ...defaultMdxComponents,
+  Tab,
+  Tabs,
+  Callout,
+  Card,
+  Cards,
+  Step,
+  Steps,
+  Accordion,
+  Accordions,
+  File,
+  Folder,
+  Files,
+};
 
-export const Route = createFileRoute("/docs/$")({
-  loader: async ({ params }) => {
-    const slugs = params._splat?.split("/").filter(Boolean) ?? [];
-    const page = await getPageMeta({ data: slugs });
-    if (!page) throw notFound();
-    return page;
+const clientLoader = browserCollections.docs.createClientLoader({
+  component({ toc, frontmatter, default: MDX }) {
+    return (
+      <DocsPage toc={toc}>
+        <DocsTitle>{frontmatter.title}</DocsTitle>
+        <DocsDescription>{frontmatter.description}</DocsDescription>
+        <DocsBody>
+          <MDX components={mdxComponents} />
+        </DocsBody>
+      </DocsPage>
+    );
   },
-  component: DocsPageComponent,
 });
 
-function DocsPageComponent() {
-  const page = Route.useLoaderData();
-  const MDXContent = use(loadContent(page.filePath));
-
-  if (!MDXContent) {
-    throw notFound();
-  }
+function Page() {
+  const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <DocsPage toc={page.toc}>
-      <h1>{page.title}</h1>
-      {page.description && (
-        <p className="text-muted-foreground">{page.description}</p>
-      )}
-      <DocsBody>
-        <MDXContent />
-      </DocsBody>
-    </DocsPage>
+    <DocsLayout
+      nav={{ title: config.title }}
+      tree={data.pageTree}
+    >
+      <Suspense fallback={<div>Loading...</div>}>
+        {clientLoader.useContent(data.path)}
+      </Suspense>
+    </DocsLayout>
   );
 }

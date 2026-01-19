@@ -29,7 +29,7 @@ export function InstallBlock({
         )}
         <div className="flex flex-wrap items-end gap-4">
           <div className="min-w-[200px] flex-1">
-            <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} persist>
+            <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} className="mb-0">
               <Tab value="npm">
                 <code className="block rounded bg-fd-secondary px-3 py-2 text-sm">
                   npm i {packageName}

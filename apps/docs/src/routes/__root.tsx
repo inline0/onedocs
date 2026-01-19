@@ -5,7 +5,7 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import "fumadocs-ui/style.css";
+import "../app.css";
 
 export const Route = createRootRoute({
   head: () => ({
