@@ -43,10 +43,21 @@ ${page.data.description ? `\n${page.data.description}\n` : ""}
 ${text}`;
 }
 
+function sortPages(pages: Page[]): Page[] {
+  return [...pages].sort((a, b) => {
+    // Sort by URL depth first (fewer segments = higher priority)
+    const aDepth = a.url.split("/").length;
+    const bDepth = b.url.split("/").length;
+    if (aDepth !== bDepth) return aDepth - bDepth;
+    // Then alphabetically
+    return a.url.localeCompare(b.url);
+  });
+}
+
 export function createLLMsHandler(source: Source, config: LLMsConfig) {
   return {
     GET: async () => {
-      const pages = source.getPages();
+      const pages = sortPages(source.getPages());
 
       const lines = [
         `# ${config.title}`,
@@ -80,7 +91,7 @@ export function createLLMsHandler(source: Source, config: LLMsConfig) {
 export function createLLMsFullHandler(source: Source) {
   return {
     GET: async () => {
-      const pages = source.getPages();
+      const pages = sortPages(source.getPages());
       const contents = await Promise.all(pages.map(getLLMText));
 
       return new Response(contents.join("\n\n---\n\n"), {
