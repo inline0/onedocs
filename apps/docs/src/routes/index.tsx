@@ -33,34 +33,35 @@ function HomePage() {
   return (
     <HomeLayout config={config}>
       <main className="flex-1">
-        {/* Hero Section */}
         <section id="hero">
           <div className="relative mx-auto container max-w-(--fd-layout-width)">
-            <div className="relative w-full p-6 lg:p-12 border-x">
-              <div className="flex flex-col justify-start items-start max-w-2xl">
-                <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tighter">
-                  {homepage?.hero?.title ?? config.title}
-                </h1>
-                <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
-                  {homepage?.hero?.description ?? config.description}
-                </p>
-                <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 mt-8 w-full">
-                  <div className="flex-1">
-                    <InstallBlock packageName="onedocs" />
+            <div className="relative w-full border-x">
+              <div className="grid grid-cols-1 lg:grid-cols-4">
+                <div className="lg:col-span-2 p-6 lg:p-12">
+                  <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tighter">
+                    {homepage?.hero?.title ?? config.title}
+                  </h1>
+                  <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
+                    {homepage?.hero?.description ?? config.description}
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 mt-8 w-full">
+                    <div className="flex-1">
+                      <InstallBlock packageName="onedocs" />
+                    </div>
+                    <a
+                      href={homepage?.hero?.cta?.href ?? "/docs"}
+                      className="inline-flex h-10 items-center justify-center rounded-lg bg-fd-primary px-6 text-sm font-medium text-fd-primary-foreground shadow transition-colors hover:bg-fd-primary/90 whitespace-nowrap"
+                    >
+                      {homepage?.hero?.cta?.label ?? "Get Started"}
+                    </a>
                   </div>
-                  <a
-                    href={homepage?.hero?.cta?.href ?? "/docs"}
-                    className="inline-flex h-10 items-center justify-center rounded-lg bg-fd-primary px-6 text-sm font-medium text-fd-primary-foreground shadow transition-colors hover:bg-fd-primary/90 whitespace-nowrap"
-                  >
-                    {homepage?.hero?.cta?.label ?? "Get Started"}
-                  </a>
                 </div>
+                <div className="lg:col-span-2 hidden lg:block" />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
         {homepage?.features && (
           <section id="features">
             <div className="relative mx-auto container max-w-(--fd-layout-width)">
@@ -93,7 +94,6 @@ function HomePage() {
           </section>
         )}
 
-        {/* Bottom border */}
         <div className="relative mx-auto container max-w-(--fd-layout-width)">
           <div className="border-x border-t h-16" />
         </div>
