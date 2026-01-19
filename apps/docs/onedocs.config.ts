@@ -3,6 +3,11 @@ import { defineConfig } from "onedocs/config";
 export default defineConfig({
   title: "Onedocs",
   description: "Zero-config documentation for TanStack Start + Fumadocs",
+  logo: {
+    light: "/logo-light.svg",
+    dark: "/logo-dark.svg",
+  },
+  icon: "/icon.png",
   nav: {
     github: "inline0/onedocs",
   },

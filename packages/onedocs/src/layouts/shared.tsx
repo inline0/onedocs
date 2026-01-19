@@ -1,5 +1,6 @@
 import type { BaseLayoutProps, LinkItemType } from "fumadocs-ui/layouts/shared";
 import type { OnedocsConfig } from "../config";
+import { Logo } from "../components/logo";
 
 function GitHubIcon() {
   return (
@@ -25,9 +26,15 @@ export function createBaseOptions(config: OnedocsConfig): BaseLayoutProps {
     });
   }
 
+  const navTitle = config.logo
+    ? typeof config.logo === "string"
+      ? <img src={config.logo} alt={config.title} className="h-6" />
+      : <Logo light={config.logo.light} dark={config.logo.dark} alt={config.title} className="h-6" />
+    : config.title;
+
   return {
     nav: {
-      title: config.title,
+      title: navTitle,
     },
     links,
   };

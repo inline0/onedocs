@@ -6,14 +6,16 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import "../app.css";
+import config from "../../onedocs.config";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Onedocs" },
+      { title: config.title },
     ],
+    links: config.icon ? [{ rel: "icon", href: config.icon }] : [],
   }),
   shellComponent: RootDocument,
   component: RootComponent,

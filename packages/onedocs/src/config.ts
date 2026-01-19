@@ -34,6 +34,7 @@ export interface OnedocsConfig {
   title: string;
   description?: string;
   logo?: string | { light: string; dark: string };
+  icon?: string;
   nav?: {
     links?: NavLink[];
     github?: string;
