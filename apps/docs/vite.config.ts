@@ -13,7 +13,12 @@ export default defineConfig({
     tsconfigPaths(),
     tailwindcss(),
     nitro(),
-    tanstackStart(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+        crawlLinks: true,
+      },
+    }),
     react(),
   ],
   resolve: {
