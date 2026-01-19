@@ -19,363 +19,274 @@ Create a single npm-publishable package that wraps TanStack Start and Fumadocs s
 
 ## Monorepo Structure
 
-Follow the `inline0/monorepo` patterns exactly:
-
 ```
 onedocs/
 ├── package.json              # Root workspace config (private: true)
 ├── biome.json                # Linting/formatting
+├── .github/                  # GitHub assets (logos for README)
 ├── apps/
 │   └── docs/                 # Example/test docs site (private)
 │       ├── package.json
-│       ├── content/
-│       │   └── docs/         # Markdown docs live here
+│       ├── content/docs/     # Markdown docs
+│       ├── public/           # Static assets (logos, icons)
 │       ├── src/
-│       │   └── routes/       # TanStack Start routes
-│       └── onedocs.config.ts # User config file
+│       │   ├── routes/       # TanStack Start routes
+│       │   ├── lib/          # Source configuration
+│       │   └── app.css       # CSS entry (imports preset)
+│       └── onedocs.config.tsx # Config file (TSX for JSX icons)
 ├── packages/
 │   ├── onedocs/              # THE publishable package
-│   │   ├── package.json      # name: "onedocs"
+│   │   ├── package.json
+│   │   ├── tsup.config.ts
 │   │   ├── src/
 │   │   │   ├── index.ts      # Main exports
-│   │   │   ├── cli.ts        # CLI for scaffolding
-│   │   │   ├── config.ts     # Config loading
-│   │   │   ├── layouts/      # Pre-built layouts
-│   │   │   ├── components/   # Re-exported Fumadocs components
-│   │   │   └── source/       # Content source helpers
+│   │   │   ├── config.ts     # Config types & defineConfig
+│   │   │   ├── layouts/      # Pre-built layouts (home, docs, root)
+│   │   │   ├── components/   # Components (InstallBlock, Logo, CTASection, etc.)
+│   │   │   ├── source/       # Content source helpers
+│   │   │   ├── css/          # CSS preset with Tailwind + Fumadocs + Inter
+│   │   │   └── fonts/        # Bundled Inter variable font
 │   │   └── tsconfig.json
-│   └── tsconfig/             # Shared tsconfig (copy from monorepo)
-│       ├── base.json
-│       └── package-library.json
+│   └── tsconfig/             # Shared tsconfig
 ```
 
 ---
 
-## Package Configuration
+## Package Exports
 
-### Root `package.json`
-
-```json
-{
-  "name": "onedocs-monorepo",
-  "private": true,
-  "workspaces": ["apps/*", "packages/*"],
-  "scripts": {
-    "dev": "bun run --cwd apps/docs dev",
-    "build": "bun run --cwd packages/onedocs build",
-    "lint": "biome lint .",
-    "format": "biome format --write .",
-    "typecheck": "tsc --noEmit -p packages/onedocs/tsconfig.json"
-  }
-}
-```
-
-### `packages/onedocs/package.json`
-
-```json
-{
-  "name": "onedocs",
-  "version": "0.1.0",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "bin": {
-    "onedocs": "./dist/cli.js"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./components": {
-      "types": "./dist/components/index.d.ts",
-      "import": "./dist/components/index.js"
-    },
-    "./config": {
-      "types": "./dist/config.d.ts",
-      "import": "./dist/config.js"
-    }
-  },
-  "files": ["dist"],
-  "scripts": {
-    "build": "tsup src/index.ts src/cli.ts src/config.ts src/components/index.ts --format esm --dts --clean",
-    "prepublishOnly": "bun run build"
-  },
-  "dependencies": {
-    "@tanstack/react-router": "^1.x",
-    "@tanstack/start": "^1.x",
-    "fumadocs-core": "^14.x",
-    "fumadocs-ui": "^14.x",
-    "fumadocs-mdx": "^10.x"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
-  },
-  "devDependencies": {
-    "tsup": "^8.x",
-    "typescript": "^5.x"
-  }
-}
-```
-
-**Why tsup for build?** It's the simplest bundler for npm packages. Outputs ESM + declarations. No config needed.
-
----
-
-## User Experience
-
-### Installation
-
-```bash
-bun add onedocs
-```
-
-### Minimal Setup
-
-**1. Create config file `onedocs.config.ts`:**
+### Main Entry (`onedocs`)
 
 ```ts
-import { defineConfig } from 'onedocs/config'
+// Layouts
+export { RootLayout } from "./layouts/root";
+export { DocsLayout } from "./layouts/docs";
+export { DocsPage, DocsBody } from "./layouts/docs-page";
+export { HomeLayout, HomePage } from "./layouts/home";
+export { createBaseOptions } from "./layouts/shared";
 
-export default defineConfig({
-  title: 'My Project',
-  description: 'Documentation for My Project',
-  // That's it. Everything else has defaults.
-})
+// Config
+export { defineConfig } from "./config";
+export type { OnedocsConfig } from "./config";
+
+// Source helpers
+export { createSource, loader } from "./source";
+
+// Components
+export { InstallBlock } from "./components/install-block";
+export { Logo } from "./components/logo";
+export { GitHubIcon } from "./components/icons";
+export { CTASection } from "./components/cta-section";
 ```
 
-**2. Create docs folder:**
+### Components Entry (`onedocs/components`)
 
-```
-content/
-└── docs/
-    ├── index.mdx           # Homepage
-    ├── getting-started.mdx
-    └── guides/
-        ├── meta.json       # { "title": "Guides", "pages": ["..."] }
-        └── installation.mdx
-```
-
-**3. Add routes (we provide these as copy-paste or CLI scaffold):**
+Re-exports Fumadocs UI components:
 
 ```ts
-// src/routes/__root.tsx
-import { createRootRoute } from '@tanstack/react-router'
-import { RootLayout } from 'onedocs'
-
-export const Route = createRootRoute({
-  component: RootLayout,
-})
-
-// src/routes/docs/$.tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { DocsPage } from 'onedocs'
-
-export const Route = createFileRoute('/docs/$')({
-  component: DocsPage,
-})
+export { Callout } from "fumadocs-ui/components/callout";
+export { Card, Cards } from "fumadocs-ui/components/card";
+export { Tab, Tabs } from "fumadocs-ui/components/tabs";
+export { Steps, Step } from "fumadocs-ui/components/steps";
+export { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+export { File, Folder, Files } from "fumadocs-ui/components/files";
+export { InstallBlock } from "./install-block";
 ```
 
-**4. Run:**
+### CSS Entry (`onedocs/css/preset.css`)
 
-```bash
-bun run dev
-```
+Includes:
+- Tailwind CSS v4
+- Fumadocs neutral theme + preset
+- Inter variable font (bundled, with OpenType features)
+- Font feature settings for body and headings
+- Full-height layout styles
 
 ---
 
 ## Config API
 
-```ts
-// onedocs.config.ts
-import { defineConfig } from 'onedocs/config'
+```tsx
+// onedocs.config.tsx (TSX to support JSX icons)
+import { defineConfig } from "onedocs/config";
+import { Package, Zap } from "lucide-react";
 
 export default defineConfig({
   // Required
   title: string,
 
-  // Optional with sane defaults
+  // Optional
   description?: string,
   logo?: string | { light: string, dark: string },
+  icon?: string, // Favicon
 
   // Navigation
   nav?: {
     links?: Array<{ label: string, href: string }>,
-    github?: string,  // Just the repo path, we build the icon
+    github?: string, // Just the repo path (e.g., "inline0/onedocs")
   },
 
-  // Homepage (optional - we provide a default)
+  // Homepage
   homepage?: {
     hero?: {
-      title?: string,       // Defaults to config.title
-      description?: string, // Defaults to config.description
+      title?: string,
+      description?: string,
       cta?: { label: string, href: string },
     },
     features?: Array<{
       title: string,
       description: string,
-      icon?: string,
+      icon?: ReactNode, // Pass JSX directly (e.g., <Package className="..." />)
     }>,
   },
 
   // Docs
   docs?: {
-    dir?: string,           // Default: 'content/docs'
-    sidebar?: 'auto' | SidebarConfig,
+    dir?: string, // Default: 'content/docs'
   },
 
   // Theme
   theme?: {
-    primaryColor?: string,  // Default: Fumadocs blue
-    darkMode?: boolean,     // Default: true (system preference)
+    primaryColor?: string,
+    darkMode?: boolean, // Default: true
   },
-
-  // i18n (optional)
-  i18n?: {
-    defaultLanguage: string,
-    languages: string[],
-  },
-})
+});
 ```
 
 ---
 
-## What We Export
+## Key Components
 
-### Main Export (`onedocs`)
+### HomePage
 
-```ts
-// Layouts - pre-configured, just use them
-export { RootLayout } from './layouts/root'
-export { DocsLayout } from './layouts/docs'
-export { DocsPage } from './layouts/docs-page'
-export { HomePage } from './layouts/home'
+Full landing page with hero, features grid, and footer:
 
-// Config loader
-export { loadConfig } from './config'
-
-// Types
-export type { OnedocsConfig } from './config'
+```tsx
+<HomePage config={config} packageName="my-package">
+  <CTASection
+    title="Ready to get started?"
+    description="Check out the docs."
+    cta={{ label: "Go to Docs", href: "/docs" }}
+  />
+</HomePage>
 ```
 
-### Components Export (`onedocs/components`)
+Features:
+- 4-column responsive feature grid with icons
+- Install block with package manager tabs
+- Footer with dynamic copyright
+- Vertical border lines (grid aesthetic)
+- Children rendered between features and footer (centered)
 
-Re-export useful Fumadocs components for power users:
+### DocsLayout
 
-```ts
-// For people who want to break out and customize
-export { Callout } from 'fumadocs-ui/components/callout'
-export { Card, Cards } from 'fumadocs-ui/components/card'
-export { Tab, Tabs } from 'fumadocs-ui/components/tabs'
-export { Steps, Step } from 'fumadocs-ui/components/steps'
-export { Accordion, Accordions } from 'fumadocs-ui/components/accordion'
-export { CodeBlock } from 'fumadocs-ui/components/codeblock'
-// ... etc
+Wraps Fumadocs DocsLayout with config-based nav/links:
+
+```tsx
+<DocsLayout config={config} pageTree={data.pageTree}>
+  {children}
+</DocsLayout>
 ```
 
----
+### InstallBlock
 
-## CLI (Optional)
+Package manager tabs (npm, yarn, pnpm, bun):
 
-Simple scaffolding for new projects:
-
-```bash
-bunx onedocs init
+```tsx
+<InstallBlock packageName="onedocs" />
 ```
 
-Creates:
-- `onedocs.config.ts`
-- `content/docs/index.mdx`
-- `src/routes/__root.tsx`
-- `src/routes/docs/$.tsx`
+### CTASection
 
----
+Centered call-to-action section:
 
-## Implementation Priority
-
-### Phase 1: Core (MVP)
-1. Monorepo setup with bun workspaces
-2. Basic package structure with tsup build
-3. Config system (`defineConfig`)
-4. DocsLayout + DocsPage components wrapping Fumadocs
-5. Content source setup (fumadocs-mdx)
-6. Working example in `apps/docs`
-
-### Phase 2: Polish
-1. RootLayout with nav configuration
-2. HomePage component with hero/features
-3. Theme configuration
-4. CLI scaffolding
-
-### Phase 3: Extras
-1. i18n support
-2. Search (Orama built-in)
-3. More component re-exports
-
----
-
-## Publishing
-
-Use npm (not bun publish) for reliability:
-
-```bash
-cd packages/onedocs
-bun run build
-npm publish
-```
-
-Or set up GitHub Actions:
-
-```yaml
-# .github/workflows/publish.yml
-on:
-  push:
-    tags: ['v*']
-
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-      - run: bun install
-      - run: cd packages/onedocs && bun run build
-      - run: cd packages/onedocs && npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```tsx
+<CTASection
+  title="Ready to get started?"
+  description="Optional description"
+  cta={{ label: "Button Text", href: "/path" }}
+/>
 ```
 
 ---
 
-## Key Dependencies
+## CSS Preset Details
 
-| Package | Purpose |
-|---------|---------|
-| `@tanstack/start` | Full-stack React framework |
-| `@tanstack/react-router` | File-based routing |
-| `fumadocs-ui` | Pre-built doc layouts & components |
-| `fumadocs-core` | Headless utilities (TOC, search, etc.) |
-| `fumadocs-mdx` | MDX content loading & collections |
-| `tsup` | Build the package for npm |
+The CSS preset (`onedocs/css/preset.css`) includes:
+
+```css
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+/* Inter variable font (bundled) */
+@font-face {
+  font-family: "Inter Variable";
+  src: url("../fonts/InterVariable.woff2") format("woff2-variations");
+}
+
+/* OpenType features */
+body {
+  font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss08" 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss07" 1, "ss08" 1, "dlig" 1;
+}
+
+/* Full-height layout */
+html, body, #nd-home-layout {
+  height: 100%;
+}
+```
 
 ---
 
-## Non-Goals
+## Implementation Pattern
 
-- Custom SSG/build system (use TanStack Start's)
-- Plugin system (use Fumadocs directly if you need this)
-- Multiple themes (one good theme, escape to Fumadocs for more)
-- Blog support (this is docs-only)
+### Minimal app.css
 
----
+```css
+@import "onedocs/css/preset.css";
 
-## File Patterns
+@source "./routes/**/*.tsx";
+@source "../content/**/*.mdx";
+```
 
-- Config: `onedocs.config.ts` at project root
-- Docs: `content/docs/**/*.{md,mdx}`
-- Meta: `content/docs/**/meta.json` for sidebar ordering
-- Assets: `public/` (standard Vite/TanStack)
+### Homepage Route
+
+```tsx
+// src/routes/index.tsx
+import { HomePage, CTASection } from "onedocs";
+import config from "../onedocs.config.tsx";
+
+function Home() {
+  return (
+    <HomePage config={config} packageName="my-package">
+      <CTASection
+        title="Ready to get started?"
+        cta={{ label: "Go to Docs", href: "/docs" }}
+      />
+    </HomePage>
+  );
+}
+```
+
+### Docs Route
+
+```tsx
+// src/routes/docs/$.tsx
+import { DocsLayout } from "onedocs";
+import config from "../../onedocs.config.tsx";
+
+function Page() {
+  const data = useFumadocsLoader(Route.useLoaderData());
+  return (
+    <DocsLayout config={config} pageTree={data.pageTree}>
+      {/* ... */}
+    </DocsLayout>
+  );
+}
+```
 
 ---
 
@@ -393,6 +304,45 @@ bun run lint             # Biome lint
 bun run format           # Biome format
 bun run typecheck        # TypeScript check
 
+# Testing
+bun test                 # Run tests
+
 # Publishing
 cd packages/onedocs && npm publish
 ```
+
+---
+
+## Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| `fumadocs-core` | Headless utilities (TOC, search, source) |
+| `fumadocs-ui` | Pre-built doc layouts & components |
+| `fumadocs-mdx` | MDX content loading & collections |
+| `lucide-react` | Icons (used internally for GitHub icon) |
+
+### Peer Dependencies
+
+- `@tanstack/react-router`
+- `@tanstack/start`
+- `react` / `react-dom`
+
+---
+
+## Non-Goals
+
+- Custom SSG/build system (use TanStack Start's)
+- Plugin system (use Fumadocs directly if you need this)
+- Multiple themes (one good theme, escape to Fumadocs for more)
+- Blog support (this is docs-only)
+
+---
+
+## File Patterns
+
+- Config: `onedocs.config.tsx` at project root (TSX for JSX icons)
+- Docs: `content/docs/**/*.{md,mdx}`
+- Meta: `content/docs/**/meta.json` for sidebar ordering
+- Assets: `public/` (standard Vite/TanStack)
+- CSS: `src/app.css` imports `onedocs/css/preset.css`

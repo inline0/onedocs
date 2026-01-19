@@ -1,23 +1,32 @@
-# Onedocs
+<p align="center">
+  <a href="https://github.com/inline0/onedocs">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-light.svg">
+      <img alt="Onedocs" src="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-light.svg" width="280">
+    </picture>
+  </a>
+</p>
 
-Zero-config documentation wrapper for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.
+<p align="center">
+  Zero-config documentation for TanStack Start + Fumadocs
+</p>
 
-> **Note:** Onedocs is designed for standalone documentation websites, not for integrating docs into existing applications. It's primarily used by [Inline0](https://github.com/inline0) packages.
+---
 
-## Why Onedocs?
+Install one dependency, write markdown, ship docs.
 
-Setting up documentation shouldn't require configuring multiple packages, build pipelines, and content sources. Onedocs bundles everything you need:
+> **Note:** Onedocs is designed for standalone documentation websites, not for integrating docs into existing applications.
 
-- **TanStack Start** - Full-stack React framework with file-based routing
-- **Fumadocs UI** - Beautiful documentation layouts and components
-- **Fumadocs MDX** - Content loading with syntax highlighting and search
+## Features
 
-## Philosophy
-
-- **One dependency** - Onedocs brings TanStack Start, Fumadocs UI, Fumadocs Core, and MDX handling
-- **Zero config by default** - Works out of the box with sensible defaults
-- **Markdown-first** - Write `.md` or `.mdx` files, get docs
-- **Escape hatches exist** - Power users can use Fumadocs components directly
+- **One Dependency** - Bundles TanStack Start, Fumadocs UI, and MDX handling
+- **Zero Config** - Works out of the box with sensible defaults
+- **Markdown First** - Write `.md` or `.mdx` files, get beautiful docs
+- **Full-text Search** - Built-in Orama search indexes your content automatically
+- **Dark Mode** - Beautiful light and dark themes with system preference support
+- **Inter Font** - Bundled Inter variable font with OpenType features
+- **TypeScript Ready** - Full type-safe configuration
 
 ## Quick Start
 
@@ -25,97 +34,120 @@ Setting up documentation shouldn't require configuring multiple packages, build 
 bun add onedocs
 ```
 
-Create your config file:
+Create your config:
 
-```ts
-// onedocs.config.ts
+```tsx
+// onedocs.config.tsx
 import { defineConfig } from "onedocs/config";
 
 export default defineConfig({
   title: "My Project",
   description: "Documentation for My Project",
+  nav: {
+    github: "username/repo",
+  },
 });
 ```
 
-Add your markdown files:
+Import the CSS preset:
 
-```
-content/
-└── docs/
-    ├── index.mdx
-    └── getting-started.mdx
+```css
+/* app.css */
+@import "onedocs/css/preset.css";
 ```
 
-Run the dev server:
+Create your homepage:
+
+```tsx
+// src/routes/index.tsx
+import { HomePage } from "onedocs";
+import config from "../onedocs.config.tsx";
+
+export default function Home() {
+  return <HomePage config={config} packageName="my-package" />;
+}
+```
+
+Add your markdown files in `content/docs/` and run:
 
 ```bash
 bun run dev
 ```
 
-That's it. Your docs are live.
-
 ## Configuration
 
-```ts
+```tsx
 import { defineConfig } from "onedocs/config";
+import { Package, Zap } from "lucide-react";
 
 export default defineConfig({
-  // Required
   title: "My Project",
+  description: "Project description",
 
-  // Optional
-  description: "Documentation for My Project",
-  logo: "/logo.svg",
+  // Logo with dark/light variants
+  logo: {
+    light: "/logo-light.svg",
+    dark: "/logo-dark.svg",
+  },
+
+  // Favicon
+  icon: "/icon.png",
 
   // Navigation
   nav: {
-    links: [{ label: "Blog", href: "/blog" }],
     github: "username/repo",
+    links: [{ label: "Blog", href: "/blog" }],
   },
 
-  // Theme
-  theme: {
-    primaryColor: "#3b82f6",
-    darkMode: true,
+  // Homepage
+  homepage: {
+    hero: {
+      title: "Ship docs in minutes",
+      description: "Your tagline here",
+      cta: { label: "Get Started", href: "/docs" },
+    },
+    features: [
+      {
+        title: "Feature One",
+        description: "Description here",
+        icon: <Package className="h-5 w-5 text-fd-primary" />,
+      },
+      {
+        title: "Feature Two",
+        description: "Description here",
+        icon: <Zap className="h-5 w-5 text-fd-primary" />,
+      },
+    ],
   },
 });
 ```
 
-## Project Structure
+## Exports
 
-```
-your-project/
-├── content/
-│   └── docs/
-│       ├── index.mdx
-│       ├── getting-started.mdx
-│       └── guides/
-│           ├── meta.json
-│           └── setup.mdx
-├── src/
-│   ├── routes/
-│   │   ├── __root.tsx
-│   │   ├── docs.tsx
-│   │   └── docs/
-│   │       └── $.tsx
-│   └── lib/
-│       └── source.ts
-├── onedocs.config.ts
-├── source.config.ts
-└── vite.config.ts
+### Main (`onedocs`)
+
+```ts
+// Layouts
+export { RootLayout, DocsLayout, HomePage, HomeLayout } from "onedocs";
+
+// Components
+export { InstallBlock, Logo, CTASection, GitHubIcon } from "onedocs";
+
+// Config
+export { defineConfig } from "onedocs";
 ```
 
-## Components
+### Components (`onedocs/components`)
 
-Onedocs re-exports Fumadocs UI components for use in your MDX files:
+Re-exports Fumadocs UI components:
 
-```tsx
+```ts
 import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components";
 ```
 
-## Documentation
+### CSS (`onedocs/css/preset.css`)
 
-For full documentation, visit [onedocs.dev](https://onedocs.dev) (coming soon).
+Includes Tailwind, Fumadocs styles, Inter font, and OpenType features.
 
 ## Development
 
@@ -123,25 +155,14 @@ For full documentation, visit [onedocs.dev](https://onedocs.dev) (coming soon).
 # Install dependencies
 bun install
 
-# Run the docs site (dogfooding)
+# Run the docs site
 bun run dev
 
 # Build the package
 bun run build
 
 # Run tests
-cd packages/onedocs && bun test
-```
-
-## Monorepo Structure
-
-```
-onedocs/
-├── apps/
-│   └── docs/          # Example docs site (dogfooding)
-├── packages/
-│   ├── onedocs/       # The publishable package
-│   └── tsconfig/      # Shared TypeScript config
+bun test
 ```
 
 ## License
