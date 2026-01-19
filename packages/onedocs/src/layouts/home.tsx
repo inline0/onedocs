@@ -17,9 +17,10 @@ export function HomeLayout({ config, children }: HomeLayoutProps) {
 interface HomePageProps {
   config: OnedocsConfig;
   packageName?: string;
+  children?: React.ReactNode;
 }
 
-export function HomePage({ config, packageName }: HomePageProps) {
+export function HomePage({ config, packageName, children }: HomePageProps) {
   const { homepage } = config;
   const currentYear = new Date().getFullYear();
 
@@ -58,12 +59,12 @@ export function HomePage({ config, packageName }: HomePageProps) {
 
             {homepage?.features && homepage.features.length > 0 && (
               <section id="features">
-                <div className="border-y">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                    {homepage.features.map((feature, index) => (
+                <div className="border-t">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 [&>*]:border-b [&>*:nth-last-child(-n+1)]:border-b-0 sm:[&>*:nth-last-child(-n+2)]:border-b-0 lg:[&>*:nth-last-child(-n+4)]:border-b-0">
+                    {homepage.features.map((feature) => (
                       <div
                         key={feature.title}
-                        className={`flex flex-col gap-y-2 items-start justify-start py-8 px-6 transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 ${index < homepage.features!.length - 4 ? "lg:border-b" : ""} ${index < homepage.features!.length - 2 ? "sm:max-lg:border-b" : ""} ${index < homepage.features!.length - 1 ? "max-sm:border-b" : ""}`}
+                        className="flex flex-col gap-y-2 items-start justify-start py-8 px-6 transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0"
                       >
                         {feature.icon && (
                           <div className="bg-fd-primary/10 p-2 rounded-lg mb-2">
@@ -82,6 +83,8 @@ export function HomePage({ config, packageName }: HomePageProps) {
                 </div>
               </section>
             )}
+
+            {children}
           </div>
         </div>
 
