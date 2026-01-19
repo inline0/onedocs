@@ -24,6 +24,10 @@
       "types": "./dist/source/index.d.ts",
       "import": "./dist/source/index.js"
     },
+    "./llms": {
+      "types": "./dist/llms/index.d.ts",
+      "import": "./dist/llms/index.js"
+    },
     "./css/preset.css": "./src/css/preset.css"
   },
   "files": ["dist", "src/css", "src/fonts"],
