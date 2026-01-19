@@ -84,8 +84,12 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
               </section>
             )}
 
-            {children}
           </div>
+          {children && (
+            <div className="flex-1 flex items-center justify-center">
+              {children}
+            </div>
+          )}
         </div>
 
         <footer className="relative mx-auto w-full max-w-(--fd-layout-width)">
