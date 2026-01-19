@@ -11,7 +11,7 @@ function HomePage() {
 
   return (
     <HomeLayout config={config}>
-      <main className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 pt-16 md:pt-24">
+      <main className="mx-auto max-w-(--fd-layout-width) px-4  pt-16 md:pt-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div>
             <InstallBlock
