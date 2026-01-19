@@ -59,7 +59,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
 
             {homepage?.features && homepage.features.length > 0 && (
               <section id="features">
-                <div className="border-t">
+                <div className="border-y">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 [&>*]:border-b [&>*:nth-last-child(-n+1)]:border-b-0 sm:[&>*:nth-last-child(-n+2)]:border-b-0 lg:[&>*:nth-last-child(-n+4)]:border-b-0">
                     {homepage.features.map((feature) => (
                       <div
@@ -89,7 +89,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
         </div>
 
         <footer className="relative mx-auto w-full max-w-(--fd-layout-width)">
-          <div className="border-x border-t px-6 py-4">
+          <div className="border-x px-6 py-4">
             <p className="text-sm text-fd-muted-foreground">
               © {currentYear} {config.title}
             </p>
