@@ -21,16 +21,17 @@ interface HomePageProps {
 
 export function HomePage({ config, packageName }: HomePageProps) {
   const { homepage } = config;
+  const currentYear = new Date().getFullYear();
 
   return (
     <HomeLayout config={config}>
-      <main className="flex-1">
-        <section id="hero">
-          <div className="relative mx-auto container max-w-(--fd-layout-width)">
-            <div className="relative w-full border-x">
+      <main className="flex-1 flex flex-col">
+        <div className="flex-1 relative mx-auto container max-w-(--fd-layout-width)">
+          <div className="h-full border-x flex flex-col">
+            <section id="hero">
               <div className="grid grid-cols-1 lg:grid-cols-4">
                 <div className="lg:col-span-2 p-6 lg:p-12">
-                  <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tighter">
+                  <h1 className="text-left text-4xl font-semibold leading-tight text-fd-foreground sm:text-5xl md:text-6xl tracking-tight">
                     {homepage?.hero?.title ?? config.title}
                   </h1>
                   <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
@@ -52,42 +53,46 @@ export function HomePage({ config, packageName }: HomePageProps) {
                 </div>
                 <div className="lg:col-span-2 hidden lg:block" />
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {homepage?.features && homepage.features.length > 0 && (
-          <section id="features">
-            <div className="relative mx-auto container max-w-(--fd-layout-width)">
-              <div className="border-x border-t">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                  {homepage.features.map((feature, index) => (
-                    <div
-                      key={feature.title}
-                      className={`flex flex-col gap-y-2 items-start justify-start py-8 px-6 border-b transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 ${index >= homepage.features!.length - 4 ? "lg:border-b-0" : ""} ${index >= homepage.features!.length - 2 ? "sm:border-b-0" : ""} ${index === homepage.features!.length - 1 ? "border-b-0" : ""}`}
-                    >
-                      {feature.icon && (
-                        <div className="bg-fd-primary/10 p-2 rounded-lg mb-2">
-                          {feature.icon}
-                        </div>
-                      )}
-                      <h3 className="text-base font-medium text-fd-card-foreground">
-                        {feature.title}
-                      </h3>
-                      <p className="text-sm text-fd-muted-foreground">
-                        {feature.description}
-                      </p>
-                    </div>
-                  ))}
+            {homepage?.features && homepage.features.length > 0 && (
+              <section id="features">
+                <div className="border-t">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                    {homepage.features.map((feature, index) => (
+                      <div
+                        key={feature.title}
+                        className={`flex flex-col gap-y-2 items-start justify-start py-8 px-6 border-b transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 ${index >= homepage.features!.length - 4 ? "lg:border-b-0" : ""} ${index >= homepage.features!.length - 2 ? "sm:border-b-0" : ""} ${index === homepage.features!.length - 1 ? "border-b-0" : ""}`}
+                      >
+                        {feature.icon && (
+                          <div className="bg-fd-primary/10 p-2 rounded-lg mb-2">
+                            {feature.icon}
+                          </div>
+                        )}
+                        <h3 className="text-base font-medium text-fd-card-foreground">
+                          {feature.title}
+                        </h3>
+                        <p className="text-sm text-fd-muted-foreground">
+                          {feature.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-          </section>
-        )}
+              </section>
+            )}
 
-        <div className="relative mx-auto container max-w-(--fd-layout-width)">
-          <div className="border-x border-t h-16" />
+            <div className="flex-1 border-t" />
+          </div>
         </div>
+
+        <footer className="relative mx-auto container max-w-(--fd-layout-width)">
+          <div className="border-x border-t px-6 py-4">
+            <p className="text-sm text-fd-muted-foreground">
+              © {currentYear} {config.title}
+            </p>
+          </div>
+        </footer>
       </main>
     </HomeLayout>
   );
