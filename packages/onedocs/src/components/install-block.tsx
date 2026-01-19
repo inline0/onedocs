@@ -12,14 +12,14 @@ interface InstallBlockProps {
 
 export function InstallBlock({
   title,
-  description,
-  packageName,
+  description, 
+  packageName, 
   ctaLabel = "Get Started",
   ctaHref = "/docs",
   children,
 }: InstallBlockProps) {
   return (
-    <div className="grid gap-8 py-16 md:grid-cols-2 md:gap-12">
+    <div className="grid gap-8 md:grid-cols-2 md:gap-12">
       <div className="flex flex-col justify-center">
         <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
           {title}
@@ -29,7 +29,7 @@ export function InstallBlock({
         )}
         <div className="flex flex-wrap items-end gap-4">
           <div className="min-w-[200px] flex-1">
-            <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} className="mb-0">
+            <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} className="!mb-0">
               <Tab value="npm">
                 <code className="block rounded bg-fd-secondary px-3 py-2 text-sm">
                   npm i {packageName}
