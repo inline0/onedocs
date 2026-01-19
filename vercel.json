@@ -2,5 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "bun install",
   "buildCommand": "bun run --cwd apps/docs build",
-  "outputDirectory": "apps/docs/.output"
+  "outputDirectory": "apps/docs/.output",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- apps/docs packages/onedocs"
 }
