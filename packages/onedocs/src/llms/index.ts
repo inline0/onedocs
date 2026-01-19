@@ -23,18 +23,14 @@ export async function getLLMText(page: Page): Promise<string> {
   if (page.data.getText) {
     try {
       text = await page.data.getText("processed");
-    } catch {
-      // getText may not be available
-    }
+    } catch {}
   }
 
   if (!text && page.data.load) {
     try {
       const content = await page.data.load();
       text = content?.structuredData?.content || "";
-    } catch {
-      // load may not be available
-    }
+    } catch {}
   }
 
   return `# ${page.data.title}
@@ -45,11 +41,9 @@ ${text}`;
 
 function sortPages(pages: Page[]): Page[] {
   return [...pages].sort((a, b) => {
-    // Sort by URL depth first (fewer segments = higher priority)
     const aDepth = a.url.split("/").length;
     const bDepth = b.url.split("/").length;
     if (aDepth !== bDepth) return aDepth - bDepth;
-    // Then alphabetically
     return a.url.localeCompare(b.url);
   });
 }
