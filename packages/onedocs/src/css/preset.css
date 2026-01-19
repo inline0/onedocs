@@ -17,6 +17,12 @@
 }
 
 @layer base {
+  html,
+  body,
+  #nd-home-layout {
+    height: 100%;
+  }
+
   body {
     font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss08" 1;
   }

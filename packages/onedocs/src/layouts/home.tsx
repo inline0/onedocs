@@ -63,7 +63,7 @@ export function HomePage({ config, packageName }: HomePageProps) {
                     {homepage.features.map((feature, index) => (
                       <div
                         key={feature.title}
-                        className={`flex flex-col gap-y-2 items-start justify-start py-8 px-6 border-b transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 ${index >= homepage.features!.length - 4 ? "lg:border-b-0" : ""} ${index >= homepage.features!.length - 2 ? "sm:border-b-0" : ""} ${index === homepage.features!.length - 1 ? "border-b-0" : ""}`}
+                        className={`flex flex-col gap-y-2 items-start justify-start py-8 px-6 transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 ${index < homepage.features!.length - 4 ? "lg:border-b" : ""} ${index < homepage.features!.length - 2 ? "sm:max-lg:border-b" : ""} ${index < homepage.features!.length - 1 ? "max-sm:border-b" : ""}`}
                       >
                         {feature.icon && (
                           <div className="bg-fd-primary/10 p-2 rounded-lg mb-2">
