@@ -19,6 +19,7 @@
         "fumadocs-core": "^16.4.7",
         "fumadocs-mdx": "^14.2.5",
         "fumadocs-ui": "^16.4.7",
+        "lucide-react": "^0.562.0",
         "nitro": "^3.0.1-alpha.1",
         "onedocs": "workspace:*",
         "react": "^19.2.3",

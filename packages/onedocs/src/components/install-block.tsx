@@ -2,7 +2,7 @@ import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import type { ReactNode } from "react";
 
 interface InstallBlockProps {
-  title: string;
+  title?: string;
   description?: string;
   packageName: string;
   children?: ReactNode;
@@ -16,9 +16,11 @@ export function InstallBlock({
 }: InstallBlockProps) {
   return (
     <div>
-      <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-        {title}
-      </h1>
+      {title && (
+        <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+          {title}
+        </h1>
+      )}
       {description && (
         <p className="text-fd-muted-foreground mb-6 text-balance">{description}</p>
       )}
