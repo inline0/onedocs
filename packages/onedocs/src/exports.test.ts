@@ -31,10 +31,10 @@ describe("package exports", () => {
       expect(typeof HomeLayout).toBe("function");
     });
 
-    it("should export Hero", async () => {
-      const { Hero } = await import("./index");
-      expect(Hero).toBeDefined();
-      expect(typeof Hero).toBe("function");
+    it("should export HomePage", async () => {
+      const { HomePage } = await import("./index");
+      expect(HomePage).toBeDefined();
+      expect(typeof HomePage).toBe("function");
     });
 
     it("should export InstallBlock", async () => {

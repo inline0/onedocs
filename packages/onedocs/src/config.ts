@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface NavLink {
   label: string;
   href: string;
@@ -12,7 +14,7 @@ export interface HeroConfig {
 export interface FeatureConfig {
   title: string;
   description: string;
-  icon?: string;
+  icon?: ReactNode;
 }
 
 export interface HomepageConfig {

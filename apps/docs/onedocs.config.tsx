@@ -1,4 +1,16 @@
 import { defineConfig } from "onedocs/config";
+import {
+  Package,
+  Settings,
+  FileText,
+  Search,
+  Moon,
+  Code,
+  Zap,
+  Puzzle,
+} from "lucide-react";
+
+const iconClass = "h-5 w-5 text-fd-primary";
 
 export default defineConfig({
   title: "Onedocs",
@@ -23,49 +35,49 @@ export default defineConfig({
         title: "One Dependency",
         description:
           "Bundles TanStack Start, Fumadocs UI, and MDX handling. Just add onedocs and start writing.",
-        icon: "package",
+        icon: <Package className={iconClass} />,
       },
       {
         title: "Zero Config",
         description:
           "Works out of the box with sensible defaults. No build tools or pipelines to configure.",
-        icon: "settings",
+        icon: <Settings className={iconClass} />,
       },
       {
         title: "Markdown First",
         description:
           "Write .md or .mdx files in your content folder. Syntax highlighting, TOC, and search included.",
-        icon: "file-text",
+        icon: <FileText className={iconClass} />,
       },
       {
         title: "Full-text Search",
         description:
           "Built-in Orama search indexes your content automatically. Fast, local, no external services.",
-        icon: "search",
+        icon: <Search className={iconClass} />,
       },
       {
         title: "Dark Mode",
         description:
           "Beautiful light and dark themes out of the box. Respects system preferences automatically.",
-        icon: "moon",
+        icon: <Moon className={iconClass} />,
       },
       {
         title: "TypeScript Ready",
         description:
           "Full TypeScript support with type-safe configuration and auto-completion in your editor.",
-        icon: "code",
+        icon: <Code className={iconClass} />,
       },
       {
         title: "Fast Builds",
         description:
           "Powered by Vite and TanStack Start for lightning-fast development and production builds.",
-        icon: "zap",
+        icon: <Zap className={iconClass} />,
       },
       {
         title: "Customizable",
         description:
           "Escape hatches to Fumadocs components when you need more control over your docs.",
-        icon: "puzzle",
+        icon: <Puzzle className={iconClass} />,
       },
     ],
   },
