@@ -1,10 +1,12 @@
-# onedocs
+# Onedocs
 
 A zero-config documentation wrapper for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.
 
+> **Note:** Onedocs is designed for standalone documentation websites, not for integrating docs into existing applications. It's primarily used by Inline0 packages.
+
 ## Project Goal
 
-Create a single npm-publishable package that wraps TanStack Start and Fumadocs so inline0 projects can have documentation with minimal setup. This is NOT for people who want to customize their docs framework—it's for people who want to `bun add onedocs` and start writing markdown.
+Create a single npm-publishable package that wraps TanStack Start and Fumadocs so Inline0 projects can have documentation with minimal setup. This is NOT for people who want to customize their docs framework—it's for people who want to `bun add onedocs` and start writing markdown.
 
 ## Core Philosophy
 

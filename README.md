@@ -1,10 +1,12 @@
-# onedocs
+# Onedocs
 
 Zero-config documentation wrapper for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.
 
-## Why onedocs?
+> **Note:** Onedocs is designed for standalone documentation websites, not for integrating docs into existing applications. It's primarily used by [Inline0](https://github.com/inline0) packages.
 
-Setting up documentation shouldn't require configuring multiple packages, build pipelines, and content sources. onedocs bundles everything you need:
+## Why Onedocs?
+
+Setting up documentation shouldn't require configuring multiple packages, build pipelines, and content sources. Onedocs bundles everything you need:
 
 - **TanStack Start** - Full-stack React framework with file-based routing
 - **Fumadocs UI** - Beautiful documentation layouts and components
@@ -12,7 +14,7 @@ Setting up documentation shouldn't require configuring multiple packages, build 
 
 ## Philosophy
 
-- **One dependency** - `onedocs` brings TanStack Start, Fumadocs UI, Fumadocs Core, and MDX handling
+- **One dependency** - Onedocs brings TanStack Start, Fumadocs UI, Fumadocs Core, and MDX handling
 - **Zero config by default** - Works out of the box with sensible defaults
 - **Markdown-first** - Write `.md` or `.mdx` files, get docs
 - **Escape hatches exist** - Power users can use Fumadocs components directly
@@ -105,7 +107,7 @@ your-project/
 
 ## Components
 
-onedocs re-exports Fumadocs UI components for use in your MDX files:
+Onedocs re-exports Fumadocs UI components for use in your MDX files:
 
 ```tsx
 import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components";
