@@ -1,0 +1,55 @@
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+export interface HeroConfig {
+  title?: string;
+  description?: string;
+  cta?: { label: string; href: string };
+}
+
+export interface FeatureConfig {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+export interface HomepageConfig {
+  hero?: HeroConfig;
+  features?: FeatureConfig[];
+}
+
+export interface ThemeConfig {
+  primaryColor?: string;
+  darkMode?: boolean;
+}
+
+export interface I18nConfig {
+  defaultLanguage: string;
+  languages: string[];
+}
+
+export interface OnedocsConfig {
+  title: string;
+  description?: string;
+  logo?: string | { light: string; dark: string };
+  nav?: {
+    links?: NavLink[];
+    github?: string;
+  };
+  homepage?: HomepageConfig;
+  docs?: {
+    dir?: string;
+  };
+  theme?: ThemeConfig;
+  i18n?: I18nConfig;
+}
+
+export function defineConfig(config: OnedocsConfig): OnedocsConfig {
+  return {
+    docs: { dir: "content/docs" },
+    theme: { darkMode: true },
+    ...config,
+  };
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@onedocs/docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 7000",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-router": "^1.151.6",
+    "@tanstack/react-start": "^1.153.0",
+    "@tanstack/router-plugin": "^1.151.6",
+    "@types/mdx": "^2.0.13",
+    "fumadocs-core": "^16.4.7",
+    "fumadocs-mdx": "^14.2.5",
+    "fumadocs-ui": "^16.4.7",
+    "nitro": "^3.0.1-alpha.1",
+    "onedocs": "workspace:*",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.0.4"
+  }
+}
