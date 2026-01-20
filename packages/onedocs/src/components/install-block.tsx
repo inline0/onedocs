@@ -1,5 +1,6 @@
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
+import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { highlight } from "fumadocs-core/highlight";
 import { renderToString } from "react-dom/server";
 import type { ReactNode } from "react";
@@ -35,16 +36,33 @@ export async function highlightInstallCommands(packageName: string): Promise<Hig
 interface InstallBlockProps {
   title?: string;
   description?: string;
-  commands: HighlightedInstallCommands;
+  packageName?: string;
+  commands?: HighlightedInstallCommands;
   children?: ReactNode;
 }
 
 export function InstallBlock({
   title,
   description,
+  packageName,
   commands,
   children,
 }: InstallBlockProps) {
+  if (!commands && !packageName) {
+    return null;
+  }
+
+  const renderTab = (pm: "npm" | "yarn" | "pnpm" | "bun", cmd: string) => {
+    if (commands) {
+      return <div dangerouslySetInnerHTML={{ __html: commands[pm] }} />;
+    }
+    return (
+      <DynamicCodeBlock lang="bash" code={cmd} />
+    );
+  };
+
+  const pkg = packageName ?? "";
+
   return (
     <div>
       {title && (
@@ -57,16 +75,16 @@ export function InstallBlock({
       )}
       <Tabs groupId="pm" items={["npm", "yarn", "pnpm", "bun"]} className="!mb-0">
         <Tab value="npm" className="!p-0 !py-0 !px-0">
-          <div dangerouslySetInnerHTML={{ __html: commands.npm }} />
+          {renderTab("npm", `npm i ${pkg}`)}
         </Tab>
         <Tab value="yarn" className="!p-0 !py-0 !px-0">
-          <div dangerouslySetInnerHTML={{ __html: commands.yarn }} />
+          {renderTab("yarn", `yarn add ${pkg}`)}
         </Tab>
         <Tab value="pnpm" className="!p-0 !py-0 !px-0">
-          <div dangerouslySetInnerHTML={{ __html: commands.pnpm }} />
+          {renderTab("pnpm", `pnpm add ${pkg}`)}
         </Tab>
         <Tab value="bun" className="!p-0 !py-0 !px-0">
-          <div dangerouslySetInnerHTML={{ __html: commands.bun }} />
+          {renderTab("bun", `bun add ${pkg}`)}
         </Tab>
       </Tabs>
       {children && (

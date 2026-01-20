@@ -12,3 +12,4 @@ export { InstallBlock } from "./install-block";
 export { Button } from "./button";
 export { DarkModeFix } from "./dark-mode-fix";
 export { Logo } from "./logo";
+export { FontHead } from "./font-head";
