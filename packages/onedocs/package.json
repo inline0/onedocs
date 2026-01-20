@@ -1,6 +1,6 @@
 {
   "name": "onedocs",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "type": "module",
   "description": "Zero-config documentation for Next.js + Fumadocs. Install one dependency, write markdown, ship docs.",
   "license": "MIT",
