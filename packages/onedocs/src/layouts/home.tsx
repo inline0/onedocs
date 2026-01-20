@@ -27,6 +27,10 @@ export function HomePage({ config, installCommands, children }: HomePageProps) {
   const heroRight = homepage?.hero?.right;
   const currentYear = new Date().getFullYear();
 
+  const renderedHeroLeft = typeof heroLeft === 'function'
+    ? heroLeft({ installCommands })
+    : heroLeft;
+
   return (
     <HomeLayout config={config}>
       <main className="flex-1 flex flex-col min-h-[calc(100vh-var(--fd-nav-height))]">
@@ -36,8 +40,8 @@ export function HomePage({ config, installCommands, children }: HomePageProps) {
             <section id="hero">
               <div className="grid grid-cols-1 lg:grid-cols-4">
                 <div className="lg:col-span-2 p-6 lg:p-12">
-                  {heroLeft ? (
-                    heroLeft
+                  {renderedHeroLeft ? (
+                    renderedHeroLeft
                   ) : (
                     <>
                       <h1 className="text-left text-4xl font-medium leading-tight text-fd-foreground sm:text-5xl">
