@@ -15,7 +15,7 @@ export async function GET(
   const title = page?.data.title ?? "Documentation";
 
   const [logo, font] = await Promise.all([
-    loadPublicFile("logo-light.svg"),
+    loadPublicFile("logo-dark.svg"),
     loadInterFont(),
   ]);
 

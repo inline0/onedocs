@@ -12,7 +12,7 @@ export const contentType = ogImageContentType;
 
 export default async function Image() {
   const [logo, font] = await Promise.all([
-    loadPublicFile("logo-light.svg"),
+    loadPublicFile("logo-dark.svg"),
     loadInterFont(),
   ]);
   return createDocsOGImage("Documentation", logo as OGImageLogo, font);
