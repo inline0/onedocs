@@ -41,6 +41,14 @@
       "types": "./dist/source/index.d.ts",
       "import": "./dist/source/index.js"
     },
+    "./llms": {
+      "types": "./dist/llms/index.d.ts",
+      "import": "./dist/llms/index.js"
+    },
+    "./seo": {
+      "types": "./dist/seo/index.d.ts",
+      "import": "./dist/seo/index.js"
+    },
     "./css/preset.css": "./src/css/preset.css"
   },
   "files": [
