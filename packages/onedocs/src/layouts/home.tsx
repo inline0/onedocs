@@ -50,7 +50,7 @@ export function HomePage({ config, installCommands, children }: HomePageProps) {
                       <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
                         {homepage?.hero?.description ?? config.description}
                       </p>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-end gap-x-8 gap-y-4 mt-4 w-full">
+                      <div className="flex flex-wrap items-start sm:items-end gap-x-8 gap-y-6 mt-4 w-full">
                         {installCommands && (
                           <div className="flex-1">
                             <InstallBlock commands={installCommands} />

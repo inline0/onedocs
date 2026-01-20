@@ -1,6 +1,6 @@
 {
   "name": "onedocs",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "description": "Zero-config documentation for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.",
   "license": "MIT",
