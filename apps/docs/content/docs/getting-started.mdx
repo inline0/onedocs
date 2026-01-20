@@ -17,22 +17,22 @@ This guide walks you through setting up Onedocs from scratch.
 <Tabs groupId="pm" items={["bun", "npm", "pnpm", "yarn"]}>
   <Tab value="bun">
     ```bash
-    bun add onedocs fumadocs-core fumadocs-mdx fumadocs-ui
+    bun add onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
     ```
   </Tab>
   <Tab value="npm">
     ```bash
-    npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui
+    npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
     ```
   </Tab>
   <Tab value="pnpm">
     ```bash
-    pnpm add onedocs fumadocs-core fumadocs-mdx fumadocs-ui
+    pnpm add onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
     ```
   </Tab>
   <Tab value="yarn">
     ```bash
-    yarn add onedocs fumadocs-core fumadocs-mdx fumadocs-ui
+    yarn add onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
     ```
   </Tab>
 </Tabs>
@@ -57,30 +57,41 @@ export default defineConfig({
 
 Create a `content/docs` folder for your markdown files:
 
-```
-your-project/
-├── content/
-│   └── docs/
-│       ├── index.mdx           # /docs
-│       ├── getting-started.mdx # /docs/getting-started
-│       └── guides/
-│           ├── meta.json       # Sidebar ordering
-│           └── setup.mdx       # /docs/guides/setup
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── globals.css
-│   │   └── docs/
-│   │       ├── layout.tsx
-│   │       └── [[...slug]]/
-│   │           └── page.tsx
-│   └── lib/
-│       └── source.ts
-├── onedocs.config.ts
-├── source.config.ts
-└── next.config.mjs
-```
+<Files>
+  <Folder name="your-project" defaultOpen>
+    <Folder name="content" defaultOpen>
+      <Folder name="docs" defaultOpen>
+        <File name="index.mdx" />
+        <File name="getting-started.mdx" />
+        <File name="meta.json" />
+      </Folder>
+    </Folder>
+    <Folder name="public" defaultOpen>
+      <Folder name="fonts">
+        <File name="InterVariable.woff2" />
+      </Folder>
+    </Folder>
+    <Folder name="src" defaultOpen>
+      <Folder name="app" defaultOpen>
+        <File name="layout.tsx" />
+        <File name="page.tsx" />
+        <File name="globals.css" />
+        <Folder name="docs">
+          <File name="layout.tsx" />
+          <Folder name="[[...slug]]">
+            <File name="page.tsx" />
+          </Folder>
+        </Folder>
+      </Folder>
+      <Folder name="lib">
+        <File name="source.ts" />
+      </Folder>
+    </Folder>
+    <File name="onedocs.config.ts" />
+    <File name="source.config.ts" />
+    <File name="next.config.mjs" />
+  </Folder>
+</Files>
 
 ## Source Configuration
 
@@ -129,15 +140,9 @@ Update your root layout in `src/app/layout.tsx`:
 
 ```tsx title="src/app/layout.tsx"
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { FontHead } from "onedocs";
 import "./globals.css";
-
-const inter = localFont({
-  src: "../../public/fonts/InterVariable.woff2",
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "My Docs",
@@ -150,7 +155,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <FontHead />
+      </head>
       <body className="antialiased">
         <RootProvider>{children}</RootProvider>
       </body>
@@ -158,6 +166,10 @@ export default function RootLayout({
   );
 }
 ```
+
+<Callout type="info">
+  `FontHead` preloads the Inter Variable font and sets up OpenType features. Place the `InterVariable.woff2` file in `public/fonts/`.
+</Callout>
 
 ## CSS Setup
 
@@ -209,7 +221,6 @@ export default async function Page(props: {
 
   return (
     <DocsPage toc={page.data.toc}>
-      <h1>{page.data.title}</h1>
       <MDX components={mdxComponents} />
     </DocsPage>
   );

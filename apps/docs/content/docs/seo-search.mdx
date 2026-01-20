@@ -1,0 +1,139 @@
+---
+title: SEO & Search
+description: Search API, sitemap, robots.txt, and LLMs.txt support
+---
+
+# SEO & Search
+
+Onedocs provides built-in support for search, sitemaps, robots.txt, and LLMs.txt files.
+
+## Search API
+
+Onedocs uses Fumadocs' built-in Orama search. Create an API route to enable search:
+
+```ts title="src/app/api/search/route.ts"
+import { source } from "@/lib/source";
+import { createFromSource } from "fumadocs-core/search/server";
+
+export const { GET } = createFromSource(source);
+```
+
+That's it! The search will automatically work with the Fumadocs UI search component.
+
+## Sitemap
+
+Create a sitemap using Next.js conventions and Onedocs helpers:
+
+```ts title="src/app/sitemap.ts"
+import { generateSitemap } from "onedocs/seo";
+import meta from "../content/docs/meta.json";
+
+const baseUrl = "https://yourdomain.com";
+
+export default function sitemap() {
+  return generateSitemap({
+    baseUrl,
+    pages: meta.pages ?? [],
+  });
+}
+```
+
+This generates a sitemap at `/sitemap.xml` with all your documentation pages.
+
+## Robots.txt
+
+Create a robots.txt file:
+
+```ts title="src/app/robots.ts"
+import { generateRobots } from "onedocs/seo";
+
+const baseUrl = "https://yourdomain.com";
+
+export default function robots() {
+  return generateRobots({ baseUrl });
+}
+```
+
+This generates a robots.txt at `/robots.txt` with:
+- `User-agent: *`
+- `Allow: /`
+- `Sitemap: https://yourdomain.com/sitemap.xml`
+
+## LLMs.txt
+
+LLMs.txt is a standard for providing documentation to AI language models. Onedocs supports generating both summary and full content versions.
+
+### Summary Version
+
+Create `/llms.txt` with a summary of all pages:
+
+```ts title="src/app/llms.txt/route.ts"
+import { createLLMsSource, generateLLMsText } from "onedocs/llms";
+import { source } from "@/lib/source";
+import config from "../../../onedocs.config";
+
+export async function GET() {
+  const llmsSource = createLLMsSource(source);
+  const text = await generateLLMsText(llmsSource, {
+    title: config.title,
+    description: config.description,
+  });
+
+  return new Response(text, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
+}
+```
+
+### Full Content Version
+
+Create `/llms-full.txt` with the complete documentation content:
+
+```ts title="src/app/llms-full.txt/route.ts"
+import { createLLMsSource, generateLLMsFullText } from "onedocs/llms";
+import { source } from "@/lib/source";
+
+export async function GET() {
+  const llmsSource = createLLMsSource(source);
+  const text = await generateLLMsFullText(llmsSource);
+
+  return new Response(text, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
+}
+```
+
+## Configuration Options
+
+### Sitemap Options
+
+```ts
+generateSitemap({
+  baseUrl: "https://yourdomain.com",
+  pages: ["index", "getting-started", "configuration"],
+  docsPath: "/docs", // Default: "/docs"
+});
+```
+
+### Robots Options
+
+```ts
+generateRobots({
+  baseUrl: "https://yourdomain.com",
+  sitemapPath: "/sitemap.xml", // Default: "/sitemap.xml"
+});
+```
+
+## Example URLs
+
+After setting up these routes, your site will have:
+
+- `/sitemap.xml` - XML sitemap for search engines
+- `/robots.txt` - Robots file with sitemap reference
+- `/llms.txt` - Summary for AI language models
+- `/llms-full.txt` - Full documentation for AI language models
+- `/api/search?query=...` - Search API endpoint

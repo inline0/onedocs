@@ -1,16 +1,16 @@
 # Onedocs
 
-A zero-config documentation wrapper for TanStack Start + Fumadocs. Install one dependency, write markdown, ship docs.
+A zero-config documentation wrapper for Next.js + Fumadocs. Install one dependency, write markdown, ship docs.
 
 > **Note:** Onedocs is designed for standalone documentation websites, not for integrating docs into existing applications. It's primarily used by Inline0 packages.
 
 ## Project Goal
 
-Create a single npm-publishable package that wraps TanStack Start and Fumadocs so Inline0 projects can have documentation with minimal setup. This is NOT for people who want to customize their docs framework—it's for people who want to `bun add onedocs` and start writing markdown.
+Create a single npm-publishable package that wraps Next.js and Fumadocs so Inline0 projects can have documentation with minimal setup. This is NOT for people who want to customize their docs framework—it's for people who want to `bun add onedocs` and start writing markdown.
 
 ## Core Philosophy
 
-- **One dependency**: `onedocs` brings everything (TanStack Start, Fumadocs UI, Fumadocs Core, MDX handling)
+- **One dependency**: `onedocs` brings everything (Next.js patterns, Fumadocs UI, Fumadocs Core, MDX handling)
 - **Zero config by default**: Works out of the box with sensible defaults
 - **Markdown-first**: Write `.md` or `.mdx` files, get docs
 - **Escape hatches exist**: Power users can use Fumadocs components directly if needed
@@ -25,27 +25,40 @@ onedocs/
 ├── biome.json                # Linting/formatting
 ├── .github/                  # GitHub assets (logos for README)
 ├── apps/
-│   └── docs/                 # Example/test docs site (private)
+│   └── docs/                 # Example/test docs site (private, Next.js)
 │       ├── package.json
 │       ├── content/docs/     # Markdown docs
-│       ├── public/           # Static assets (logos, icons)
+│       ├── public/           # Static assets (logos, icons, fonts)
 │       ├── src/
-│       │   ├── routes/       # TanStack Start routes
-│       │   ├── lib/          # Source configuration
-│       │   └── app.css       # CSS entry (imports preset)
-│       └── onedocs.config.tsx # Config file (TSX for JSX icons)
+│       │   ├── app/          # Next.js App Router
+│       │   │   ├── layout.tsx
+│       │   │   ├── page.tsx
+│       │   │   ├── globals.css
+│       │   │   ├── icon.png
+│       │   │   ├── docs/
+│       │   │   ├── api/search/
+│       │   │   ├── llms.txt/
+│       │   │   ├── llms-full.txt/
+│       │   │   ├── sitemap.ts
+│       │   │   └── robots.ts
+│       │   └── lib/          # Source configuration
+│       ├── onedocs.config.tsx
+│       ├── source.config.ts
+│       ├── next.config.mjs
+│       └── vercel.json
 ├── packages/
 │   ├── onedocs/              # THE publishable package
 │   │   ├── package.json
-│   │   ├── tsup.config.ts
 │   │   ├── src/
 │   │   │   ├── index.ts      # Main exports
 │   │   │   ├── config.ts     # Config types & defineConfig
-│   │   │   ├── layouts/      # Pre-built layouts (home, docs, root)
-│   │   │   ├── components/   # Components (InstallBlock, Logo, CTASection, etc.)
+│   │   │   ├── layouts/      # Pre-built layouts (home, docs, docs-page)
+│   │   │   ├── components/   # Components (InstallBlock, Logo, CTASection, FontHead, etc.)
 │   │   │   ├── source/       # Content source helpers
-│   │   │   ├── css/          # CSS preset with Tailwind + Fumadocs + Inter
-│   │   │   └── fonts/        # Bundled Inter variable font
+│   │   │   ├── llms/         # LLMs.txt generation
+│   │   │   ├── seo/          # Sitemap & robots generation
+│   │   │   ├── css/          # CSS preset with Tailwind + Fumadocs
+│   │   │   └── mdx-components.ts
 │   │   └── tsconfig.json
 │   └── tsconfig/             # Shared tsconfig
 ```
@@ -58,7 +71,6 @@ onedocs/
 
 ```ts
 // Layouts
-export { RootLayout } from "./layouts/root";
 export { DocsLayout } from "./layouts/docs";
 export { DocsPage, DocsBody } from "./layouts/docs-page";
 export { HomeLayout, HomePage } from "./layouts/home";
@@ -73,23 +85,27 @@ export { createSource, loader } from "./source";
 
 // Components
 export { InstallBlock } from "./components/install-block";
+export { CodeBlock } from "./components/code-block";
+export { Button } from "./components/button";
 export { Logo } from "./components/logo";
 export { GitHubIcon } from "./components/icons";
 export { CTASection } from "./components/cta-section";
+export { FontHead } from "./components/font-head";
+
+// MDX Components
+export { mdxComponents } from "./mdx-components";
 ```
 
-### Components Entry (`onedocs/components`)
-
-Re-exports Fumadocs UI components:
+### LLMs Entry (`onedocs/llms`)
 
 ```ts
-export { Callout } from "fumadocs-ui/components/callout";
-export { Card, Cards } from "fumadocs-ui/components/card";
-export { Tab, Tabs } from "fumadocs-ui/components/tabs";
-export { Steps, Step } from "fumadocs-ui/components/steps";
-export { Accordion, Accordions } from "fumadocs-ui/components/accordion";
-export { File, Folder, Files } from "fumadocs-ui/components/files";
-export { InstallBlock } from "./install-block";
+export { createLLMsSource, generateLLMsText, generateLLMsFullText } from "./llms";
+```
+
+### SEO Entry (`onedocs/seo`)
+
+```ts
+export { generateSitemap, generateRobots } from "./seo";
 ```
 
 ### CSS Entry (`onedocs/css/preset.css`)
@@ -97,8 +113,7 @@ export { InstallBlock } from "./install-block";
 Includes:
 - Tailwind CSS v4
 - Fumadocs neutral theme + preset
-- Inter variable font (bundled, with OpenType features)
-- Font feature settings for body and headings
+- Font variable configuration for Inter
 - Full-height layout styles
 
 ---
@@ -156,6 +171,22 @@ export default defineConfig({
 
 ## Key Components
 
+### FontHead
+
+Preloads Inter Variable font and sets up OpenType features:
+
+```tsx
+// In your root layout
+<html lang="en" suppressHydrationWarning>
+  <head>
+    <FontHead />
+  </head>
+  <body>...</body>
+</html>
+```
+
+Requires `InterVariable.woff2` in `public/fonts/`.
+
 ### HomePage
 
 Full landing page with hero, features grid, and footer:
@@ -182,14 +213,24 @@ Features:
 Wraps Fumadocs DocsLayout with config-based nav/links:
 
 ```tsx
-<DocsLayout config={config} pageTree={data.pageTree}>
+<DocsLayout config={config} pageTree={source.pageTree}>
   {children}
 </DocsLayout>
 ```
 
+### DocsPage
+
+Wraps page content with table of contents:
+
+```tsx
+<DocsPage toc={page.data.toc}>
+  <MDX components={mdxComponents} />
+</DocsPage>
+```
+
 ### InstallBlock
 
-Package manager tabs (npm, yarn, pnpm, bun):
+Package manager tabs (npm, yarn, pnpm, bun) with Shiki highlighting:
 
 ```tsx
 <InstallBlock packageName="onedocs" />
@@ -209,83 +250,106 @@ Centered call-to-action section:
 
 ---
 
-## CSS Preset Details
+## Implementation Pattern (Next.js App Router)
 
-The CSS preset (`onedocs/css/preset.css`) includes:
+### Root Layout
 
-```css
-@import "tailwindcss";
-@import "fumadocs-ui/css/neutral.css";
-@import "fumadocs-ui/css/preset.css";
+```tsx
+// src/app/layout.tsx
+import { RootProvider } from "fumadocs-ui/provider/next";
+import { FontHead } from "onedocs";
+import "./globals.css";
 
-/* Inter variable font (bundled) */
-@font-face {
-  font-family: "Inter Variable";
-  src: url("../fonts/InterVariable.woff2") format("woff2-variations");
-}
-
-/* OpenType features */
-body {
-  font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss08" 1;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss07" 1, "ss08" 1, "dlig" 1;
-}
-
-/* Full-height layout */
-html, body, #nd-home-layout {
-  height: 100%;
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <FontHead />
+      </head>
+      <body className="antialiased">
+        <RootProvider>{children}</RootProvider>
+      </body>
+    </html>
+  );
 }
 ```
 
----
-
-## Implementation Pattern
-
-### Minimal app.css
+### globals.css
 
 ```css
 @import "onedocs/css/preset.css";
 
-@source "./routes/**/*.tsx";
+@source "./app/**/*.tsx";
 @source "../content/**/*.mdx";
 ```
 
-### Homepage Route
+### Homepage
 
 ```tsx
-// src/routes/index.tsx
+// src/app/page.tsx
 import { HomePage, CTASection } from "onedocs";
-import config from "../onedocs.config.tsx";
+import config from "../../onedocs.config";
 
-function Home() {
+export default function Home() {
   return (
-    <HomePage config={config} packageName="my-package">
+    <HomePage config={config} packageName="onedocs">
       <CTASection
         title="Ready to get started?"
-        cta={{ label: "Go to Docs", href: "/docs" }}
+        cta={{ label: "Read the Docs", href: "/docs" }}
       />
     </HomePage>
   );
 }
 ```
 
-### Docs Route
+### Docs Layout
 
 ```tsx
-// src/routes/docs/$.tsx
+// src/app/docs/layout.tsx
 import { DocsLayout } from "onedocs";
-import config from "../../onedocs.config.tsx";
+import { source } from "@/lib/source";
+import config from "../../../onedocs.config";
 
-function Page() {
-  const data = useFumadocsLoader(Route.useLoaderData());
+export default function Layout({ children }) {
   return (
-    <DocsLayout config={config} pageTree={data.pageTree}>
-      {/* ... */}
+    <DocsLayout config={config} pageTree={source.pageTree}>
+      {children}
     </DocsLayout>
   );
 }
+```
+
+### Docs Page
+
+```tsx
+// src/app/docs/[[...slug]]/page.tsx
+import { DocsPage, mdxComponents } from "onedocs";
+import { source } from "@/lib/source";
+import { notFound } from "next/navigation";
+
+export default async function Page({ params }) {
+  const { slug } = await params;
+  const page = source.getPage(slug);
+  if (!page) notFound();
+
+  const MDX = page.data.body;
+
+  return (
+    <DocsPage toc={page.data.toc}>
+      <MDX components={mdxComponents} />
+    </DocsPage>
+  );
+}
+```
+
+### Search API
+
+```ts
+// src/app/api/search/route.ts
+import { source } from "@/lib/source";
+import { createFromSource } from "fumadocs-core/search/server";
+
+export const { GET } = createFromSource(source);
 ```
 
 ---
@@ -298,14 +362,12 @@ bun run dev              # Run example docs site
 
 # Building
 bun run build            # Build the onedocs package
+bun run build:docs       # Build the docs site
 
 # Quality
 bun run lint             # Biome lint
 bun run format           # Biome format
 bun run typecheck        # TypeScript check
-
-# Testing
-bun test                 # Run tests
 
 # Publishing
 cd packages/onedocs && npm publish
@@ -324,15 +386,18 @@ cd packages/onedocs && npm publish
 
 ### Peer Dependencies
 
-- `@tanstack/react-router`
-- `@tanstack/start`
+- `fumadocs-core`
+- `fumadocs-mdx`
+- `fumadocs-ui`
+- `lucide-react`
+- `next`
 - `react` / `react-dom`
 
 ---
 
 ## Non-Goals
 
-- Custom SSG/build system (use TanStack Start's)
+- Custom SSG/build system (use Next.js's)
 - Plugin system (use Fumadocs directly if you need this)
 - Multiple themes (one good theme, escape to Fumadocs for more)
 - Blog support (this is docs-only)
@@ -344,5 +409,22 @@ cd packages/onedocs && npm publish
 - Config: `onedocs.config.tsx` at project root (TSX for JSX icons)
 - Docs: `content/docs/**/*.{md,mdx}`
 - Meta: `content/docs/**/meta.json` for sidebar ordering
-- Assets: `public/` (standard Vite/TanStack)
-- CSS: `src/app.css` imports `onedocs/css/preset.css`
+- Assets: `public/` (standard Next.js)
+- Fonts: `public/fonts/InterVariable.woff2`
+- CSS: `src/app/globals.css` imports `onedocs/css/preset.css`
+- Icon: `src/app/icon.png` (Next.js convention)
+
+---
+
+## Vercel Deployment
+
+The monorepo uses a `vercel.json` in `apps/docs/` to build correctly:
+
+```json
+{
+  "framework": "nextjs",
+  "buildCommand": "cd ../../packages/onedocs && bun run build && cd ../../apps/docs && next build"
+}
+```
+
+This ensures the onedocs package is built before the docs site.
