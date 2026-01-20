@@ -1,15 +1,15 @@
 ---
 title: Components
-description: Pre-built components from Fumadocs
+description: Built-in MDX components
 ---
 
 # Components
 
-Onedocs re-exports useful components from Fumadocs UI for use in your MDX files.
+Onedocs includes all the Fumadocs UI components. Use them in your MDX files without importing.
 
-## Using MDX Components
+## Using components
 
-Onedocs exports a pre-configured `mdxComponents` object that includes all common Fumadocs components:
+Pass `mdxComponents` to your MDX content:
 
 ```tsx title="src/app/docs/[[...slug]]/page.tsx"
 import { DocsPage, mdxComponents } from "onedocs";
@@ -18,11 +18,9 @@ import { DocsPage, mdxComponents } from "onedocs";
 <MDX components={mdxComponents} />
 ```
 
-## Available Components
+## Callout
 
-### Callout
-
-Display important information with different variants.
+Highlight important information:
 
 ```mdx
 <Callout type="info">
@@ -50,9 +48,9 @@ Display important information with different variants.
   This is an error callout.
 </Callout>
 
-### Tabs
+## Tabs
 
-Organize content into tabs.
+Organize content into tabs:
 
 ```mdx
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
@@ -70,9 +68,9 @@ Organize content into tabs.
   <Tab value="bun">bun add onedocs</Tab>
 </Tabs>
 
-### Cards
+## Cards
 
-Display content in card format.
+Link to other pages:
 
 ```mdx
 <Cards>
@@ -94,9 +92,9 @@ Display content in card format.
   </Card>
 </Cards>
 
-### Steps
+## Steps
 
-Display numbered steps.
+Show numbered steps:
 
 ```mdx
 <Steps>
@@ -112,9 +110,9 @@ Display numbered steps.
   <Step>Write documentation</Step>
 </Steps>
 
-### Accordion
+## Accordion
 
-Collapsible content sections.
+Collapsible content:
 
 ```mdx
 <Accordions>
@@ -136,9 +134,9 @@ Collapsible content sections.
   </Accordion>
 </Accordions>
 
-### Files
+## Files
 
-Display file trees.
+Show file trees:
 
 ```mdx
 <Files>
@@ -162,9 +160,9 @@ Display file trees.
   <File name="onedocs.config.ts" />
 </Files>
 
-## Direct Fumadocs Access
+## More components
 
-For advanced use cases, you can import directly from Fumadocs:
+Need something else? Import directly from Fumadocs:
 
 ```ts
 import { Callout } from "fumadocs-ui/components/callout";
@@ -172,4 +170,4 @@ import { CodeBlock } from "fumadocs-ui/components/codeblock";
 import { ImageZoom } from "fumadocs-ui/components/image-zoom";
 ```
 
-See the [Fumadocs documentation](https://fumadocs.dev/docs/ui/components) for the complete list of available components.
+See the [Fumadocs docs](https://fumadocs.dev/docs/ui/components) for the full list.

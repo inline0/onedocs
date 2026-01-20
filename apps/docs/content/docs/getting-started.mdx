@@ -10,9 +10,9 @@ This guide walks you through setting up Onedocs from scratch.
 ## Prerequisites
 
 - Node.js 18+ or Bun 1.0+
-- A Next.js project (or we'll create one)
+- A Next.js project (or create one fresh)
 
-## Installation
+## Install
 
 <Tabs groupId="pm" items={["bun", "npm", "pnpm", "yarn"]}>
   <Tab value="bun">
@@ -37,25 +37,9 @@ This guide walks you through setting up Onedocs from scratch.
   </Tab>
 </Tabs>
 
-## Configuration
+## Project structure
 
-Create `onedocs.config.ts` in your project root:
-
-```ts title="onedocs.config.ts"
-import { defineConfig } from "onedocs/config";
-
-export default defineConfig({
-  title: "My Docs",
-  description: "Documentation for my project",
-  nav: {
-    github: "username/repo",
-  },
-});
-```
-
-## Project Structure
-
-Create a `content/docs` folder for your markdown files:
+Here's what you'll end up with:
 
 <Files>
   <Folder name="your-project" defaultOpen>
@@ -93,9 +77,29 @@ Create a `content/docs` folder for your markdown files:
   </Folder>
 </Files>
 
-## Source Configuration
+Let's create each file.
 
-Create `source.config.ts` to define your content collection:
+## Configuration files
+
+### onedocs.config.ts
+
+Your main config file:
+
+```ts title="onedocs.config.ts"
+import { defineConfig } from "onedocs/config";
+
+export default defineConfig({
+  title: "My Docs",
+  description: "Documentation for my project",
+  nav: {
+    github: "username/repo",
+  },
+});
+```
+
+### source.config.ts
+
+Defines where your content lives:
 
 ```ts title="source.config.ts"
 import { defineDocs } from "fumadocs-mdx/config";
@@ -105,9 +109,9 @@ export const docs = defineDocs({
 });
 ```
 
-## Next.js Configuration
+### next.config.mjs
 
-Set up your `next.config.mjs`:
+Enable MDX processing:
 
 ```js title="next.config.mjs"
 import { createMDX } from "fumadocs-mdx/next";
@@ -120,9 +124,11 @@ const config = {};
 export default withMDX(config);
 ```
 
-## Content Source
+## Source setup
 
-Create `src/lib/source.ts` to load your docs:
+### src/lib/source.ts
+
+Load your docs content:
 
 ```ts title="src/lib/source.ts"
 import { loader } from "fumadocs-core/source";
@@ -134,9 +140,11 @@ export const source = loader({
 });
 ```
 
-## App Layout
+## App files
 
-Update your root layout in `src/app/layout.tsx`:
+### src/app/layout.tsx
+
+Your root layout:
 
 ```tsx title="src/app/layout.tsx"
 import type { Metadata } from "next";
@@ -168,12 +176,12 @@ export default function RootLayout({
 ```
 
 <Callout type="info">
-  `FontHead` preloads the Inter Variable font and sets up OpenType features. Place the `InterVariable.woff2` file in `public/fonts/`.
+  `FontHead` preloads the Inter Variable font. Put `InterVariable.woff2` in `public/fonts/`.
 </Callout>
 
-## CSS Setup
+### src/app/globals.css
 
-Update your `src/app/globals.css`:
+Import the CSS preset:
 
 ```css title="src/app/globals.css"
 @import "onedocs/css/preset.css";
@@ -182,9 +190,9 @@ Update your `src/app/globals.css`:
 @source "../content/**/*.mdx";
 ```
 
-## Docs Layout
+### src/app/docs/layout.tsx
 
-Create `src/app/docs/layout.tsx`:
+Docs layout with sidebar:
 
 ```tsx title="src/app/docs/layout.tsx"
 import { DocsLayout } from "onedocs";
@@ -201,9 +209,9 @@ export default function Layout({ children }: { children: ReactNode }) {
 }
 ```
 
-## Docs Page
+### src/app/docs/[[...slug]]/page.tsx
 
-Create `src/app/docs/[[...slug]]/page.tsx`:
+Individual doc pages:
 
 ```tsx title="src/app/docs/[[...slug]]/page.tsx"
 import { source } from "@/lib/source";
@@ -244,9 +252,9 @@ export async function generateMetadata(props: {
 }
 ```
 
-## Running
+## Run it
 
-Start the development server:
+Start the dev server:
 
 ```bash
 bun run dev
@@ -257,3 +265,5 @@ Build for production:
 ```bash
 bun run build
 ```
+
+Your docs are ready.

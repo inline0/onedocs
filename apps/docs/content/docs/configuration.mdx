@@ -5,9 +5,9 @@ description: Configure Onedocs with onedocs.config.ts
 
 # Configuration
 
-Onedocs is configured through `onedocs.config.ts` in your project root.
+All configuration goes in `onedocs.config.ts` at your project root.
 
-## Basic Configuration
+## Basic setup
 
 ```ts title="onedocs.config.ts"
 import { defineConfig } from "onedocs/config";
@@ -18,29 +18,31 @@ export default defineConfig({
 });
 ```
 
-## Full Configuration
+That's the minimum. Everything else is optional.
+
+## Full example
 
 ```ts title="onedocs.config.ts"
 import { defineConfig } from "onedocs/config";
 
 export default defineConfig({
-  // Required
   title: "My Project",
-
-  // Optional
   description: "Documentation for My Project",
-  logo: "/logo.svg", // or { light: "/logo-light.svg", dark: "/logo-dark.svg" }
 
-  // Navigation
+  // Logo (string or light/dark variants)
+  logo: "/logo.svg",
+  // logo: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
+
+  // Navigation bar
   nav: {
     links: [
       { label: "Blog", href: "/blog" },
       { label: "Changelog", href: "/changelog" },
     ],
-    github: "username/repo", // Adds GitHub icon link
+    github: "username/repo",
   },
 
-  // Homepage configuration
+  // Homepage
   homepage: {
     hero: {
       title: "My Project",
@@ -59,18 +61,18 @@ export default defineConfig({
     ],
   },
 
-  // Docs configuration
+  // Docs
   docs: {
-    dir: "content/docs", // Default location
+    dir: "content/docs",
   },
 
   // Theme
   theme: {
     primaryColor: "#3b82f6",
-    darkMode: true, // Enable dark mode toggle
+    darkMode: true,
   },
 
-  // Internationalization (optional)
+  // i18n (optional)
   i18n: {
     defaultLanguage: "en",
     languages: ["en", "es", "de"],
@@ -78,59 +80,59 @@ export default defineConfig({
 });
 ```
 
-## Configuration Options
+## Options
 
-### `title` (required)
+### title (required)
 
-The title of your documentation site. Used in the navbar and page titles.
-
-```ts
-title: "My Project";
-```
-
-### `description`
-
-A short description of your project. Used in meta tags and the homepage.
+Your site's name. Shows in the navbar and page titles.
 
 ```ts
-description: "Documentation for My Project";
+title: "My Project"
 ```
 
-### `logo`
+### description
 
-Your project logo. Can be a string path or an object with light/dark variants.
+Short description for meta tags and the homepage.
+
+```ts
+description: "Documentation for My Project"
+```
+
+### logo
+
+Your logo. Can be a single path or light/dark variants.
 
 ```ts
 // Single logo
 logo: "/logo.svg"
 
-// Light/dark variants
+// Light/dark mode
 logo: {
   light: "/logo-light.svg",
   dark: "/logo-dark.svg"
 }
 ```
 
-### `nav`
+### nav
 
-Navigation configuration.
+Navigation bar configuration.
 
 ```ts
 nav: {
-  // Additional navigation links
+  // Extra links in the navbar
   links: [
     { label: "Blog", href: "/blog" },
     { label: "API", href: "/api" },
   ],
 
-  // GitHub repository (adds icon link)
+  // GitHub repo (adds icon link)
   github: "username/repo",
 }
 ```
 
-### `homepage`
+### homepage
 
-Homepage configuration with hero section and features.
+Homepage hero and features.
 
 ```ts
 homepage: {
@@ -146,36 +148,36 @@ homepage: {
     {
       title: "Feature 1",
       description: "Description of feature 1",
-      icon: "rocket", // Optional icon name
+      icon: "rocket", // Optional
     },
   ],
 }
 ```
 
-### `docs`
+### docs
 
-Documentation-specific configuration.
+Where your markdown files live.
 
 ```ts
 docs: {
-  dir: "content/docs", // Location of markdown files
+  dir: "content/docs", // Default
 }
 ```
 
-### `theme`
+### theme
 
-Theme customization options.
+Customize colors and dark mode.
 
 ```ts
 theme: {
-  primaryColor: "#3b82f6", // Primary brand color
-  darkMode: true,          // Enable dark mode (default: true)
+  primaryColor: "#3b82f6",
+  darkMode: true, // Default: true
 }
 ```
 
-### `i18n`
+### i18n
 
-Internationalization configuration.
+Multi-language support.
 
 ```ts
 i18n: {
@@ -184,9 +186,9 @@ i18n: {
 }
 ```
 
-## TypeScript Support
+## TypeScript
 
-The `defineConfig` function provides full TypeScript support with autocompletion and type checking.
+The `defineConfig` helper gives you full autocompletion:
 
 ```ts
 import { defineConfig, type OnedocsConfig } from "onedocs/config";

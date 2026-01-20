@@ -1,36 +1,39 @@
 ---
 title: Introduction
-description: Zero-config documentation for Next.js + Fumadocs
+description: Zero-config documentation for Next.js
 ---
 
 # Introduction
 
-Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs. Install one dependency, write markdown, ship docs.
-
-## Why Onedocs?
-
-Setting up documentation shouldn't require configuring multiple packages, build pipelines, and content sources. Onedocs bundles everything you need:
-
-- **Next.js** - The React framework for production
-- **Fumadocs UI** - Beautiful documentation layouts and components
-- **Fumadocs MDX** - Content loading with syntax highlighting and search
-
-## Philosophy
-
-Onedocs is built for teams who want documentation without the overhead:
-
-- **One dependency** - Onedocs brings Next.js, Fumadocs UI, Fumadocs Core, and MDX handling
-- **Zero config by default** - Works out of the box with sensible defaults
-- **Markdown-first** - Write `.md` or `.mdx` files, get docs
-- **Escape hatches exist** - Power users can use Fumadocs components directly
-
-## Quick Start
+Onedocs is a documentation wrapper for Next.js. Install it, write markdown, ship docs.
 
 ```bash
 bun add onedocs
 ```
 
-Create your config file:
+No configuring multiple packages. No wrestling with build pipelines. Just write your docs.
+
+## What's included
+
+Onedocs bundles everything you need:
+
+- **Next.js** - The React framework
+- **Fumadocs UI** - Beautiful documentation layouts
+- **Fumadocs MDX** - Content loading with syntax highlighting
+- **Built-in search** - Full-text search out of the box
+
+## Philosophy
+
+Onedocs is for teams who want docs without the overhead:
+
+- **One dependency** - Everything comes from `onedocs`
+- **Zero config** - Sensible defaults that just work
+- **Markdown-first** - Write `.md` or `.mdx`, get docs
+- **Escape hatches** - Need more control? Use Fumadocs directly
+
+## Quick start
+
+Create your config:
 
 ```ts title="onedocs.config.ts"
 import { defineConfig } from "onedocs/config";
@@ -41,7 +44,7 @@ export default defineConfig({
 });
 ```
 
-Add your markdown files:
+Add your markdown:
 
 ```
 content/
@@ -57,3 +60,12 @@ bun run dev
 ```
 
 That's it. Your docs are live.
+
+<Cards>
+  <Card title="Getting Started" href="/docs/getting-started">
+    Full setup guide with all the files you need
+  </Card>
+  <Card title="Components" href="/docs/components">
+    Callouts, tabs, cards, and more
+  </Card>
+</Cards>
