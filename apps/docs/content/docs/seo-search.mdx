@@ -103,6 +103,27 @@ export async function GET() {
 }
 ```
 
+## Configuration options
+
+### Sitemap options
+
+```ts
+generateSitemap({
+  baseUrl: "https://yourdomain.com",
+  pages: ["index", "getting-started", "configuration"],
+  docsPath: "/docs", // Default: "/docs"
+});
+```
+
+### Robots options
+
+```ts
+generateRobots({
+  baseUrl: "https://yourdomain.com",
+  sitemapPath: "/sitemap.xml", // Default: "/sitemap.xml"
+});
+```
+
 ## What you get
 
 After setting up these routes:
