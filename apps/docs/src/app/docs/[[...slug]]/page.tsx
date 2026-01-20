@@ -13,7 +13,6 @@ export default async function Page(props: {
 
   return (
     <DocsPage toc={page.data.toc}>
-      <h1>{page.data.title}</h1>
       <MDX components={mdxComponents} />
     </DocsPage>
   );
