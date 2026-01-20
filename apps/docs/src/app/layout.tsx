@@ -4,7 +4,7 @@ import { RootProvider } from "fumadocs-ui/provider/next";
 import "./globals.css";
 
 const inter = localFont({
-  src: "../../public/fonts/InterVariable.woff2",
+  src: "./fonts/InterVariable.woff2",
   variable: "--font-inter",
   display: "swap",
 });
