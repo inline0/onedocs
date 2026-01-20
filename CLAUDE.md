@@ -291,7 +291,7 @@ export const size = ogImageSize;
 export const contentType = ogImageContentType;
 
 export default async function Image() {
-  const logo = await loadPublicFile("logo-light.svg");
+  const logo = await loadPublicFile("logo-dark.svg");
   return createRootOGImage(logo as OGImageLogo);
 }
 ```
@@ -314,7 +314,7 @@ export const contentType = ogImageContentType;
 
 export default async function Image() {
   const [logo, font] = await Promise.all([
-    loadPublicFile("logo-light.svg"),
+    loadPublicFile("logo-dark.svg"),
     loadInterFont(),
   ]);
   return createDocsOGImage("Documentation", logo as OGImageLogo, font);
@@ -342,7 +342,7 @@ export async function GET(
   const title = page?.data.title ?? "Documentation";
 
   const [logo, font] = await Promise.all([
-    loadPublicFile("logo-light.svg"),
+    loadPublicFile("logo-dark.svg"),
     loadInterFont(),
   ]);
 
@@ -365,7 +365,7 @@ return {
 ```
 
 Requires:
-- `public/logo-light.svg` - Logo for OG images
+- `public/logo-dark.svg` - Logo for OG images
 - `public/fonts/Inter-Medium.ttf` - Font for title text
 
 ---
