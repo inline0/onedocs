@@ -1,4 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "buildCommand": "cd ../../packages/onedocs && bun run build && cd ../../apps/docs && next build"
 }
