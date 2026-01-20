@@ -10,29 +10,29 @@ This guide walks you through setting up Onedocs from scratch.
 ## Prerequisites
 
 - Node.js 18+ or Bun 1.0+
-- A TanStack Start project (or we'll create one)
+- A Next.js project (or we'll create one)
 
 ## Installation
 
 <Tabs groupId="pm" items={["bun", "npm", "pnpm", "yarn"]}>
   <Tab value="bun">
     ```bash
-    bun add onedocs
+    bun add onedocs fumadocs-core fumadocs-mdx fumadocs-ui
     ```
   </Tab>
   <Tab value="npm">
     ```bash
-    npm install onedocs
+    npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui
     ```
   </Tab>
   <Tab value="pnpm">
     ```bash
-    pnpm add onedocs
+    pnpm add onedocs fumadocs-core fumadocs-mdx fumadocs-ui
     ```
   </Tab>
   <Tab value="yarn">
     ```bash
-    yarn add onedocs
+    yarn add onedocs fumadocs-core fumadocs-mdx fumadocs-ui
     ```
   </Tab>
 </Tabs>
@@ -67,19 +67,19 @@ your-project/
 │           ├── meta.json       # Sidebar ordering
 │           └── setup.mdx       # /docs/guides/setup
 ├── src/
-│   ├── routes/
-│   │   ├── __root.tsx
-│   │   ├── index.tsx
-│   │   ├── docs.tsx
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── globals.css
 │   │   └── docs/
-│   │       ├── index.tsx
-│   │       └── $.tsx
-│   ├── lib/
-│   │   └── source.ts
-│   └── router.tsx
+│   │       ├── layout.tsx
+│   │       └── [[...slug]]/
+│   │           └── page.tsx
+│   └── lib/
+│       └── source.ts
 ├── onedocs.config.ts
 ├── source.config.ts
-└── vite.config.ts
+└── next.config.mjs
 ```
 
 ## Source Configuration
@@ -94,33 +94,19 @@ export const docs = defineDocs({
 });
 ```
 
-## Vite Configuration
+## Next.js Configuration
 
-Set up your `vite.config.ts`:
+Set up your `next.config.mjs`:
 
-```ts title="vite.config.ts"
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import react from "@vitejs/plugin-react";
-import mdx from "fumadocs-mdx/vite";
-import { nitro } from "nitro/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
-import * as MdxConfig from "./source.config";
+```js title="next.config.mjs"
+import { createMDX } from "fumadocs-mdx/next";
 
-export default defineConfig({
-  plugins: [
-    mdx(MdxConfig),
-    tsconfigPaths(),
-    tailwindcss(),
-    nitro(),
-    tanstackStart(),
-    react(),
-  ],
-  resolve: {
-    dedupe: ["react", "react-dom"],
-  },
-});
+const withMDX = createMDX();
+
+/** @type {import('next').NextConfig} */
+const config = {};
+
+export default withMDX(config);
 ```
 
 ## Content Source
@@ -137,107 +123,113 @@ export const source = loader({
 });
 ```
 
-## Routes
+## App Layout
 
-### Root Route
+Update your root layout in `src/app/layout.tsx`:
 
-```tsx title="src/routes/__root.tsx"
-import { RootProvider } from "fumadocs-ui/provider/tanstack";
-import {
-  createRootRoute,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/react-router";
-import "fumadocs-ui/style.css";
+```tsx title="src/app/layout.tsx"
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { RootProvider } from "fumadocs-ui/provider/next";
+import "./globals.css";
 
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "My Docs" },
-    ],
-  }),
-  shellComponent: RootDocument,
-  component: RootComponent,
+const inter = localFont({
+  src: "../../public/fonts/InterVariable.woff2",
+  variable: "--font-inter",
+  display: "swap",
 });
 
-function RootComponent() {
-  return (
-    <RootProvider>
-      <Outlet />
-    </RootProvider>
-  );
-}
+export const metadata: Metadata = {
+  title: "My Docs",
+  description: "Documentation for my project",
+};
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className="antialiased">
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   );
 }
 ```
 
-### Docs Layout
+## CSS Setup
 
-```tsx title="src/routes/docs.tsx"
+Update your `src/app/globals.css`:
+
+```css title="src/app/globals.css"
+@import "onedocs/css/preset.css";
+
+@source "./app/**/*.tsx";
+@source "../content/**/*.mdx";
+```
+
+## Docs Layout
+
+Create `src/app/docs/layout.tsx`:
+
+```tsx title="src/app/docs/layout.tsx"
 import { DocsLayout } from "onedocs";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { source } from "../lib/source";
-import config from "../../onedocs.config";
+import type { ReactNode } from "react";
+import { source } from "@/lib/source";
+import config from "../../../onedocs.config";
 
-export const Route = createFileRoute("/docs")({
-  component: DocsLayoutWrapper,
-});
-
-function DocsLayoutWrapper() {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout config={config} pageTree={source.pageTree}>
-      <Outlet />
+      {children}
     </DocsLayout>
   );
 }
 ```
 
-### Docs Page
+## Docs Page
 
-```tsx title="src/routes/docs/$.tsx"
-import { DocsPage } from "onedocs";
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { source } from "../../lib/source";
+Create `src/app/docs/[[...slug]]/page.tsx`:
 
-export const Route = createFileRoute("/docs/$")({
-  component: DocsPageComponent,
-});
+```tsx title="src/app/docs/[[...slug]]/page.tsx"
+import { source } from "@/lib/source";
+import { DocsPage, mdxComponents } from "onedocs";
+import { notFound } from "next/navigation";
 
-function DocsPageComponent() {
-  const params = Route.useParams();
-  const slugs = params._splat?.split("/").filter(Boolean) ?? [];
-  const page = source.getPage(slugs);
+export default async function Page(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-  if (!page) {
-    throw notFound();
-  }
-
-  const MDXContent = page.data.body;
+  const MDX = page.data.body;
 
   return (
     <DocsPage toc={page.data.toc}>
       <h1>{page.data.title}</h1>
-      {page.data.description && (
-        <p className="text-muted-foreground">{page.data.description}</p>
-      )}
-      <MDXContent />
+      <MDX components={mdxComponents} />
     </DocsPage>
   );
+}
+
+export async function generateStaticParams() {
+  return source.generateParams();
+}
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
+
+  return {
+    title: page.data.title,
+    description: page.data.description,
+  };
 }
 ```
 

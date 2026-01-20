@@ -7,15 +7,16 @@ description: Pre-built components from Fumadocs
 
 Onedocs re-exports useful components from Fumadocs UI for use in your MDX files.
 
-## Installation
+## Using MDX Components
 
-Components are available from `onedocs/components`:
+Onedocs exports a pre-configured `mdxComponents` object that includes all common Fumadocs components:
 
-```ts
-import { Callout, Card, Tabs, Tab } from "onedocs/components";
+```tsx title="src/app/docs/[[...slug]]/page.tsx"
+import { DocsPage, mdxComponents } from "onedocs";
+
+// In your page component:
+<MDX components={mdxComponents} />
 ```
-
-Or use them directly in MDX by adding to your MDX components.
 
 ## Available Components
 
@@ -118,7 +119,7 @@ Collapsible content sections.
 ```mdx
 <Accordions>
   <Accordion title="What is Onedocs?">
-    Onedocs is a zero-config documentation wrapper for TanStack Start and Fumadocs.
+    Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs.
   </Accordion>
   <Accordion title="How do I install it?">
     Run `bun add onedocs` to install.
@@ -128,7 +129,7 @@ Collapsible content sections.
 
 <Accordions>
   <Accordion title="What is Onedocs?">
-    Onedocs is a zero-config documentation wrapper for TanStack Start and Fumadocs.
+    Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs.
   </Accordion>
   <Accordion title="How do I install it?">
     Run `bun add onedocs` to install.
@@ -160,39 +161,6 @@ Display file trees.
   </Folder>
   <File name="onedocs.config.ts" />
 </Files>
-
-## Using Components in MDX
-
-To use these components in your MDX files, you need to add them to your MDX component configuration. Create or update `mdx-components.tsx`:
-
-```tsx title="mdx-components.tsx"
-import defaultMdxComponents from "fumadocs-ui/mdx";
-import * as TabsComponents from "fumadocs-ui/components/tabs";
-import { Callout } from "fumadocs-ui/components/callout";
-import { Card, Cards } from "fumadocs-ui/components/card";
-import { Steps, Step } from "fumadocs-ui/components/steps";
-import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
-import { File, Folder, Files } from "fumadocs-ui/components/files";
-import type { MDXComponents } from "mdx/types";
-
-export function getMDXComponents(components?: MDXComponents): MDXComponents {
-  return {
-    ...defaultMdxComponents,
-    ...TabsComponents,
-    Callout,
-    Card,
-    Cards,
-    Steps,
-    Step,
-    Accordion,
-    Accordions,
-    File,
-    Folder,
-    Files,
-    ...components,
-  };
-}
-```
 
 ## Direct Fumadocs Access
 
