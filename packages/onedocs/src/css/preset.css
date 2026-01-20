@@ -37,4 +37,23 @@
       display: none !important;
     }
   }
+
+}
+
+@media (min-width: 48rem) {
+  #nd-docs-layout #nd-sidebar {
+    --fd-sidebar-width: 266px !important;
+  }
+}
+
+#nd-sidebar#nd-sidebar > div:first-child {
+  padding-top: 13px !important;
+}
+
+#nd-subnav > a {
+  margin-left: 1px;
+}
+
+[aria-label="Open Sidebar"] {
+  margin-right: 1px;
 }

@@ -39,7 +39,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
           <div className="relative">
             <section id="hero">
               <div className="grid grid-cols-1 lg:grid-cols-4">
-                <div className="lg:col-span-2 p-6 lg:p-12">
+                <div className="lg:col-span-2 px-6 py-8 lg:p-12">
                   {renderedHeroLeft ? (
                     renderedHeroLeft
                   ) : (
@@ -50,7 +50,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                       <p className="text-left max-w-xl leading-normal text-fd-muted-foreground sm:text-lg sm:leading-normal text-balance mt-4">
                         {homepage?.hero?.description ?? config.description}
                       </p>
-                      <div className="flex flex-wrap items-start sm:items-end gap-x-8 gap-y-6 mt-4 w-full">
+                      <div className="flex flex-wrap items-end gap-x-8 gap-y-6 mt-4 w-full">
                         {packageName && (
                           <div className="flex-1">
                             <InstallBlock packageName={packageName} />
@@ -65,7 +65,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                 </div>
                 <div className="lg:col-span-2 hidden lg:block">
                   {heroRight ? (
-                    <div className="flex h-full items-center p-6 lg:p-12">
+                    <div className="flex h-full items-center px-6 py-8 lg:p-12">
                       {heroRight}
                     </div>
                   ) : null}
