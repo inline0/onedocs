@@ -32,9 +32,9 @@ function FrameworkLink({
   ...props
 }: React.ComponentProps<"a"> & { prefetch?: boolean }) {
   return (
-    <Link to={href ?? "#"} preload={prefetch ? "intent" : false} {...props}>
+    <a href={href ?? "#"} {...props}>
       {props.children}
-    </Link>
+    </a>
   );
 }
 
