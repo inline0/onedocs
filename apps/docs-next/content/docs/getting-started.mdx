@@ -1,0 +1,256 @@
+---
+title: Getting Started
+description: Set up Onedocs in your project
+---
+
+# Getting Started
+
+This guide walks you through setting up Onedocs from scratch.
+
+## Prerequisites
+
+- Node.js 18+ or Bun 1.0+
+- A TanStack Start project (or we'll create one)
+
+## Installation
+
+<Tabs groupId="pm" items={["bun", "npm", "pnpm", "yarn"]}>
+  <Tab value="bun">
+    ```bash
+    bun add onedocs
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install onedocs
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add onedocs
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add onedocs
+    ```
+  </Tab>
+</Tabs>
+
+## Configuration
+
+Create `onedocs.config.ts` in your project root:
+
+```ts title="onedocs.config.ts"
+import { defineConfig } from "onedocs/config";
+
+export default defineConfig({
+  title: "My Docs",
+  description: "Documentation for my project",
+  nav: {
+    github: "username/repo",
+  },
+});
+```
+
+## Project Structure
+
+Create a `content/docs` folder for your markdown files:
+
+```
+your-project/
+├── content/
+│   └── docs/
+│       ├── index.mdx           # /docs
+│       ├── getting-started.mdx # /docs/getting-started
+│       └── guides/
+│           ├── meta.json       # Sidebar ordering
+│           └── setup.mdx       # /docs/guides/setup
+├── src/
+│   ├── routes/
+│   │   ├── __root.tsx
+│   │   ├── index.tsx
+│   │   ├── docs.tsx
+│   │   └── docs/
+│   │       ├── index.tsx
+│   │       └── $.tsx
+│   ├── lib/
+│   │   └── source.ts
+│   └── router.tsx
+├── onedocs.config.ts
+├── source.config.ts
+└── vite.config.ts
+```
+
+## Source Configuration
+
+Create `source.config.ts` to define your content collection:
+
+```ts title="source.config.ts"
+import { defineDocs } from "fumadocs-mdx/config";
+
+export const docs = defineDocs({
+  dir: "content/docs",
+});
+```
+
+## Vite Configuration
+
+Set up your `vite.config.ts`:
+
+```ts title="vite.config.ts"
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
+import mdx from "fumadocs-mdx/vite";
+import { nitro } from "nitro/vite";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import * as MdxConfig from "./source.config";
+
+export default defineConfig({
+  plugins: [
+    mdx(MdxConfig),
+    tsconfigPaths(),
+    tailwindcss(),
+    nitro(),
+    tanstackStart(),
+    react(),
+  ],
+  resolve: {
+    dedupe: ["react", "react-dom"],
+  },
+});
+```
+
+## Content Source
+
+Create `src/lib/source.ts` to load your docs:
+
+```ts title="src/lib/source.ts"
+import { loader } from "fumadocs-core/source";
+import { docs } from "../../.source/server";
+
+export const source = loader({
+  baseUrl: "/docs",
+  source: docs.toFumadocsSource(),
+});
+```
+
+## Routes
+
+### Root Route
+
+```tsx title="src/routes/__root.tsx"
+import { RootProvider } from "fumadocs-ui/provider/tanstack";
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+} from "@tanstack/react-router";
+import "fumadocs-ui/style.css";
+
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "My Docs" },
+    ],
+  }),
+  shellComponent: RootDocument,
+  component: RootComponent,
+});
+
+function RootComponent() {
+  return (
+    <RootProvider>
+      <Outlet />
+    </RootProvider>
+  );
+}
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+```
+
+### Docs Layout
+
+```tsx title="src/routes/docs.tsx"
+import { DocsLayout } from "onedocs";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { source } from "../lib/source";
+import config from "../../onedocs.config";
+
+export const Route = createFileRoute("/docs")({
+  component: DocsLayoutWrapper,
+});
+
+function DocsLayoutWrapper() {
+  return (
+    <DocsLayout config={config} pageTree={source.pageTree}>
+      <Outlet />
+    </DocsLayout>
+  );
+}
+```
+
+### Docs Page
+
+```tsx title="src/routes/docs/$.tsx"
+import { DocsPage } from "onedocs";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { source } from "../../lib/source";
+
+export const Route = createFileRoute("/docs/$")({
+  component: DocsPageComponent,
+});
+
+function DocsPageComponent() {
+  const params = Route.useParams();
+  const slugs = params._splat?.split("/").filter(Boolean) ?? [];
+  const page = source.getPage(slugs);
+
+  if (!page) {
+    throw notFound();
+  }
+
+  const MDXContent = page.data.body;
+
+  return (
+    <DocsPage toc={page.data.toc}>
+      <h1>{page.data.title}</h1>
+      {page.data.description && (
+        <p className="text-muted-foreground">{page.data.description}</p>
+      )}
+      <MDXContent />
+    </DocsPage>
+  );
+}
+```
+
+## Running
+
+Start the development server:
+
+```bash
+bun run dev
+```
+
+Build for production:
+
+```bash
+bun run build
+```

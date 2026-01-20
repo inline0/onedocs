@@ -1,0 +1,33 @@
+import type { ReactNode } from "react";
+import { Button } from "./button";
+
+interface CTASectionProps {
+  title: string;
+  description?: string;
+  cta: {
+    label: string;
+    href: string;
+  };
+  children?: ReactNode;
+}
+
+export function CTASection({ title, description, cta, children }: CTASectionProps) {
+  return (
+    <section>
+      <div className="flex flex-col items-center justify-center text-center py-16 px-6">
+        <h2 className="text-2xl font-semibold text-fd-foreground sm:text-3xl">
+          {title}
+        </h2>
+        {description && (
+          <p className="mt-2 text-fd-muted-foreground max-w-md">
+            {description}
+          </p>
+        )}
+        <Button href={cta.href} className="mt-6">
+          {cta.label}
+        </Button>
+        {children}
+      </div>
+    </section>
+  );
+}

@@ -1,7 +1,6 @@
 import { source } from '@/lib/source';
-import { DocsPage, DocsBody } from 'fumadocs-ui/page';
+import { DocsPage, mdxComponents } from 'onedocs-next';
 import { notFound } from 'next/navigation';
-import defaultMdxComponents from 'fumadocs-ui/mdx';
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -14,10 +13,8 @@ export default async function Page(props: {
 
   return (
     <DocsPage toc={page.data.toc}>
-      <DocsBody>
-        <h1>{page.data.title}</h1>
-        <MDX components={{ ...defaultMdxComponents }} />
-      </DocsBody>
+      <h1>{page.data.title}</h1>
+      <MDX components={mdxComponents} />
     </DocsPage>
   );
 }
