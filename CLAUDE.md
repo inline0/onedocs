@@ -35,7 +35,12 @@ onedocs/
 │       │   │   ├── page.tsx
 │       │   │   ├── globals.css
 │       │   │   ├── icon.png
+│       │   │   ├── opengraph-image.tsx
 │       │   │   ├── docs/
+│       │   │   │   ├── layout.tsx
+│       │   │   │   ├── [[...slug]]/page.tsx
+│       │   │   │   ├── opengraph-image.tsx
+│       │   │   │   └── og/[...slug]/route.tsx
 │       │   │   ├── api/search/
 │       │   │   ├── llms.txt/
 │       │   │   ├── llms-full.txt/
@@ -57,6 +62,8 @@ onedocs/
 │   │   │   ├── source/       # Content source helpers
 │   │   │   ├── llms/         # LLMs.txt generation
 │   │   │   ├── seo/          # Sitemap & robots generation
+│   │   │   ├── og/           # OG image generation helpers
+│   │   │   ├── metadata/     # Metadata generation helpers
 │   │   │   ├── css/          # CSS preset with Tailwind + Fumadocs
 │   │   │   └── mdx-components.ts
 │   │   └── tsconfig.json
@@ -106,6 +113,22 @@ export { createLLMsSource, generateLLMsText, generateLLMsFullText } from "./llms
 
 ```ts
 export { generateSitemap, generateRobots } from "./seo";
+```
+
+### OG Image Entry (`onedocs/og`)
+
+```ts
+export { createRootOGImage, createDocsOGImage } from "./og";
+export { loadPublicFile, loadInterFont } from "./og";
+export { ogImageSize, ogImageContentType } from "./og";
+export type { OGImageLogo, LoadedFile } from "./og";
+```
+
+### Metadata Entry (`onedocs/metadata`)
+
+```ts
+export { createMetadata, createDocsPageMetadata } from "./metadata";
+export type { CreateMetadataOptions } from "./metadata";
 ```
 
 ### CSS Entry (`onedocs/css/preset.css`)
@@ -247,6 +270,123 @@ Centered call-to-action section:
   cta={{ label: "Button Text", href: "/path" }}
 />
 ```
+
+---
+
+## OG Images
+
+### Root OG Image
+
+```tsx
+// src/app/opengraph-image.tsx
+import {
+  createRootOGImage,
+  loadPublicFile,
+  ogImageSize,
+  ogImageContentType,
+  type OGImageLogo,
+} from "onedocs/og";
+
+export const size = ogImageSize;
+export const contentType = ogImageContentType;
+
+export default async function Image() {
+  const logo = await loadPublicFile("logo-light.svg");
+  return createRootOGImage(logo as OGImageLogo);
+}
+```
+
+### Docs OG Image (Static)
+
+```tsx
+// src/app/docs/opengraph-image.tsx
+import {
+  createDocsOGImage,
+  loadPublicFile,
+  loadInterFont,
+  ogImageSize,
+  ogImageContentType,
+  type OGImageLogo,
+} from "onedocs/og";
+
+export const size = ogImageSize;
+export const contentType = ogImageContentType;
+
+export default async function Image() {
+  const [logo, font] = await Promise.all([
+    loadPublicFile("logo-light.svg"),
+    loadInterFont(),
+  ]);
+  return createDocsOGImage("Documentation", logo as OGImageLogo, font);
+}
+```
+
+### Dynamic OG Images (Per Page)
+
+```tsx
+// src/app/docs/og/[...slug]/route.tsx
+import {
+  createDocsOGImage,
+  loadPublicFile,
+  loadInterFont,
+  type OGImageLogo,
+} from "onedocs/og";
+import { source } from "@/lib/source";
+
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ slug: string[] }> }
+) {
+  const { slug } = await params;
+  const page = source.getPage(slug);
+  const title = page?.data.title ?? "Documentation";
+
+  const [logo, font] = await Promise.all([
+    loadPublicFile("logo-light.svg"),
+    loadInterFont(),
+  ]);
+
+  return createDocsOGImage(title, logo as OGImageLogo, font);
+}
+```
+
+Then reference it in docs page metadata:
+
+```tsx
+// In generateMetadata
+const ogImageUrl = params.slug
+  ? `/docs/og/${params.slug.join("/")}`
+  : "/docs/opengraph-image";
+
+return {
+  openGraph: { images: [ogImageUrl] },
+  twitter: { images: [ogImageUrl] },
+};
+```
+
+Requires:
+- `public/logo-light.svg` - Logo for OG images
+- `public/fonts/Inter-Medium.ttf` - Font for title text
+
+---
+
+## Metadata Helper
+
+```tsx
+// src/app/layout.tsx
+import { createMetadata } from "onedocs/metadata";
+import config from "../../onedocs.config";
+
+export const metadata = createMetadata(config, {
+  baseUrl: "https://yourdomain.com",
+});
+```
+
+Creates metadata with:
+- Title template (`%s | Site Name`)
+- Description from config
+- OpenGraph and Twitter card metadata
+- metadataBase for absolute URLs
 
 ---
 
@@ -410,9 +550,10 @@ cd packages/onedocs && npm publish
 - Docs: `content/docs/**/*.{md,mdx}`
 - Meta: `content/docs/**/meta.json` for sidebar ordering
 - Assets: `public/` (standard Next.js)
-- Fonts: `public/fonts/InterVariable.woff2`
+- Fonts: `public/fonts/InterVariable.woff2` (website), `public/fonts/Inter-Medium.ttf` (OG images)
 - CSS: `src/app/globals.css` imports `onedocs/css/preset.css`
 - Icon: `src/app/icon.png` (Next.js convention)
+- OG Images: `src/app/opengraph-image.tsx`, `src/app/docs/opengraph-image.tsx`
 
 ---
 

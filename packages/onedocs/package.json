@@ -49,6 +49,14 @@
       "types": "./dist/seo/index.d.ts",
       "import": "./dist/seo/index.js"
     },
+    "./og": {
+      "types": "./dist/og/index.d.ts",
+      "import": "./dist/og/index.js"
+    },
+    "./metadata": {
+      "types": "./dist/metadata/index.d.ts",
+      "import": "./dist/metadata/index.js"
+    },
     "./css/preset.css": "./src/css/preset.css"
   },
   "files": [

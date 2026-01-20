@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { FontHead } from "onedocs";
+import { createMetadata } from "onedocs/metadata";
+import config from "../../onedocs.config";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Onedocs",
-  description: "Zero-config documentation for Next.js + Fumadocs",
-};
+export const metadata = createMetadata(config, {
+  baseUrl: "https://onedocs.dev",
+});
 
 export default function RootLayout({
   children,
