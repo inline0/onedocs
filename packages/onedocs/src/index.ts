@@ -14,5 +14,6 @@ export { Button } from "./components/button";
 export { Logo } from "./components/logo";
 export { GitHubIcon } from "./components/icons";
 export { CTASection } from "./components/cta-section";
+export { FontHead } from "./components/font-head";
 
 export { mdxComponents } from "./mdx-components";
