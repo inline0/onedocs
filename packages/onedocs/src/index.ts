@@ -9,7 +9,7 @@ export type { OnedocsConfig } from "./config";
 
 export { createSource, loader } from "./source";
 
-export { InstallBlock } from "./components/install-block";
+export { InstallBlock, highlightInstallCommands, type HighlightedInstallCommands } from "./components/install-block";
 export { Button } from "./components/button";
 export { Logo } from "./components/logo";
 export { GitHubIcon } from "./components/icons";

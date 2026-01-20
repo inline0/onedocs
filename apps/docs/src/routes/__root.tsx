@@ -14,8 +14,19 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: config.title },
+      {
+        name: "description",
+        content: "Zero-config documentation for TanStack Start + Fumadocs",
+      },
+      {
+        name: "og:description",
+        content: "Zero-config documentation for TanStack Start + Fumadocs",
+      },
+      { name: "apple-mobile-web-app-title", content: "Onedocs" },
     ],
-    links: config.icon ? [{ rel: "icon", href: config.icon }] : [],
+    links: [
+      { rel: "icon", href: config.icon ?? "/icon.png" },
+    ],
   }),
   shellComponent: RootDocument,
   component: RootComponent,
