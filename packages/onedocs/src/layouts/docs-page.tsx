@@ -1,17 +1,21 @@
-import { DocsPage as FumaDocsPage, DocsBody } from "fumadocs-ui/page";
+import {
+  DocsPage as FumaDocsPage,
+  DocsBody,
+  type DocsPageProps as FumaDocsPageProps,
+} from "fumadocs-ui/page";
 import type { ReactNode } from "react";
 
-interface DocsPageProps {
-  toc?: any[];
+interface DocsPageProps extends Omit<FumaDocsPageProps, "children"> {
   children: ReactNode;
 }
 
-export function DocsPage({ toc, children }: DocsPageProps) {
+export function DocsPage({ children, ...props }: DocsPageProps) {
   return (
-    <FumaDocsPage toc={toc}>
+    <FumaDocsPage {...props}>
       <DocsBody>{children}</DocsBody>
     </FumaDocsPage>
   );
 }
 
 export { DocsBody };
+export type { DocsPageProps };

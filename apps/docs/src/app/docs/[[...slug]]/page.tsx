@@ -11,8 +11,18 @@ export default async function Page(props: {
 
   const MDX = page.data.body;
 
+  const filePath = page.file.path;
+
   return (
-    <DocsPage toc={page.data.toc}>
+    <DocsPage
+      toc={page.data.toc}
+      editOnGithub={{
+        owner: "inline0",
+        repo: "onedocs",
+        sha: "main",
+        path: filePath,
+      }}
+    >
       <MDX components={mdxComponents} />
     </DocsPage>
   );
