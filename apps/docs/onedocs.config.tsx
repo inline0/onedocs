@@ -14,7 +14,7 @@ const iconClass = "h-5 w-5 text-fd-primary";
 
 export default defineConfig({
   title: "Onedocs",
-  description: "Zero-config documentation for TanStack Start + Fumadocs",
+  description: "Zero-config documentation for Next.js + Fumadocs",
   logo: {
     light: "/logo-light.svg",
     dark: "/logo-dark.svg",
@@ -27,14 +27,14 @@ export default defineConfig({
     hero: {
       title: "Ship docs in minutes",
       description:
-        "Install one dependency, write markdown, ship docs. A zero-config wrapper around TanStack Start and Fumadocs.",
+        "Install one dependency, write markdown, ship docs. A zero-config wrapper around Next.js and Fumadocs.",
       cta: { label: "Get Started", href: "/docs" },
     },
     features: [
       {
         title: "One Dependency",
         description:
-          "Bundles TanStack Start, Fumadocs UI, and MDX handling. Just add onedocs and start writing.",
+          "Bundles Fumadocs UI and MDX handling. Just add onedocs and start writing.",
         icon: <Package className={iconClass} />,
       },
       {
@@ -70,7 +70,7 @@ export default defineConfig({
       {
         title: "Fast Builds",
         description:
-          "Powered by Vite and TanStack Start for lightning-fast development and production builds.",
+          "Powered by Next.js with Turbopack for lightning-fast development and production builds.",
         icon: <Zap className={iconClass} />,
       },
       {

@@ -1,5 +1,4 @@
 // @ts-nocheck
-/// <reference types="vite/client" />
 import { browser } from 'fumadocs-mdx/runtime/browser';
 import type * as Config from '../source.config';
 
@@ -8,12 +7,6 @@ const create = browser<typeof Config, import("fumadocs-mdx/runtime/types").Inter
   }
 }>();
 const browserCollections = {
-  docs: create.doc("docs", import.meta.glob(["./**/*.{mdx,md}"], {
-    "base": "./../content/docs",
-    "query": {
-      "collection": "docs"
-    },
-    "eager": false
-  })),
+  docs: create.doc("docs", {"components.mdx": () => import("../content/docs/components.mdx?collection=docs"), "configuration.mdx": () => import("../content/docs/configuration.mdx?collection=docs"), "getting-started.mdx": () => import("../content/docs/getting-started.mdx?collection=docs"), "index.mdx": () => import("../content/docs/index.mdx?collection=docs"), }),
 };
 export default browserCollections;

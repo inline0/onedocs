@@ -1,7 +1,7 @@
 import { HomeLayout as FumaHomeLayout } from "fumadocs-ui/layouts/home";
 import type { OnedocsConfig } from "../config";
 import { createBaseOptions } from "./shared";
-import { InstallBlock, type HighlightedInstallCommands } from "../components/install-block";
+import { InstallBlock } from "../components/install-block";
 import { Button } from "../components/button";
 
 interface HomeLayoutProps {
@@ -17,18 +17,18 @@ export function HomeLayout({ config, children }: HomeLayoutProps) {
 
 interface HomePageProps {
   config: OnedocsConfig;
-  installCommands?: HighlightedInstallCommands;
+  packageName?: string;
   children?: React.ReactNode;
 }
 
-export function HomePage({ config, installCommands, children }: HomePageProps) {
+export function HomePage({ config, packageName, children }: HomePageProps) {
   const { homepage } = config;
   const heroLeft = homepage?.hero?.left;
   const heroRight = homepage?.hero?.right;
   const currentYear = new Date().getFullYear();
 
   const renderedHeroLeft = typeof heroLeft === 'function'
-    ? heroLeft({ installCommands })
+    ? heroLeft({})
     : heroLeft;
 
   return (
@@ -51,9 +51,9 @@ export function HomePage({ config, installCommands, children }: HomePageProps) {
                         {homepage?.hero?.description ?? config.description}
                       </p>
                       <div className="flex flex-wrap items-start sm:items-end gap-x-8 gap-y-6 mt-4 w-full">
-                        {installCommands && (
+                        {packageName && (
                           <div className="flex-1">
-                            <InstallBlock commands={installCommands} />
+                            <InstallBlock packageName={packageName} />
                           </div>
                         )}
                         <Button href={homepage?.hero?.cta?.href ?? "/docs"}>

@@ -1,14 +1,11 @@
 import type { ReactNode } from "react";
-import type { HighlightedInstallCommands } from "./components/install-block";
 
 export interface NavLink {
   label: string;
   href: string;
 }
 
-export interface HeroRenderProps {
-  installCommands?: HighlightedInstallCommands;
-}
+export interface HeroRenderProps {}
 
 export interface HeroConfig {
   title?: ReactNode;

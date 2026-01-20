@@ -100,51 +100,37 @@ function sortPages(pages: Page[]): Page[] {
   });
 }
 
-export function createLLMsHandler(source: LLMsSource, config: LLMsConfig) {
-  return {
-    GET: async () => {
-      const pages = sortPages(source.getPages());
+export async function generateLLMsText(
+  source: LLMsSource,
+  config: LLMsConfig,
+): Promise<string> {
+  const pages = sortPages(source.getPages());
 
-      const lines = [
-        `# ${config.title}`,
-        "",
-        config.description ? `${config.description}\n` : "",
-        "## Pages",
-        "",
-      ];
+  const lines = [
+    `# ${config.title}`,
+    "",
+    config.description ? `${config.description}\n` : "",
+    "## Pages",
+    "",
+  ];
 
-      for (const page of pages) {
-        lines.push(`- ${page.data.title}: ${page.url}`);
-        if (page.data.description) {
-          lines.push(`  ${page.data.description}`);
-        }
-      }
+  for (const page of pages) {
+    lines.push(`- ${page.data.title}: ${page.url}`);
+    if (page.data.description) {
+      lines.push(`  ${page.data.description}`);
+    }
+  }
 
-      lines.push("");
-      lines.push("## Full Content");
-      lines.push("");
-      lines.push("For full documentation content, see /llms-full.txt");
+  lines.push("");
+  lines.push("## Full Content");
+  lines.push("");
+  lines.push("For full documentation content, see /llms-full.txt");
 
-      return new Response(lines.join("\n"), {
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-        },
-      });
-    },
-  };
+  return lines.join("\n");
 }
 
-export function createLLMsFullHandler(source: LLMsSource) {
-  return {
-    GET: async () => {
-      const pages = sortPages(source.getPages());
-      const contents = await Promise.all(pages.map(getLLMText));
-
-      return new Response(contents.join("\n\n---\n\n"), {
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-        },
-      });
-    },
-  };
+export async function generateLLMsFullText(source: LLMsSource): Promise<string> {
+  const pages = sortPages(source.getPages());
+  const contents = await Promise.all(pages.map(getLLMText));
+  return contents.join("\n\n---\n\n");
 }

@@ -1,4 +1,3 @@
-export { RootLayout } from "./layouts/root";
 export { DocsLayout } from "./layouts/docs";
 export { DocsPage, DocsBody } from "./layouts/docs-page";
 export { HomeLayout, HomePage } from "./layouts/home";
@@ -9,9 +8,11 @@ export type { OnedocsConfig } from "./config";
 
 export { createSource, loader } from "./source";
 
-export { InstallBlock, highlightInstallCommands, type HighlightedInstallCommands } from "./components/install-block";
+export { InstallBlock } from "./components/install-block";
+export { CodeBlock } from "./components/code-block";
 export { Button } from "./components/button";
 export { Logo } from "./components/logo";
 export { GitHubIcon } from "./components/icons";
 export { CTASection } from "./components/cta-section";
-export { FontHead } from "./components/font-head";
+
+export { mdxComponents } from "./mdx-components";

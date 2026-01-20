@@ -1,0 +1,4 @@
+@import "onedocs/css/preset.css";
+
+@source "./app/**/*.tsx";
+@source "../content/**/*.mdx";

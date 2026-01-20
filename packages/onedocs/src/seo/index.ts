@@ -1,9 +1,11 @@
+import type { MetadataRoute } from "next";
+
 export interface RobotsConfig {
   baseUrl: string;
   sitemapPath?: string;
 }
 
-export interface DocsSitemapConfig {
+export interface SitemapConfig {
   baseUrl: string;
   pages: string[];
   docsPath?: string;
@@ -17,56 +19,55 @@ const normalizeDocsPath = (docsPath: string) => {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 };
 
-export function createRobotsHandler({
+export function generateRobots({
   baseUrl,
   sitemapPath = "/sitemap.xml",
-}: RobotsConfig) {
+}: RobotsConfig): MetadataRoute.Robots {
   const siteUrl = normalizeBaseUrl(baseUrl);
   const sitemapUrl = sitemapPath.startsWith("/")
     ? `${siteUrl}${sitemapPath}`
     : `${siteUrl}/${sitemapPath}`;
-  const body = `User-agent: *\nAllow: /\nSitemap: ${sitemapUrl}\nHost: ${siteUrl}\n`;
 
-  return () =>
-    new Response(body, {
-      headers: {
-        "content-type": "text/plain; charset=utf-8",
-      },
-    });
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+    },
+    sitemap: sitemapUrl,
+    host: siteUrl,
+  };
 }
 
-export function createDocsSitemapHandler({
+export function generateSitemap({
   baseUrl,
   pages,
   docsPath = "/docs",
-}: DocsSitemapConfig) {
+}: SitemapConfig): MetadataRoute.Sitemap {
   const siteUrl = normalizeBaseUrl(baseUrl);
   const docsBase = normalizeDocsPath(docsPath);
-  const urls = [siteUrl];
+  const now = new Date();
+
+  const urls: MetadataRoute.Sitemap = [
+    {
+      url: siteUrl,
+      lastModified: now,
+    },
+  ];
 
   for (const page of pages) {
     if (page.startsWith("---")) continue;
     if (page.startsWith("index")) {
-      urls.push(`${siteUrl}${docsBase}/`);
+      urls.push({
+        url: `${siteUrl}${docsBase}`,
+        lastModified: now,
+      });
       continue;
     }
-    urls.push(`${siteUrl}${docsBase}/${page}/`);
+    urls.push({
+      url: `${siteUrl}${docsBase}/${page}`,
+      lastModified: now,
+    });
   }
 
-  const now = new Date().toISOString();
-  const entries = urls
-    .map(
-      (url) =>
-        `  <url>\n    <loc>${url}</loc>\n    <lastmod>${now}</lastmod>\n  </url>`,
-    )
-    .join("\n");
-
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>`;
-
-  return () =>
-    new Response(sitemap, {
-      headers: {
-        "content-type": "application/xml; charset=utf-8",
-      },
-    });
+  return urls;
 }
