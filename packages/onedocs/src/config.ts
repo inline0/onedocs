@@ -5,7 +5,7 @@ export interface NavLink {
   href: string;
 }
 
-export interface HeroRenderProps {}
+export type HeroRenderProps = Record<string, never>;
 
 export interface HeroConfig {
   title?: ReactNode;
