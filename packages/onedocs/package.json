@@ -75,7 +75,8 @@
     "clean": "rm -rf dist",
     "build": "bun run clean && tsc -p tsconfig.json",
     "dev": "tsc -w -p tsconfig.json",
-    "prepack": "bun run build"
+    "prepack": "bun run build",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "fumadocs-core": "^16.4.7",
@@ -95,6 +96,7 @@
     "fumadocs-ui": "^16.4.7",
     "lucide-react": "^0.562.0",
     "next": "^16.1.4",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.1.4"
   }
 }

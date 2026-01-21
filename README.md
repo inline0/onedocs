@@ -1,15 +1,21 @@
 <p align="center">
-  <a href="https://github.com/inline0/onedocs">
+  <a href="https://onedocs.dev">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-dark.svg">
       <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-light.svg">
-      <img alt="Onedocs" src="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-light.svg" width="280">
+      <img alt="Onedocs" src="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-light.svg" height="50">
     </picture>
   </a>
 </p>
 
 <p align="center">
-  Zero-config documentation for TanStack Start + Fumadocs
+  Zero-config documentation for Next.js + Fumadocs
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/onedocs"><img src="https://img.shields.io/npm/v/onedocs.svg" alt="npm version"></a>
+  <a href="https://github.com/inline0/onedocs/actions/workflows/ci.yml"><img src="https://github.com/inline0/onedocs/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/inline0/onedocs/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/onedocs.svg" alt="license"></a>
 </p>
 
 ---
@@ -20,7 +26,7 @@ Install one dependency, write markdown, ship docs.
 
 ## Features
 
-- **One Dependency** - Bundles TanStack Start, Fumadocs UI, and MDX handling
+- **One Dependency** - Bundles Next.js patterns, Fumadocs UI, and MDX handling
 - **Zero Config** - Works out of the box with sensible defaults
 - **Markdown First** - Write `.md` or `.mdx` files, get beautiful docs
 - **Full-text Search** - Built-in Orama search indexes your content automatically
@@ -34,10 +40,9 @@ Install one dependency, write markdown, ship docs.
 bun add onedocs
 ```
 
-Create your config:
+Create `onedocs.config.tsx`:
 
 ```tsx
-// onedocs.config.tsx
 import { defineConfig } from "onedocs/config";
 
 export default defineConfig({
@@ -49,19 +54,17 @@ export default defineConfig({
 });
 ```
 
-Import the CSS preset:
+Import the CSS preset in `src/app/globals.css`:
 
 ```css
-/* app.css */
 @import "onedocs/css/preset.css";
 ```
 
-Create your homepage:
+Create your homepage in `src/app/page.tsx`:
 
 ```tsx
-// src/routes/index.tsx
 import { HomePage } from "onedocs";
-import config from "../onedocs.config.tsx";
+import config from "../../onedocs.config";
 
 export default function Home() {
   return <HomePage config={config} packageName="my-package" />;
@@ -83,23 +86,15 @@ import { Package, Zap } from "lucide-react";
 export default defineConfig({
   title: "My Project",
   description: "Project description",
-
-  // Logo with dark/light variants
   logo: {
     light: "/logo-light.svg",
     dark: "/logo-dark.svg",
   },
-
-  // Favicon
   icon: "/icon.png",
-
-  // Navigation
   nav: {
     github: "username/repo",
     links: [{ label: "Blog", href: "/blog" }],
   },
-
-  // Homepage
   homepage: {
     hero: {
       title: "Ship docs in minutes",
@@ -127,19 +122,12 @@ export default defineConfig({
 ### Main (`onedocs`)
 
 ```ts
-// Layouts
 export { RootLayout, DocsLayout, HomePage, HomeLayout } from "onedocs";
-
-// Components
 export { InstallBlock, Logo, CTASection, GitHubIcon } from "onedocs";
-
-// Config
 export { defineConfig } from "onedocs";
 ```
 
 ### Components (`onedocs/components`)
-
-Re-exports Fumadocs UI components:
 
 ```ts
 import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components";
@@ -149,20 +137,17 @@ import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components";
 
 Includes Tailwind, Fumadocs styles, Inter font, and OpenType features.
 
+## Documentation
+
+For full documentation, visit [onedocs.dev](https://onedocs.dev).
+
 ## Development
 
 ```bash
-# Install dependencies
 bun install
-
-# Run the docs site
 bun run dev
-
-# Build the package
 bun run build
-
-# Run tests
-bun test
+bun run test
 ```
 
 ## License
