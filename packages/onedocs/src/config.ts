@@ -36,6 +36,16 @@ export interface I18nConfig {
   languages: string[];
 }
 
+export interface SocialLink {
+  icon: ReactNode;
+  href: string;
+  label: string;
+}
+
+export interface FooterConfig {
+  socials?: SocialLink[];
+}
+
 export interface OnedocsConfig {
   title: string;
   description?: string;
@@ -45,6 +55,7 @@ export interface OnedocsConfig {
     links?: NavLink[];
     github?: string;
   };
+  footer?: FooterConfig;
   homepage?: HomepageConfig;
   docs?: {
     dir?: string;

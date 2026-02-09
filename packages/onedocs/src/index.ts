@@ -4,7 +4,7 @@ export { HomeLayout, HomePage } from "./layouts/home";
 export { createBaseOptions } from "./layouts/shared";
 
 export { defineConfig } from "./config";
-export type { OnedocsConfig } from "./config";
+export type { OnedocsConfig, SocialLink, FooterConfig } from "./config";
 
 export { createSource, loader } from "./source";
 

@@ -39,7 +39,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
           <div className="relative">
             <section id="hero">
               <div className="grid grid-cols-1 lg:grid-cols-4">
-                <div className="lg:col-span-2 px-6 py-8 lg:p-12">
+                <div className="lg:col-span-2 px-6 py-8 lg:px-16 lg:py-12 xl:px-20 xl:py-16">
                   {renderedHeroLeft ? (
                     renderedHeroLeft
                   ) : (
@@ -65,7 +65,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                 </div>
                 <div className="lg:col-span-2 hidden lg:block">
                   {heroRight ? (
-                    <div className="flex h-full items-center px-6 py-8 lg:p-12">
+                    <div className="flex h-full items-center px-6 py-8 lg:px-16 lg:py-12 xl:px-20 xl:py-16">
                       {heroRight}
                     </div>
                   ) : null}
@@ -80,7 +80,7 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                     {homepage.features.map((feature) => (
                       <div
                         key={feature.title}
-                        className="flex flex-col gap-y-2 items-start justify-start py-8 px-6 transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0"
+                        className="flex flex-col gap-y-2 items-start justify-start p-8 transition-colors hover:bg-fd-secondary/20 sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0"
                       >
                         {feature.icon && (
                           <div className="bg-fd-primary/10 p-2 rounded-lg mb-2">
@@ -109,10 +109,26 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
         </div>
 
         <footer className="relative mx-auto w-full max-w-(--fd-layout-width)">
-          <div className="border-x border-t px-6 py-4">
+          <div className="border-x border-t px-6 py-4 flex items-center justify-between gap-4">
             <p className="text-sm text-fd-muted-foreground">
               © {currentYear} {config.title}
             </p>
+            {config.footer?.socials && config.footer.socials.length > 0 && (
+              <div className="flex items-center gap-3">
+                {config.footer.socials.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="text-fd-muted-foreground transition-colors hover:text-fd-foreground [&_svg]:size-4"
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </footer>
       </main>
