@@ -43,6 +43,7 @@ export interface SocialLink {
 }
 
 export interface FooterConfig {
+  links?: NavLink[];
   socials?: SocialLink[];
 }
 

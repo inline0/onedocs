@@ -113,22 +113,39 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
             <p className="text-sm text-fd-muted-foreground">
               © {currentYear} {config.title}
             </p>
-            {config.footer?.socials && config.footer.socials.length > 0 && (
-              <div className="flex items-center gap-3">
-                {config.footer.socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="text-fd-muted-foreground transition-colors hover:text-fd-foreground [&_svg]:size-4"
-                  >
-                    {social.icon}
-                  </a>
-                ))}
-              </div>
-            )}
+            <div className="flex items-center gap-4">
+              {config.footer?.links && config.footer.links.length > 0 && (
+                <div className="flex items-center gap-4">
+                  {config.footer.links.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+              {config.footer?.socials && config.footer.socials.length > 0 && (
+                <div className="flex items-center gap-3">
+                  {config.footer.socials.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="text-fd-muted-foreground transition-colors hover:text-fd-foreground [&_svg]:size-4"
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </footer>
       </main>

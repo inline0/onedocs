@@ -23,6 +23,11 @@ export default defineConfig({
   nav: {
     github: "inline0/onedocs",
   },
+  footer: {
+    links: [
+      { label: "Inline0.com", href: "https://inline0.com" },
+    ],
+  },
   homepage: {
     hero: {
       title: "Ship docs in minutes",
