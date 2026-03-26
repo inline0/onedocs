@@ -20,7 +20,19 @@ export function createMetadata(
     description: config.description,
     ...(config.icon && {
       icons: {
-        icon: config.icon,
+        icon:
+          typeof config.icon === "string"
+            ? config.icon
+            : [
+                {
+                  url: config.icon.light,
+                  media: "(prefers-color-scheme: light)",
+                },
+                {
+                  url: config.icon.dark,
+                  media: "(prefers-color-scheme: dark)",
+                },
+              ],
       },
     }),
     ...(baseUrl && {
