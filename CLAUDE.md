@@ -24,33 +24,9 @@ onedocs/
 ├── package.json              # Root workspace config (private: true)
 ├── biome.json                # Linting/formatting
 ├── .github/                  # GitHub assets (logos for README)
-├── apps/
-│   └── docs/                 # Example/test docs site (private, Next.js)
-│       ├── package.json
-│       ├── content/docs/     # Markdown docs
-│       ├── public/           # Static assets (logos, icons, fonts)
-│       ├── src/
-│       │   ├── app/          # Next.js App Router
-│       │   │   ├── layout.tsx
-│       │   │   ├── page.tsx
-│       │   │   ├── globals.css
-│       │   │   ├── icon.png
-│       │   │   ├── opengraph-image.tsx
-│       │   │   ├── docs/
-│       │   │   │   ├── layout.tsx
-│       │   │   │   ├── [[...slug]]/page.tsx
-│       │   │   │   ├── opengraph-image.tsx
-│       │   │   │   └── og/[...slug]/route.tsx
-│       │   │   ├── api/search/
-│       │   │   ├── llms.txt/
-│       │   │   ├── llms-full.txt/
-│       │   │   ├── sitemap.ts
-│       │   │   └── robots.ts
-│       │   └── lib/          # Source configuration
-│       ├── onedocs.config.tsx
-│       ├── source.config.ts
-│       ├── next.config.mjs
-│       └── vercel.json
+├── docs/                     # Portable Markdown documentation (plus meta.json navigation)
+├── scripts/
+│   └── check-docs-content.mjs # Validates the portable docs content
 ├── packages/
 │   ├── onedocs/              # THE publishable package
 │   │   ├── package.json
@@ -497,17 +473,16 @@ export const { GET } = createFromSource(source);
 ## Commands Reference
 
 ```bash
-# Development
-bun run dev              # Run example docs site
-
 # Building
 bun run build            # Build the onedocs package
-bun run build:docs       # Build the docs site
 
 # Quality
 bun run lint             # Biome lint
 bun run format           # Biome format
 bun run typecheck        # TypeScript check
+
+# Docs content
+node scripts/check-docs-content.mjs --expected-docs 6 --expected-nav 1
 
 # Publishing
 cd packages/onedocs && npm publish
@@ -557,15 +532,6 @@ cd packages/onedocs && npm publish
 
 ---
 
-## Vercel Deployment
+## Repository Documentation
 
-The monorepo uses a `vercel.json` in `apps/docs/` to build correctly:
-
-```json
-{
-  "framework": "nextjs",
-  "buildCommand": "cd ../../packages/onedocs && bun run build && cd ../../apps/docs && next build"
-}
-```
-
-This ensures the onedocs package is built before the docs site.
+The repository's own documentation lives as portable Markdown in `docs/` at the root: flat `.md` files with frontmatter plus a `meta.json` navigation file. There is no docs app in this repository. `scripts/check-docs-content.mjs` validates frontmatter, navigation reachability, portability (no MDX/JSX outside code fences), and relative links; the `Docs content` workflow runs it in CI.

@@ -145,9 +145,14 @@ For full documentation, visit [onedocs.dev](https://onedocs.dev).
 
 ```bash
 bun install
-bun run dev
 bun run build
-bun run test
+bun run --cwd packages/onedocs test
+```
+
+The portable Markdown documentation lives in `docs/` at the repository root. Validate it with:
+
+```bash
+node scripts/check-docs-content.mjs --expected-docs 6 --expected-nav 1
 ```
 
 ## License
