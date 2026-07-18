@@ -3,7 +3,6 @@ title: "Getting Started"
 description: "Set up Onedocs in your project."
 path: "getting-started"
 order: 20
-section: "Getting Started"
 meta_title: "Getting Started"
 meta_description: "Set up Onedocs in your project."
 ---

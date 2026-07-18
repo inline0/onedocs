@@ -3,7 +3,6 @@ title: "Introduction"
 description: "Zero-config documentation for Next.js and Fumadocs."
 path: "."
 order: 10
-section: "Getting Started"
 meta_title: "Introduction"
 meta_description: "Zero-config documentation for Next.js and Fumadocs."
 ---
