@@ -1,4 +1,13 @@
 {
-  "title": "Documentation",
-  "pages": ["index", "getting-started", "configuration", "components", "seo-search", "api-reference"]
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "getting-started",
+    "---Usage---",
+    "components",
+    "seo-search",
+    "---Reference---",
+    "configuration",
+    "api-reference"
+  ]
 }

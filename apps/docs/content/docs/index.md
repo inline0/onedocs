@@ -1,6 +1,11 @@
 ---
-title: Introduction
-description: Zero-config documentation for Next.js
+title: "Introduction"
+description: "Zero-config documentation for Next.js and Fumadocs."
+path: "."
+order: 10
+section: "Getting Started"
+meta_title: "Introduction"
+meta_description: "Zero-config documentation for Next.js and Fumadocs."
 ---
 
 # Introduction
@@ -8,7 +13,7 @@ description: Zero-config documentation for Next.js
 Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs. Install one dependency, write markdown, ship docs.
 
 ```bash
-bun add onedocs
+npm install onedocs
 ```
 
 No configuring multiple packages. No wrestling with build pipelines. Just write your docs.
@@ -56,16 +61,14 @@ content/
 Run the dev server:
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 That's it. Your docs are live.
 
-<Cards>
-  <Card title="Getting Started" href="/docs/getting-started">
-    Full setup guide with all the files you need
-  </Card>
-  <Card title="Components" href="/docs/components">
-    Callouts, tabs, cards, and more
-  </Card>
-</Cards>
+## Start here
+
+- [Getting Started](/docs/getting-started)
+- [Components](/docs/components)
+- [Configuration](/docs/configuration)
+- [API Reference](/docs/api-reference)

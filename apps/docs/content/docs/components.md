@@ -1,6 +1,11 @@
 ---
-title: Components
-description: Built-in MDX components
+title: "Components"
+description: "Built-in MDX components."
+path: "components"
+order: 30
+section: "Usage"
+meta_title: "Components"
+meta_description: "Built-in MDX components."
 ---
 
 # Components
@@ -20,7 +25,7 @@ import { DocsPage, mdxComponents } from "onedocs";
 
 ## Callout
 
-Highlight important information:
+Highlight important information with info, warning, or error styling:
 
 ```mdx
 <Callout type="info">
@@ -35,18 +40,6 @@ Highlight important information:
   This is an error callout.
 </Callout>
 ```
-
-<Callout type="info">
-  This is an informational callout.
-</Callout>
-
-<Callout type="warn">
-  This is a warning callout.
-</Callout>
-
-<Callout type="error">
-  This is an error callout.
-</Callout>
 
 ## Tabs
 
@@ -61,16 +54,9 @@ Organize content into tabs:
 </Tabs>
 ```
 
-<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
-  <Tab value="npm">npm install onedocs</Tab>
-  <Tab value="yarn">yarn add onedocs</Tab>
-  <Tab value="pnpm">pnpm add onedocs</Tab>
-  <Tab value="bun">bun add onedocs</Tab>
-</Tabs>
-
 ## Cards
 
-Link to other pages:
+Link to other pages with card grids:
 
 ```mdx
 <Cards>
@@ -82,15 +68,6 @@ Link to other pages:
   </Card>
 </Cards>
 ```
-
-<Cards>
-  <Card title="Getting Started" href="/docs/getting-started">
-    Learn how to set up Onedocs
-  </Card>
-  <Card title="Configuration" href="/docs/configuration">
-    Configure your documentation
-  </Card>
-</Cards>
 
 ## Steps
 
@@ -104,15 +81,9 @@ Show numbered steps:
 </Steps>
 ```
 
-<Steps>
-  <Step>Install Onedocs</Step>
-  <Step>Create configuration</Step>
-  <Step>Write documentation</Step>
-</Steps>
-
 ## Accordion
 
-Collapsible content:
+Collapsible content for FAQs and optional detail:
 
 ```mdx
 <Accordions>
@@ -120,19 +91,10 @@ Collapsible content:
     Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs.
   </Accordion>
   <Accordion title="How do I install it?">
-    Run `bun add onedocs` to install.
+    Run `npm install onedocs` to install.
   </Accordion>
 </Accordions>
 ```
-
-<Accordions>
-  <Accordion title="What is Onedocs?">
-    Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs.
-  </Accordion>
-  <Accordion title="How do I install it?">
-    Run `bun add onedocs` to install.
-  </Accordion>
-</Accordions>
 
 ## Files
 
@@ -149,16 +111,6 @@ Show file trees:
   <File name="onedocs.config.ts" />
 </Files>
 ```
-
-<Files>
-  <Folder name="content" defaultOpen>
-    <Folder name="docs" defaultOpen>
-      <File name="index.mdx" />
-      <File name="getting-started.mdx" />
-    </Folder>
-  </Folder>
-  <File name="onedocs.config.ts" />
-</Files>
 
 ## More components
 

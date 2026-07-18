@@ -1,6 +1,11 @@
 ---
-title: SEO & Search
-description: Search, sitemap, robots.txt, and LLMs.txt
+title: "SEO & Search"
+description: "Search, sitemap, robots.txt, and LLMs.txt."
+path: "seo-search"
+order: 40
+section: "Usage"
+meta_title: "SEO & Search"
+meta_description: "Search, sitemap, robots.txt, and LLMs.txt."
 ---
 
 # SEO & Search
@@ -53,6 +58,7 @@ export default function robots() {
 ```
 
 This creates:
+
 ```
 User-agent: *
 Allow: /

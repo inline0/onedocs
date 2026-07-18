@@ -1,6 +1,11 @@
 ---
-title: Configuration
-description: Configure Onedocs with onedocs.config.ts
+title: "Configuration"
+description: "Configure Onedocs with onedocs.config.ts."
+path: "configuration"
+order: 50
+section: "Reference"
+meta_title: "Configuration"
+meta_description: "Configure Onedocs with onedocs.config.ts."
 ---
 
 # Configuration

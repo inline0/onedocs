@@ -1,6 +1,11 @@
 ---
-title: API Reference
-description: Complete reference for all onedocs exports
+title: "API Reference"
+description: "Complete reference for all onedocs exports."
+path: "api-reference"
+order: 60
+section: "Reference"
+meta_title: "API Reference"
+meta_description: "Complete reference for all onedocs exports."
 ---
 
 # API Reference
@@ -19,8 +24,6 @@ Complete reference for all exports from the `onedocs` package.
 | `onedocs/llms` | LLMs.txt generation |
 | `onedocs/seo` | Sitemap and robots.txt |
 | `onedocs/css/preset.css` | Tailwind CSS preset |
-
----
 
 ## Layouts
 
@@ -115,8 +118,6 @@ import { HomeLayout } from "onedocs";
   {/* Custom homepage content */}
 </HomeLayout>
 ```
-
----
 
 ## Components
 
@@ -218,8 +219,6 @@ import { CodeBlock } from "onedocs";
 <CodeBlock lang="tsx" code="const x = 1;" />
 ```
 
----
-
 ## Configuration
 
 ### defineConfig
@@ -249,8 +248,6 @@ const config: OnedocsConfig = {
 
 See [Configuration](/docs/configuration) for all options.
 
----
-
 ## Source Utilities
 
 ### loader
@@ -275,8 +272,6 @@ import { createSource } from "onedocs/source";
 
 export const source = createSource(docs);
 ```
-
----
 
 ## Metadata
 
@@ -317,8 +312,6 @@ export async function generateMetadata({ params }) {
   });
 }
 ```
-
----
 
 ## OpenGraph Images
 
@@ -416,8 +409,6 @@ export async function GET(
 - `public/logo-dark.svg` - Logo for OG images
 - `public/fonts/Inter-Medium.ttf` - Font for titles
 
----
-
 ## LLMs.txt
 
 Generate LLMs.txt files for AI assistants.
@@ -465,8 +456,6 @@ export async function GET() {
 }
 ```
 
----
-
 ## SEO
 
 ### generateSitemap
@@ -500,8 +489,6 @@ export default function robots() {
 }
 ```
 
----
-
 ## CSS Preset
 
 Import the CSS preset in your `globals.css`:
@@ -519,8 +506,6 @@ The preset includes:
 - Fumadocs preset styles
 - Inter font configuration
 - Full-height layout styles
-
----
 
 ## MDX Components
 

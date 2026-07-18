@@ -1,6 +1,11 @@
 ---
-title: Getting Started
-description: Set up Onedocs in your project
+title: "Getting Started"
+description: "Set up Onedocs in your project."
+path: "getting-started"
+order: 20
+section: "Getting Started"
+meta_title: "Getting Started"
+meta_description: "Set up Onedocs in your project."
 ---
 
 # Getting Started
@@ -14,68 +19,41 @@ This guide walks you through setting up Onedocs from scratch.
 
 ## Install
 
-<Tabs groupId="pm" items={["bun", "npm", "pnpm", "yarn"]}>
-  <Tab value="bun">
-    ```bash
-    bun add onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
-    ```
-  </Tab>
-  <Tab value="npm">
-    ```bash
-    npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
-    ```
-  </Tab>
-  <Tab value="pnpm">
-    ```bash
-    pnpm add onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
-    ```
-  </Tab>
-  <Tab value="yarn">
-    ```bash
-    yarn add onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
-    ```
-  </Tab>
-</Tabs>
+```bash
+npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react
+```
+
+The same install works with bun, pnpm, or yarn.
 
 ## Project structure
 
 Here's what you'll end up with:
 
-<Files>
-  <Folder name="your-project" defaultOpen>
-    <Folder name="content" defaultOpen>
-      <Folder name="docs" defaultOpen>
-        <File name="index.mdx" />
-        <File name="getting-started.mdx" />
-        <File name="meta.json" />
-      </Folder>
-    </Folder>
-    <Folder name="public" defaultOpen>
-      <Folder name="fonts">
-        <File name="InterVariable.woff2" />
-      </Folder>
-    </Folder>
-    <Folder name="src" defaultOpen>
-      <Folder name="app" defaultOpen>
-        <File name="layout.tsx" />
-        <File name="page.tsx" />
-        <File name="globals.css" />
-        <Folder name="docs">
-          <File name="layout.tsx" />
-          <Folder name="[[...slug]]">
-            <File name="page.tsx" />
-          </Folder>
-        </Folder>
-      </Folder>
-      <Folder name="lib">
-        <File name="source.ts" />
-      </Folder>
-    </Folder>
-    <File name="onedocs.config.ts" />
-    <File name="source.config.ts" />
-    <File name="next.config.mjs" />
-  </Folder>
-</Files>
+```
+your-project/
+├── content/
+│   └── docs/
+│       ├── index.mdx
+│       ├── getting-started.mdx
+│       └── meta.json
+├── public/
+│   └── fonts/
+│       └── InterVariable.woff2
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── globals.css
+│   │   └── docs/
+│   │       ├── layout.tsx
+│   │       └── [[...slug]]/
+│   │           └── page.tsx
+│   └── lib/
+│       └── source.ts
+├── onedocs.config.ts
+├── source.config.ts
+└── next.config.mjs
+```
 
 Let's create each file.
 
@@ -175,9 +153,7 @@ export default function RootLayout({
 }
 ```
 
-<Callout type="info">
-  `FontHead` preloads the Inter Variable font. Put `InterVariable.woff2` in `public/fonts/`.
-</Callout>
+`FontHead` preloads the Inter Variable font. Put `InterVariable.woff2` in `public/fonts/`.
 
 ### src/app/globals.css
 
@@ -257,13 +233,13 @@ export async function generateMetadata(props: {
 Start the dev server:
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 Build for production:
 
 ```bash
-bun run build
+npm run build
 ```
 
 Your docs are ready.
