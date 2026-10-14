@@ -16,7 +16,8 @@ Complete reference for all exports from the `onedocs` package.
 
 | Import | Description |
 |--------|-------------|
-| `onedocs` | Main entry - layouts, components, config |
+| `onedocs` | Main entry - layouts, components, `mdxComponents`, `defineConfig`, source helpers |
+| `onedocs/components` | Fumadocs UI components plus `InstallBlock`, `CodeBlock`, `Button` and `Logo` |
 | `onedocs/config` | Configuration helpers |
 | `onedocs/source` | Content source utilities |
 | `onedocs/metadata` | Metadata generation |
@@ -50,13 +51,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 ### DocsPage
 
-Wrapper for individual documentation pages. Adds table of contents.
+Wrapper for individual documentation pages. Wraps the Fumadocs UI `DocsPage` and puts the content in `DocsBody`.
 
 ```tsx
 import { DocsPage, mdxComponents } from "onedocs";
+import { notFound } from "next/navigation";
 
-export default async function Page({ params }) {
+export default async function Page(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
   const page = source.getPage(params.slug);
+  if (!page) notFound();
   const MDX = page.data.body;
 
   return (
@@ -70,6 +76,7 @@ export default async function Page({ params }) {
 **Props:**
 - `toc` - Table of contents from page data
 - `children` - MDX content
+- Any other prop of the Fumadocs UI `DocsPage`, such as `full`
 
 ### DocsBody
 
@@ -107,6 +114,8 @@ export default function Home() {
 - `packageName` - Package name for install block (optional)
 - `children` - Content between features and footer (optional)
 
+See [homepage](/docs/configuration#homepage) and [footer](/docs/configuration#footer) for what the config controls.
+
 ### HomeLayout
 
 Base layout for the homepage (used internally by `HomePage`).
@@ -119,11 +128,24 @@ import { HomeLayout } from "onedocs";
 </HomeLayout>
 ```
 
+### createBaseOptions
+
+Builds the Fumadocs UI layout options (navbar title or logo, `nav.links` and the GitHub link) from your config. `DocsLayout` and `HomeLayout` use it; call it yourself when you render a Fumadocs UI layout directly.
+
+```tsx
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { createBaseOptions } from "onedocs";
+
+<DocsLayout {...createBaseOptions(config)} tree={source.pageTree}>
+  {children}
+</DocsLayout>
+```
+
 ## Components
 
 ### InstallBlock
 
-Package manager tabs showing install commands for npm, yarn, pnpm, and bun.
+Package manager tabs showing install commands for npm, yarn, pnpm, and bun (`npm i`, `yarn add`, `pnpm add`, `bun add`). It is an async server component.
 
 ```tsx
 import { InstallBlock } from "onedocs";
@@ -133,35 +155,40 @@ import { InstallBlock } from "onedocs";
 
 **Props:**
 - `packageName` - The npm package name to install
+- `title` - Heading above the tabs (optional)
+- `description` - Text above the tabs (optional)
+- `children` - Content below the tabs (optional)
 
 ### Button
 
-Styled button/link component.
+Rounded link styled as a primary button. There is one style.
 
 ```tsx
 import { Button } from "onedocs";
 
 <Button href="/docs">Get Started</Button>
-<Button href="/docs" variant="secondary">Learn More</Button>
 ```
 
 **Props:**
 - `href` - Link destination
-- `variant` - `"primary"` (default) or `"secondary"`
 - `children` - Button text
+- `className` - Extra classes (optional)
 
 ### Logo
 
-Renders your site logo with light/dark mode support.
+Renders a light and a dark image and shows the one that matches the current theme. `DocsLayout` and `HomePage` use it for a `logo` with light and dark variants.
 
 ```tsx
 import { Logo } from "onedocs";
 
-<Logo config={config} />
+<Logo light="/logo-light.svg" dark="/logo-dark.svg" alt="My Project" className="h-6" />
 ```
 
 **Props:**
-- `config` - Your `OnedocsConfig` object (reads `logo` property)
+- `light` - Image path for light mode
+- `dark` - Image path for dark mode
+- `alt` - Alt text (default: `"Logo"`)
+- `className` - Classes for both images (optional)
 
 ### CTASection
 
@@ -179,12 +206,13 @@ import { CTASection } from "onedocs";
 
 **Props:**
 - `title` - Section heading
-- `description` - Optional description (optional)
+- `description` - Text under the heading (optional)
 - `cta` - Button config with `label` and `href`
+- `children` - Content below the button (optional)
 
 ### FontHead
 
-Preloads Inter Variable font. Add to your root layout's `<head>`.
+Preloads the Inter Variable font, declares its `@font-face` and sets it as the font of the page. Add to your root layout's `<head>`.
 
 ```tsx
 import { FontHead } from "onedocs";
@@ -197,7 +225,11 @@ import { FontHead } from "onedocs";
 </html>
 ```
 
-Requires `public/fonts/InterVariable.woff2`.
+Onedocs does not ship the font. By default `FontHead` loads `/fonts/InterVariable.woff2`, so put the file in `public/fonts/`, or pass another URL with `fontPath`:
+
+```tsx
+<FontHead fontPath="/assets/Inter.woff2" />
+```
 
 ### GitHubIcon
 
@@ -211,7 +243,7 @@ import { GitHubIcon } from "onedocs";
 
 ### CodeBlock
 
-Syntax-highlighted code block component.
+Syntax-highlighted code block, highlighted on the server with Shiki through Fumadocs. It is an async server component.
 
 ```tsx
 import { CodeBlock } from "onedocs";
@@ -265,13 +297,17 @@ export const source = loader({
 
 ### createSource
 
-Helper for creating a content source (wrapper around loader).
+Helper for creating a content source (wrapper around loader). The base URL defaults to `/docs`.
 
 ```tsx
 import { createSource } from "onedocs/source";
+import { docs } from "../../.source/server";
 
 export const source = createSource(docs);
+// export const source = createSource(docs, { baseUrl: "/guide" });
 ```
+
+In 0.1.27 `createSource` returns an untyped source, so TypeScript reports errors such as `Property 'data' does not exist on type 'unknown'` when you read `page.data` ([#4](https://github.com/inline0/onedocs/issues/4)). Use `loader` as shown above until that is fixed.
 
 ## Metadata
 
@@ -288,36 +324,44 @@ export const metadata = createMetadata(config, {
 ```
 
 **Options:**
-- `baseUrl` - Your site's base URL (for OpenGraph)
+- `baseUrl` - Your site's base URL (optional)
+- `additional` - Extra `Metadata` fields, merged in last (optional)
 
 **Returns:** Next.js `Metadata` object with:
-- Title template (`%s | Site Name`)
+- Title (`config.title`) and title template (`%s | Site Name`)
 - Description
-- OpenGraph metadata
-- Twitter card metadata
-- metadataBase
+- Favicon from `config.icon`, when set
+- When `baseUrl` is set: `metadataBase`, OpenGraph metadata and a Twitter `summary_large_image` card
 
 ### createDocsPageMetadata
 
-Generates metadata for individual docs pages.
+Generates the title and description metadata for a docs page. It takes one object with `title` and an optional `description`.
 
 ```tsx
 import { createDocsPageMetadata } from "onedocs/metadata";
+import { notFound } from "next/navigation";
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
   const page = source.getPage(params.slug);
-  return createDocsPageMetadata(page, {
-    baseUrl: "https://example.com",
-    ogImagePath: `/docs/og/${params.slug?.join("/") || ""}`,
+  if (!page) notFound();
+
+  return createDocsPageMetadata({
+    title: page.data.title,
+    description: page.data.description,
   });
 }
 ```
+
+For a per-page Open Graph image, see [Dynamic OG Images](#dynamic-og-images).
 
 ## OpenGraph Images
 
 ### createRootOGImage
 
-Creates an OG image for the homepage.
+Creates an OG image for the homepage: your logo centered on a black background.
 
 ```tsx
 // src/app/opengraph-image.tsx
@@ -340,7 +384,7 @@ export default async function Image() {
 
 ### createDocsOGImage
 
-Creates an OG image for docs pages with a title.
+Creates an OG image for docs pages: the logo top left and the title in white on black. The font argument is optional; without it the title uses the system font.
 
 ```tsx
 // src/app/docs/opengraph-image.tsx
@@ -367,7 +411,7 @@ export default async function Image() {
 
 ### Dynamic OG Images
 
-For per-page OG images:
+For per-page OG images, serve them from a route. Nothing points pages at this route automatically: add it to each page's metadata yourself, for example with `openGraph: { images: "/docs/og/getting-started" }` next to the fields from `createDocsPageMetadata`.
 
 ```tsx
 // src/app/docs/og/[...slug]/route.tsx
@@ -400,14 +444,14 @@ export async function GET(
 
 | Function | Description |
 |----------|-------------|
-| `loadPublicFile(path)` | Loads a file from `public/` directory |
-| `loadInterFont()` | Loads Inter-Medium.ttf for OG images |
+| `loadPublicFile(path)` | Loads a file from `public/` as a data URL and buffer; for SVGs it also reads the `width` and `height` attributes |
+| `loadInterFont(path?)` | Loads a font from `public/` for OG images, `fonts/Inter-Medium.ttf` by default |
 | `ogImageSize` | Standard OG image dimensions `{ width: 1200, height: 630 }` |
 | `ogImageContentType` | MIME type `"image/png"` |
 
 **Required files:**
-- `public/logo-dark.svg` - Logo for OG images
-- `public/fonts/Inter-Medium.ttf` - Font for titles
+- `public/logo-dark.svg` - Logo for OG images. The OG helpers size it from its `width` and `height` attributes, so the `<svg>` tag needs both as plain numbers.
+- `public/fonts/Inter-Medium.ttf` - Font for titles. Onedocs does not ship it.
 
 ## LLMs.txt
 
@@ -415,68 +459,75 @@ Generate LLMs.txt files for AI assistants.
 
 ### generateLLMsText
 
-Generates concise LLMs.txt content.
+Generates concise LLMs.txt content. Takes a source wrapped with `createLLMsSource` and `{ title, description? }`, and returns a promise.
 
 ```tsx
 // src/app/llms.txt/route.ts
-import { generateLLMsText } from "onedocs/llms";
-import { source } from "@/lib/source";
-
-export function GET() {
-  const content = generateLLMsText(source, {
-    title: "My Project",
-    description: "Project description",
-    baseUrl: "https://example.com",
-  });
-
-  return new Response(content, {
-    headers: { "Content-Type": "text/plain" },
-  });
-}
-```
-
-### generateLLMsFullText
-
-Generates full LLMs.txt with complete page content.
-
-```tsx
-// src/app/llms-full.txt/route.ts
-import { generateLLMsFullText } from "onedocs/llms";
+import { createLLMsSource, generateLLMsText } from "onedocs/llms";
 import { source } from "@/lib/source";
 
 export async function GET() {
-  const content = await generateLLMsFullText(source, {
+  const content = await generateLLMsText(createLLMsSource(source), {
     title: "My Project",
-    baseUrl: "https://example.com",
+    description: "Project description",
   });
 
   return new Response(content, {
-    headers: { "Content-Type": "text/plain" },
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
 }
 ```
+
+Page URLs are written as they come from the source, for example `/docs/getting-started`, without a domain.
+
+### generateLLMsFullText
+
+Generates full LLMs.txt with complete page content. Takes only the wrapped source and returns a promise.
+
+```tsx
+// src/app/llms-full.txt/route.ts
+import { createLLMsSource, generateLLMsFullText } from "onedocs/llms";
+import { source } from "@/lib/source";
+
+export async function GET() {
+  const content = await generateLLMsFullText(createLLMsSource(source));
+
+  return new Response(content, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+```
+
+Page bodies are included only when Fumadocs MDX's `includeProcessedMarkdown` is on; see [SEO & Search](/docs/seo-search#full-content-version).
+
+### createLLMsSource
+
+Wraps a Fumadocs source (`loader()` or `createSource()` result) in the shape the two functions above read: each page's URL, title, description and text loaders.
 
 ## SEO
 
 ### generateSitemap
 
-Generates a sitemap for your docs.
+Generates a sitemap for your docs. Takes one object: `baseUrl`, the `pages` list (usually from `meta.json`) and an optional `docsPath` (default `/docs`).
 
 ```tsx
 // src/app/sitemap.ts
 import { generateSitemap } from "onedocs/seo";
-import { source } from "@/lib/source";
+import meta from "../../content/docs/meta.json";
 
 export default function sitemap() {
-  return generateSitemap(source, {
+  return generateSitemap({
     baseUrl: "https://example.com",
+    pages: meta.pages ?? [],
   });
 }
 ```
 
+See [SEO & Search](/docs/seo-search#sitemap) for how entries become URLs.
+
 ### generateRobots
 
-Generates robots.txt content.
+Generates robots.txt content: allow everything, plus `Host` and `Sitemap` lines. `sitemapPath` defaults to `/sitemap.xml`.
 
 ```tsx
 // src/app/robots.ts
@@ -496,20 +547,23 @@ Import the CSS preset in your `globals.css`:
 ```css
 @import "onedocs/css/preset.css";
 
-@source "./app/**/*.tsx";
-@source "../content/**/*.mdx";
+@source "./**/*.tsx";
+@source "../../content/**/*.mdx";
 ```
 
+The `@source` paths are relative to `src/app/globals.css`.
+
 The preset includes:
-- Tailwind CSS v4
+- Tailwind CSS v4 (install `tailwindcss` and `@tailwindcss/postcss` yourself)
 - Fumadocs neutral theme
 - Fumadocs preset styles
-- Inter font configuration
-- Full-height layout styles
+- `--font-sans` set to the `--font-inter` variable that `FontHead` defines
+- Inter OpenType features for body text and headings
+- Full-height layout styles and the Onedocs layout tweaks
 
 ## MDX Components
 
-The `mdxComponents` export includes all Fumadocs MDX components:
+The `mdxComponents` export spreads the Fumadocs UI default MDX components and adds the components below:
 
 ```tsx
 import { mdxComponents } from "onedocs";
@@ -518,6 +572,7 @@ import { mdxComponents } from "onedocs";
 ```
 
 **Included components:**
+- Fumadocs UI defaults: `pre` (code blocks), `a`, `img`, `h1` to `h6` (headings with anchors), `table`, `CodeBlockTab`, `CodeBlockTabs`, `CodeBlockTabsList`, `CodeBlockTabsTrigger`, `CalloutContainer`, `CalloutTitle`, `CalloutDescription`
 - `Callout` - Info/warning/error callouts
 - `Card`, `Cards` - Card layouts
 - `Tab`, `Tabs` - Tabbed content
@@ -526,7 +581,7 @@ import { mdxComponents } from "onedocs";
 - `File`, `Folder`, `Files` - File trees
 - `ImageZoom` - Zoomable images
 - `TypeTable` - Type documentation tables
-- `InstallBlock` - Package install commands
-- `CodeBlock` - Syntax-highlighted code
+
+`InstallBlock` and `CodeBlock` are not included; add them yourself as shown in [Components](/docs/components#more-components).
 
 See [Components](/docs/components) for usage examples.

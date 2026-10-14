@@ -5,12 +5,12 @@ path: "configuration"
 order: 50
 section: "Reference"
 meta_title: "Configuration"
-meta_description: "Configure Onedocs with onedocs.config.ts."
+meta_description: "Every onedocs.config.ts option: title, logo, favicon, navigation, footer and the home page hero and features, plus the typed options nothing reads yet."
 ---
 
 # Configuration
 
-All configuration goes in `onedocs.config.ts` at your project root.
+Site-wide settings go in `onedocs.config.ts` at your project root. You pass the exported object to `DocsLayout`, `HomePage` and `createMetadata`, which read it. Where your content lives is set in `source.config.ts`, not here (see [Getting Started](/docs/getting-started)).
 
 ## Basic setup
 
@@ -27,8 +27,11 @@ That's the minimum. Everything else is optional.
 
 ## Full example
 
-```ts title="onedocs.config.ts"
+Feature icons are React elements, so a config that uses them must be a `.tsx` file:
+
+```tsx title="onedocs.config.tsx"
 import { defineConfig } from "onedocs/config";
+import { Rocket, Zap } from "lucide-react";
 
 export default defineConfig({
   title: "My Project",
@@ -37,6 +40,9 @@ export default defineConfig({
   // Logo (string or light/dark variants)
   logo: "/logo.svg",
   // logo: { light: "/logo-light.svg", dark: "/logo-dark.svg" },
+
+  // Favicon (string or light/dark variants), used by createMetadata
+  icon: "/icon.png",
 
   // Navigation bar
   nav: {
@@ -51,36 +57,26 @@ export default defineConfig({
   homepage: {
     hero: {
       title: "My Project",
-      description: "The best documentation framework",
+      description: "Documentation that ships with the code",
       cta: { label: "Get Started", href: "/docs" },
     },
     features: [
       {
         title: "Fast",
-        description: "Built on Next.js for optimal performance",
+        description: "Static pages built by Next.js",
+        icon: <Zap className="size-5 text-fd-primary" />,
       },
       {
         title: "Simple",
         description: "Write markdown, get docs",
+        icon: <Rocket className="size-5 text-fd-primary" />,
       },
     ],
   },
 
-  // Docs
-  docs: {
-    dir: "content/docs",
-  },
-
-  // Theme
-  theme: {
-    primaryColor: "#3b82f6",
-    darkMode: true,
-  },
-
-  // i18n (optional)
-  i18n: {
-    defaultLanguage: "en",
-    languages: ["en", "es", "de"],
+  // Homepage footer
+  footer: {
+    links: [{ label: "License", href: "https://github.com/username/repo/blob/main/LICENSE" }],
   },
 });
 ```
@@ -89,7 +85,7 @@ export default defineConfig({
 
 ### title (required)
 
-Your site's name. Shows in the navbar and page titles.
+Your site's name. The navbar shows it when no `logo` is set, `createMetadata` uses it as the default page title and in the `%s | Title` template, and the home page uses it as the hero title and in the footer copyright line.
 
 ```ts
 title: "My Project"
@@ -97,7 +93,7 @@ title: "My Project"
 
 ### description
 
-Short description for meta tags and the homepage.
+Short description. `createMetadata` uses it for the meta description, and the home page shows it under the hero title when `homepage.hero.description` is not set.
 
 ```ts
 description: "Documentation for My Project"
@@ -105,7 +101,7 @@ description: "Documentation for My Project"
 
 ### logo
 
-Your logo. Can be a single path or light/dark variants.
+Replaces the title in the navbar. Use a single path or light and dark variants; the image is 24 px tall and uses `title` as its alt text.
 
 ```ts
 // Single logo
@@ -118,9 +114,23 @@ logo: {
 }
 ```
 
+### icon
+
+The favicon, set through `createMetadata`. Light and dark variants are served with `prefers-color-scheme` media queries.
+
+```ts
+icon: "/icon.png"
+
+// Light/dark mode
+icon: {
+  light: "/icon-light.png",
+  dark: "/icon-dark.png"
+}
+```
+
 ### nav
 
-Navigation bar configuration.
+Navigation bar configuration, used by `DocsLayout` and `HomePage`.
 
 ```ts
 nav: {
@@ -130,66 +140,65 @@ nav: {
     { label: "API", href: "/api" },
   ],
 
-  // GitHub repo (adds icon link)
+  // GitHub repo as "owner/name" (adds an icon link to https://github.com/owner/name)
   github: "username/repo",
 }
 ```
 
 ### homepage
 
-Homepage hero and features.
+The hero and feature grid that `HomePage` renders.
 
-```ts
+```tsx
 homepage: {
   hero: {
     title: "My Project",        // Defaults to config.title
     description: "Description", // Defaults to config.description
     cta: {
-      label: "Get Started",
-      href: "/docs",
+      label: "Get Started",     // Default: "Get Started"
+      href: "/docs",            // Default: "/docs"
     },
   },
   features: [
     {
       title: "Feature 1",
       description: "Description of feature 1",
-      icon: "rocket", // Optional
+      icon: <Rocket className="size-5" />, // Optional React element
     },
   ],
 }
 ```
 
-### docs
+`icon` is rendered as given, so pass an element such as a `lucide-react` icon. A string like `"rocket"` is printed as text.
 
-Where your markdown files live.
+Two more hero options replace parts of the default hero:
 
-```ts
-docs: {
-  dir: "content/docs", // Default
+- `hero.left` replaces the title, description, install block and button with your own content. It takes a React node or a function that returns one.
+- `hero.right` fills the right half of the hero. It is hidden below the `lg` breakpoint.
+
+### footer
+
+Links and social icons in the `HomePage` footer, next to the copyright line. Both open in a new tab.
+
+```tsx
+// import { GitHubIcon } from "onedocs";
+footer: {
+  links: [{ label: "Privacy", href: "/privacy" }],
+  socials: [
+    { label: "GitHub", href: "https://github.com/username/repo", icon: <GitHubIcon /> },
+  ],
 }
 ```
 
-### theme
+Each social link uses `label` as its accessible name.
 
-Customize colors and dark mode.
+## Options that have no effect yet
 
-```ts
-theme: {
-  primaryColor: "#3b82f6",
-  darkMode: true, // Default: true
-}
-```
+`OnedocsConfig` also types `docs`, `theme` and `i18n`, and `defineConfig` fills in `docs.dir` and `theme.darkMode` defaults, but no Onedocs code reads them ([#2](https://github.com/inline0/onedocs/issues/2)). Setting them changes nothing:
 
-### i18n
-
-Multi-language support.
-
-```ts
-i18n: {
-  defaultLanguage: "en",
-  languages: ["en", "es", "de", "fr"],
-}
-```
+- `docs.dir`: the content folder is the `dir` you pass to `defineDocs` in `source.config.ts`.
+- `theme.primaryColor` and `theme.darkMode`: colors come from the Fumadocs UI theme that the CSS preset imports, and the light and dark modes come from Fumadocs UI's `RootProvider`.
+- `i18n`: Onedocs has no multi-language support.
 
 ## TypeScript
 
@@ -204,3 +213,5 @@ const config: OnedocsConfig = {
 
 export default defineConfig(config);
 ```
+
+`defineConfig` returns the object you pass, plus the unused `docs` and `theme` defaults described above.

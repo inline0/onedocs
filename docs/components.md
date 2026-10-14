@@ -5,12 +5,12 @@ path: "components"
 order: 30
 section: "Usage"
 meta_title: "Components"
-meta_description: "Built-in MDX components."
+meta_description: "The MDX components Onedocs registers through mdxComponents: callouts, tabs, cards, steps, accordions, file trees, image zoom and type tables."
 ---
 
 # Components
 
-Onedocs includes all the Fumadocs UI components. Use them in your MDX files without importing.
+Onedocs registers a set of Fumadocs UI components for your MDX files, so you can use them without importing them.
 
 ## Using components
 
@@ -23,9 +23,11 @@ import { DocsPage, mdxComponents } from "onedocs";
 <MDX components={mdxComponents} />
 ```
 
+`mdxComponents` contains the Fumadocs UI defaults (headings with anchor links, code blocks, links, images, tables, `Card`, `Cards` and `Callout`) plus `Tab`, `Tabs`, `Step`, `Steps`, `Accordion`, `Accordions`, `File`, `Folder`, `Files`, `ImageZoom` and `TypeTable`. Every example below works with it as is.
+
 ## Callout
 
-Highlight important information with info, warning, or error styling:
+Highlight important information. `type` is one of `info` (the default), `warn`, `error`, `success` or `idea`:
 
 ```mdx
 <Callout type="info">
@@ -41,9 +43,17 @@ Highlight important information with info, warning, or error styling:
 </Callout>
 ```
 
+Add a heading with `title`:
+
+```mdx
+<Callout type="warn" title="Breaking change">
+  The `docs` option was removed in version 2.
+</Callout>
+```
+
 ## Tabs
 
-Organize content into tabs:
+Organize content into tabs. Each `Tab` `value` matches an entry in `items`:
 
 ```mdx
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
@@ -83,15 +93,15 @@ Show numbered steps:
 
 ## Accordion
 
-Collapsible content for FAQs and optional detail:
+Collapsible content for FAQs and optional detail. Only one item is open at a time:
 
 ```mdx
 <Accordions>
   <Accordion title="What is Onedocs?">
-    Onedocs is a zero-config documentation wrapper for Next.js and Fumadocs.
+    Layouts, components and SEO helpers for documentation sites built with Next.js and Fumadocs.
   </Accordion>
   <Accordion title="How do I install it?">
-    Run `npm install onedocs` to install.
+    Follow the install step in Getting Started.
   </Accordion>
 </Accordions>
 ```
@@ -112,14 +122,50 @@ Show file trees:
 </Files>
 ```
 
+## Image zoom
+
+An image that opens full size when clicked. `width` and `height` are required for images from `public/`:
+
+```mdx
+<ImageZoom src="/screenshot.png" alt="Dashboard" width={1200} height={800} />
+```
+
+## Type table
+
+Document the props or options of an API:
+
+```mdx
+<TypeTable
+  type={{
+    title: {
+      type: "string",
+      description: "Site name shown in the navbar.",
+    },
+    description: {
+      type: "string",
+      description: "Used for meta tags and the home page.",
+      default: "undefined",
+    },
+  }}
+/>
+```
+
 ## More components
 
-Need something else? Import directly from Fumadocs:
+`InstallBlock` and `CodeBlock` from `onedocs` are not in `mdxComponents`. To use them in MDX, add them to the object you pass:
+
+```tsx title="src/app/docs/[[...slug]]/page.tsx"
+import { CodeBlock, DocsPage, InstallBlock, mdxComponents } from "onedocs";
+
+// In your page component:
+<MDX components={{ ...mdxComponents, InstallBlock, CodeBlock }} />
+```
+
+For anything else, import it from Fumadocs UI in your MDX file or add it the same way:
 
 ```ts
-import { Callout } from "fumadocs-ui/components/callout";
-import { CodeBlock } from "fumadocs-ui/components/codeblock";
-import { ImageZoom } from "fumadocs-ui/components/image-zoom";
+import { Banner } from "fumadocs-ui/components/banner";
+import { InlineTOC } from "fumadocs-ui/components/inline-toc";
 ```
 
 See the [Fumadocs docs](https://fumadocs.dev/docs/ui/components) for the full list.

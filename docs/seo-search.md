@@ -10,11 +10,11 @@ meta_description: "Search, sitemap, robots.txt, and LLMs.txt."
 
 # SEO & Search
 
-Onedocs includes helpers for search, sitemaps, and AI-friendly documentation.
+Search comes from Fumadocs. Onedocs adds helpers for the sitemap, robots.txt and llms.txt files, all set up as Next.js App Router routes. For page metadata and Open Graph images, see `onedocs/metadata` and `onedocs/og` in the [API Reference](/docs/api-reference#metadata).
 
 ## Search
 
-Onedocs uses Fumadocs' built-in Orama search. Create an API route:
+Onedocs uses the built-in Orama search from Fumadocs. Create an API route:
 
 ```ts title="src/app/api/search/route.ts"
 import { source } from "@/lib/source";
@@ -23,7 +23,7 @@ import { createFromSource } from "fumadocs-core/search/server";
 export const { GET } = createFromSource(source);
 ```
 
-That's it. Search works automatically with the Fumadocs UI search component.
+The search dialog that `RootProvider` adds queries `/api/search` by default, so no other setup is needed.
 
 ## Sitemap
 
@@ -31,7 +31,7 @@ Generate a sitemap at `/sitemap.xml`:
 
 ```ts title="src/app/sitemap.ts"
 import { generateSitemap } from "onedocs/seo";
-import meta from "../content/docs/meta.json";
+import meta from "../../content/docs/meta.json";
 
 const baseUrl = "https://yourdomain.com";
 
@@ -42,6 +42,8 @@ export default function sitemap() {
   });
 }
 ```
+
+`generateSitemap` lists the site root, then one URL per entry in `pages` under `/docs`. Entries starting with `---` (sidebar separators) are skipped, and `index` maps to `/docs` itself. It reads the entries as given, so pages inside subfolders need their own entries, for example `"guides/setup"`.
 
 ## Robots.txt
 
@@ -60,8 +62,10 @@ export default function robots() {
 This creates:
 
 ```
-User-agent: *
+User-Agent: *
 Allow: /
+
+Host: https://yourdomain.com
 Sitemap: https://yourdomain.com/sitemap.xml
 ```
 
@@ -91,6 +95,8 @@ export async function GET() {
 }
 ```
 
+The file starts with the title and description, lists every page as `- Title: URL` with its description, and ends with a pointer to `/llms-full.txt`. Both functions take the wrapped source from `createLLMsSource`, not the Fumadocs source itself, and return a promise.
+
 ### Full content version
 
 Create `/llms-full.txt` with complete documentation:
@@ -107,6 +113,23 @@ export async function GET() {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
 }
+```
+
+Each page is written as its title, URL, description and processed Markdown, with `---` between pages.
+
+The page text comes from Fumadocs MDX's processed Markdown, which is off by default. Without it, `llms-full.txt` contains only titles, URLs and descriptions ([#3](https://github.com/inline0/onedocs/issues/3)). Turn it on in `source.config.ts`:
+
+```ts title="source.config.ts"
+import { defineDocs } from "fumadocs-mdx/config";
+
+export const docs = defineDocs({
+  dir: "content/docs",
+  docs: {
+    postprocess: {
+      includeProcessedMarkdown: true,
+    },
+  },
+});
 ```
 
 ## Configuration options

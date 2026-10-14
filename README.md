@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  Zero-config documentation for Next.js + Fumadocs
+  Layouts, components and SEO helpers for documentation sites built with Next.js + Fumadocs
 </p>
 
 <p align="center">
@@ -20,29 +20,35 @@
 
 ---
 
-Install one dependency, write markdown, ship docs.
+Write markdown, describe your site in one config file, ship docs.
 
 > **Note:** Onedocs is designed for standalone documentation websites, not for integrating docs into existing applications.
 
 ## Features
 
-- **One Dependency** - Bundles Next.js patterns, Fumadocs UI, and MDX handling
-- **Zero Config** - Works out of the box with sensible defaults
-- **Markdown First** - Write `.md` or `.mdx` files, get beautiful docs
-- **Full-text Search** - Built-in Orama search indexes your content automatically
-- **Dark Mode** - Beautiful light and dark themes with system preference support
-- **Inter Font** - Bundled Inter variable font with OpenType features
-- **TypeScript Ready** - Full type-safe configuration
+- **Ready-Made Layouts** - `DocsLayout`, `DocsPage` and `HomePage` on top of Fumadocs UI
+- **One Config File** - Title, logo, navigation, footer and home page in `onedocs.config.ts`
+- **Markdown First** - Write `.md` or `.mdx` files, with callouts, tabs, steps and more registered for MDX
+- **Full-text Search** - Fumadocs' Orama search through one API route
+- **Dark Mode** - Light and dark themes from Fumadocs UI, with light and dark logo and favicon variants
+- **Inter Font** - `FontHead` loads Inter Variable (you supply the font file) with OpenType features
+- **SEO Helpers** - sitemap.xml, robots.txt, llms.txt, page metadata and Open Graph images
+- **TypeScript Ready** - Type-safe configuration
 
 ## Quick Start
 
+Onedocs needs Node.js 20.9+, Next.js 16 with the App Router, React 19.2 and Tailwind CSS v4. Next.js and Fumadocs are peer dependencies:
+
 ```bash
-bun add onedocs
+npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react@0.562 next react react-dom
+npm install -D tailwindcss @tailwindcss/postcss typescript @types/react @types/react-dom @types/node
 ```
 
-Create `onedocs.config.tsx`:
+Keep the `lucide-react@0.562` pin: without it npm installs lucide-react 1.x, which conflicts with the `onedocs` peer range ([#1](https://github.com/inline0/onedocs/issues/1)).
 
-```tsx
+Create `onedocs.config.ts`:
+
+```ts
 import { defineConfig } from "onedocs/config";
 
 export default defineConfig({
@@ -71,13 +77,15 @@ export default function Home() {
 }
 ```
 
-Add your markdown files in `content/docs/` and run:
+Then add the Fumadocs MDX and Next.js config, the content source, the root and docs layouts and the docs page route; the [Getting Started guide](https://onedocs.dev/docs/getting-started) shows every file. Add your markdown files in `content/docs/` and run:
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 ## Configuration
+
+Feature icons are React elements, so this config is `onedocs.config.tsx`:
 
 ```tsx
 import { defineConfig } from "onedocs/config";
@@ -122,10 +130,12 @@ export default defineConfig({
 ### Main (`onedocs`)
 
 ```ts
-export { RootLayout, DocsLayout, HomePage, HomeLayout } from "onedocs";
-export { InstallBlock, Logo, CTASection, GitHubIcon } from "onedocs";
-export { defineConfig } from "onedocs";
+import { DocsLayout, DocsPage, DocsBody, HomePage, HomeLayout } from "onedocs";
+import { InstallBlock, CodeBlock, Button, Logo, CTASection, FontHead, GitHubIcon } from "onedocs";
+import { mdxComponents, defineConfig, createSource, loader, createBaseOptions } from "onedocs";
 ```
+
+SEO helpers live in `onedocs/seo`, `onedocs/llms`, `onedocs/metadata` and `onedocs/og`. See the [API Reference](https://onedocs.dev/docs/api-reference).
 
 ### Components (`onedocs/components`)
 
@@ -135,7 +145,7 @@ import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components";
 
 ### CSS (`onedocs/css/preset.css`)
 
-Includes Tailwind, Fumadocs styles, Inter font, and OpenType features.
+Includes Tailwind CSS v4, the Fumadocs UI styles, the Inter font variable that `FontHead` sets, and OpenType features. Install `tailwindcss` and `@tailwindcss/postcss` yourself.
 
 ## Documentation
 
