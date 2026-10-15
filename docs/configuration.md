@@ -5,7 +5,7 @@ path: "configuration"
 order: 50
 section: "Reference"
 meta_title: "Configuration"
-meta_description: "Every onedocs.config.ts option: title, logo, favicon, navigation, footer and the home page hero and features, plus the typed options nothing reads yet."
+meta_description: "Every onedocs.config.ts option: title, logo, favicon, navigation, footer and the home page hero and features, plus migration guidance for deprecated options."
 ---
 
 # Configuration
@@ -192,9 +192,9 @@ footer: {
 
 Each social link uses `label` as its accessible name.
 
-## Options that have no effect yet
+## Deprecated options
 
-`OnedocsConfig` also types `docs`, `theme` and `i18n`, and `defineConfig` fills in `docs.dir` and `theme.darkMode` defaults, but no Onedocs code reads them ([#2](https://github.com/inline0/onedocs/issues/2)). Setting them changes nothing:
+`docs`, `theme` and `i18n` are deprecated because Onedocs does not read them. They remain accepted for compatibility and are marked deprecated in TypeScript. Move their settings to the supported configuration points:
 
 - `docs.dir`: the content folder is the `dir` you pass to `defineDocs` in `source.config.ts`.
 - `theme.primaryColor` and `theme.darkMode`: colors come from the Fumadocs UI theme that the CSS preset imports, and the light and dark modes come from Fumadocs UI's `RootProvider`.
@@ -214,4 +214,4 @@ const config: OnedocsConfig = {
 export default defineConfig(config);
 ```
 
-`defineConfig` returns the object you pass, plus the unused `docs` and `theme` defaults described above.
+`defineConfig` returns a copy of the object you pass. It does not inject unused `docs` or `theme` defaults.

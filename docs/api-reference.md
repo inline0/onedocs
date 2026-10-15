@@ -307,7 +307,7 @@ export const source = createSource(docs);
 // export const source = createSource(docs, { baseUrl: "/guide" });
 ```
 
-In 0.1.27 `createSource` returns an untyped source, so TypeScript reports errors such as `Property 'data' does not exist on type 'unknown'` when you read `page.data` ([#4](https://github.com/inline0/onedocs/issues/4)). Use `loader` as shown above until that is fixed.
+`createSource` preserves your collection's page and metadata types, including `page.data.body`, `page.data.toc` and custom frontmatter fields. Its result also works with Fumadocs search and `createLLMsSource`.
 
 ## Metadata
 
@@ -498,7 +498,7 @@ export async function GET() {
 }
 ```
 
-Page bodies are included only when Fumadocs MDX's `includeProcessedMarkdown` is on; see [SEO & Search](/docs/seo-search#full-content-version).
+Page bodies use processed Markdown when available, then raw Markdown, then legacy structured content. See [SEO & Search](/docs/seo-search#full-content-version).
 
 ### createLLMsSource
 

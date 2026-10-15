@@ -40,11 +40,9 @@ Write markdown, describe your site in one config file, ship docs.
 Onedocs needs Node.js 20.9+, Next.js 16 with the App Router, React 19.2 and Tailwind CSS v4. Next.js and Fumadocs are peer dependencies:
 
 ```bash
-npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react@0.562 next react react-dom
+npm install onedocs fumadocs-core@^16 fumadocs-mdx@^14 fumadocs-ui@^16 lucide-react next@^16 react@^19.2 react-dom@^19.2
 npm install -D tailwindcss @tailwindcss/postcss typescript @types/react @types/react-dom @types/node
 ```
-
-Keep the `lucide-react@0.562` pin: without it npm installs lucide-react 1.x, which conflicts with the `onedocs` peer range ([#1](https://github.com/inline0/onedocs/issues/1)).
 
 Create `onedocs.config.ts`:
 
@@ -157,6 +155,8 @@ For full documentation, visit [onedocs.dev](https://onedocs.dev).
 bun install
 bun run build
 bun run --cwd packages/onedocs test
+node scripts/check-package.mjs
+node scripts/check-consumer.mjs
 ```
 
 The portable Markdown documentation lives in `docs/` at the repository root. Validate it with:

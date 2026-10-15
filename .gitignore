@@ -30,3 +30,7 @@ coverage/
 
 # Bun
 bun.lockb
+
+# Copied from the repository root by npm prepack
+/packages/onedocs/README.md
+/packages/onedocs/LICENSE

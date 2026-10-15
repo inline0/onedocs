@@ -26,11 +26,15 @@ export interface HomepageConfig {
   features?: FeatureConfig[];
 }
 
+/** @deprecated Configure colors in CSS and color mode through Fumadocs RootProvider. */
 export interface ThemeConfig {
+  /** @deprecated Set Fumadocs theme variables in your CSS instead. */
   primaryColor?: string;
+  /** @deprecated Configure Fumadocs RootProvider instead. */
   darkMode?: boolean;
 }
 
+/** @deprecated Configure internationalization through Fumadocs directly. */
 export interface I18nConfig {
   defaultLanguage: string;
   languages: string[];
@@ -58,17 +62,17 @@ export interface OnedocsConfig {
   };
   footer?: FooterConfig;
   homepage?: HomepageConfig;
+  /** @deprecated Set the content directory in source.config.ts with defineDocs. */
   docs?: {
+    /** @deprecated Pass dir to defineDocs in source.config.ts instead. */
     dir?: string;
   };
+  /** @deprecated Configure CSS theme variables and Fumadocs RootProvider instead. */
   theme?: ThemeConfig;
+  /** @deprecated Configure internationalization through Fumadocs directly. */
   i18n?: I18nConfig;
 }
 
 export function defineConfig(config: OnedocsConfig): OnedocsConfig {
-  return {
-    docs: { dir: "content/docs" },
-    theme: { darkMode: true },
-    ...config,
-  };
+  return { ...config };
 }

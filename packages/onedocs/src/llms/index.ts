@@ -9,7 +9,7 @@ interface Page {
     title: string;
     description?: string;
     load?: () => Promise<{ structuredData?: { content?: string } }>;
-    getText?: (type: string) => Promise<string>;
+    getText?: (type: "raw" | "processed") => Promise<string>;
   };
 }
 
@@ -50,7 +50,7 @@ function toLLMPageData(
     title: data.title ?? fallbackTitle,
     description: data.description,
     getText: getText
-      ? (type: string) => getText(type as "raw" | "processed")
+      ? (type: "raw" | "processed") => getText(type)
       : undefined,
     load,
   };
@@ -73,9 +73,12 @@ export async function getLLMText(page: Page): Promise<string> {
   let text = "";
 
   if (page.data.getText) {
-    try {
-      text = await page.data.getText("processed");
-    } catch {}
+    for (const type of ["processed", "raw"] as const) {
+      try {
+        text = await page.data.getText(type);
+      } catch {}
+      if (text) break;
+    }
   }
 
   if (!text && page.data.load) {

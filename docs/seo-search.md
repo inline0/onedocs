@@ -117,7 +117,7 @@ export async function GET() {
 
 Each page is written as its title, URL, description and processed Markdown, with `---` between pages.
 
-The page text comes from Fumadocs MDX's processed Markdown, which is off by default. Without it, `llms-full.txt` contains only titles, URLs and descriptions ([#3](https://github.com/inline0/onedocs/issues/3)). Turn it on in `source.config.ts`:
+Onedocs tries processed Markdown first, then falls back to raw Markdown when processed output is unavailable. The default Fumadocs MDX setup therefore includes page bodies. To prefer Markdown after MDX processing, enable `includeProcessedMarkdown` in `source.config.ts`:
 
 ```ts title="source.config.ts"
 import { defineDocs } from "fumadocs-mdx/config";

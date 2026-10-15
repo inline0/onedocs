@@ -17,20 +17,16 @@ This guide sets up a documentation site with Onedocs from an empty folder. If yo
 - Next.js 16 with the App Router, React 19.2 or later
 - Tailwind CSS v4 (the Onedocs CSS preset imports `tailwindcss`)
 
-Fumadocs UI 16 only supports Next.js 16 and React 19.2, so older Next.js or React versions do not work even though the `onedocs` package metadata still lists them ([#5](https://github.com/inline0/onedocs/issues/5)).
-
 ## Install
 
 Onedocs does not bundle Next.js or Fumadocs. They are peer dependencies, so you install them next to it:
 
 ```bash
-npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react@0.562 next react react-dom
+npm install onedocs fumadocs-core@^16 fumadocs-mdx@^14 fumadocs-ui@^16 lucide-react next@^16 react@^19.2 react-dom@^19.2
 npm install -D tailwindcss @tailwindcss/postcss typescript @types/react @types/react-dom @types/node
 ```
 
-Keep the `lucide-react@0.562` pin. `onedocs` 0.1.27 declares `lucide-react` `^0.562.0` as a peer, and without the pin npm installs lucide-react 1.x and stops with an `ERESOLVE` error ([#1](https://github.com/inline0/onedocs/issues/1)).
-
-The same packages work with pnpm, yarn or bun.
+The same packages work with pnpm, yarn or bun. These ranges select the supported Fumadocs 16 and MDX 14 releases; lucide-react 0.562.x and 1.x are both supported.
 
 Add the Next.js scripts to `package.json`:
 

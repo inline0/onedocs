@@ -7,7 +7,7 @@
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check .",
-    "typecheck": "tsc --noEmit -p packages/onedocs/tsconfig.json"
+    "typecheck": "tsc --noEmit -p packages/onedocs/tsconfig.json && tsc -p packages/onedocs/tsconfig.tests.json"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",

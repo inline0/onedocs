@@ -155,13 +155,13 @@ export default defineConfig({
 
   // Docs
   docs?: {
-    dir?: string, // Default: 'content/docs'
+    dir?: string, // Deprecated: set dir in source.config.ts instead
   },
 
   // Theme
   theme?: {
-    primaryColor?: string,
-    darkMode?: boolean, // Default: true
+    primaryColor?: string, // Deprecated: configure CSS variables
+    darkMode?: boolean, // Deprecated: configure Fumadocs RootProvider
   },
 });
 ```
@@ -497,7 +497,7 @@ cd packages/onedocs && npm publish
 | `fumadocs-core` | Headless utilities (TOC, search, source) |
 | `fumadocs-ui` | Pre-built doc layouts & components |
 | `fumadocs-mdx` | MDX content loading & collections |
-| `lucide-react` | Icons (used internally for GitHub icon) |
+| `lucide-react` | Optional icons for consumer config; supports 0.562.x and 1.x |
 
 ### Peer Dependencies
 

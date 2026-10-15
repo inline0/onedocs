@@ -28,7 +28,7 @@ On top of Fumadocs, the `onedocs` package gives you:
 Onedocs does not bundle Next.js or Fumadocs. They are peer dependencies that you install next to it:
 
 ```bash
-npm install onedocs fumadocs-core fumadocs-mdx fumadocs-ui lucide-react@0.562 next react react-dom
+npm install onedocs fumadocs-core@^16 fumadocs-mdx@^14 fumadocs-ui@^16 lucide-react next@^16 react@^19.2 react-dom@^19.2
 ```
 
 You also need Tailwind CSS v4, Node.js 20.9 or later, and about ten small files: the Next.js and Fumadocs MDX config, a content source, the root layout, the docs layout and the docs page route. [Getting Started](/docs/getting-started) shows each one.
