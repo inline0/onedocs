@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://onedocs.dev">
+  <a href="https://onedocs.inline0.dev">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-dark.svg">
       <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/inline0/onedocs/main/.github/logo-light.svg">
@@ -75,7 +75,7 @@ export default function Home() {
 }
 ```
 
-Then add the Fumadocs MDX and Next.js config, the content source, the root and docs layouts and the docs page route; the [Getting Started guide](https://onedocs.dev/docs/getting-started) shows every file. Add your markdown files in `content/docs/` and run:
+Then add the Fumadocs MDX and Next.js config, the content source, the root and docs layouts and the docs page route; the [Getting Started guide](https://onedocs.inline0.dev/docs/getting-started) shows every file. Add your markdown files in `content/docs/` and run:
 
 ```bash
 npm run dev
@@ -133,7 +133,7 @@ import { InstallBlock, CodeBlock, Button, Logo, CTASection, FontHead, GitHubIcon
 import { mdxComponents, defineConfig, createSource, loader, createBaseOptions } from "onedocs";
 ```
 
-SEO helpers live in `onedocs/seo`, `onedocs/llms`, `onedocs/metadata` and `onedocs/og`. See the [API Reference](https://onedocs.dev/docs/api-reference).
+SEO helpers live in `onedocs/seo`, `onedocs/llms`, `onedocs/metadata` and `onedocs/og`. See the [API Reference](https://onedocs.inline0.dev/docs/api-reference).
 
 ### Components (`onedocs/components`)
 
@@ -147,7 +147,7 @@ Includes Tailwind CSS v4, the Fumadocs UI styles, the Inter font variable that `
 
 ## Documentation
 
-For full documentation, visit [onedocs.dev](https://onedocs.dev).
+For full documentation, visit [onedocs.inline0.dev](https://onedocs.inline0.dev).
 
 ## Development
 
