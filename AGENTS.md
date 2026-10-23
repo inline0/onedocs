@@ -1,8 +1,15 @@
 # OneDocs development
 
+Use `AGENTS.md` as the only repository instruction filename, including nested
+guides. Keep the guidance here and do not add forwarding aliases.
+
 OneDocs is a Next.js and Fumadocs library. Preserve its public `onedocs` package
 name, exports, peer dependency compatibility and runtime support for Node.js
 20.9 or newer. The repository itself uses Node.js 26.12.0 and pnpm 12.14.0.
+
+Use [the API reference](docs/api-reference.md) and
+[configuration guide](docs/configuration.md) when editing public behavior.
+The root [README](README.md#development) lists the supported pnpm commands.
 
 ## Workspace
 
