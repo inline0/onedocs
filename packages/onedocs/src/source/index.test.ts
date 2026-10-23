@@ -1,8 +1,12 @@
-import { describe, expect, it } from "vitest";
-import * as source from "./index";
+import type { MetaData, Source } from "fumadocs-core/source"
+import { describe, expect, it } from "vitest"
+import * as source from "./index.ts"
 
 const collection = {
-  toFumadocsSource: () => ({
+  toFumadocsSource: (): Source<{
+    pageData: { title: string; body: string; toc: [] }
+    metaData: MetaData
+  }> => ({
     files: [
       {
         type: "page" as const,
@@ -11,20 +15,20 @@ const collection = {
       },
     ],
   }),
-};
+}
 
 describe("createSource", () => {
   it("retains page content with the default docs URL", () => {
-    const docs = source.createSource(collection);
-    expect(docs.getPage([])?.url).toBe("/docs");
-    expect(docs.getPage([])?.data.body).toBe("Page body");
-    expect(docs.getPages()).toHaveLength(1);
-    expect(typeof source.loader).toBe("function");
-  });
+    const docs = source.createSource(collection)
+    expect(docs.getPage([])?.url).toBe("/docs")
+    expect(docs.getPage([])?.data.body).toBe("Page body")
+    expect(docs.getPages()).toHaveLength(1)
+    expect(typeof source.loader).toBe("function")
+  })
 
   it("accepts a custom base URL", () => {
     expect(
-      source.createSource(collection, { baseUrl: "/guide" }).getPage([])?.url,
-    ).toBe("/guide");
-  });
-});
+      source.createSource(collection, { baseUrl: "/guide" }).getPage([])?.url
+    ).toBe("/guide")
+  })
+})

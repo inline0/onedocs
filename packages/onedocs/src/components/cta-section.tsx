@@ -1,17 +1,28 @@
-import type { ReactNode } from "react";
-import { Button } from "./button";
+import type { ReactNode } from "react"
+import { Button } from "./button.tsx"
 
 interface CTASectionProps {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
   cta: {
-    label: string;
-    href: string;
-  };
-  children?: ReactNode;
+    label: string
+    href: string
+  }
+  children?: ReactNode
 }
 
-export function CTASection({ title, description, cta, children }: CTASectionProps) {
+/**
+ * Render a call to action with optional additional content.
+ *
+ * @param props - Component content and presentation options.
+ * @returns The rendered component.
+ */
+export function CTASection({
+  title,
+  description,
+  cta,
+  children,
+}: CTASectionProps) {
   return (
     <section>
       <div className="flex flex-col items-center justify-center text-center py-16 px-6 lg:px-16 xl:px-20">
@@ -29,5 +40,5 @@ export function CTASection({ title, description, cta, children }: CTASectionProp
         {children}
       </div>
     </section>
-  );
+  )
 }

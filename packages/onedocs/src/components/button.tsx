@@ -1,11 +1,17 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
 interface ButtonProps {
-  href: string;
-  children: ReactNode;
-  className?: string;
+  href: string
+  children: ReactNode
+  className?: string
 }
 
+/**
+ * Render a styled link button.
+ *
+ * @param props - Component content and presentation options.
+ * @returns The rendered component.
+ */
 export function Button({ href, children, className = "" }: ButtonProps) {
   return (
     <a
@@ -14,5 +20,5 @@ export function Button({ href, children, className = "" }: ButtonProps) {
     >
       {children}
     </a>
-  );
+  )
 }

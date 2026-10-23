@@ -15,12 +15,12 @@ Site-wide settings go in `onedocs.config.ts` at your project root. You pass the 
 ## Basic setup
 
 ```ts title="onedocs.config.ts"
-import { defineConfig } from "onedocs/config";
+import { defineConfig } from "onedocs/config"
 
 export default defineConfig({
   title: "My Project",
   description: "Documentation for My Project",
-});
+})
 ```
 
 That's the minimum. Everything else is optional.
@@ -30,8 +30,8 @@ That's the minimum. Everything else is optional.
 Feature icons are React elements, so a config that uses them must be a `.tsx` file:
 
 ```tsx title="onedocs.config.tsx"
-import { defineConfig } from "onedocs/config";
-import { Rocket, Zap } from "lucide-react";
+import { Rocket, Zap } from "lucide-react"
+import { defineConfig } from "onedocs/config"
 
 export default defineConfig({
   title: "My Project",
@@ -76,9 +76,14 @@ export default defineConfig({
 
   // Homepage footer
   footer: {
-    links: [{ label: "License", href: "https://github.com/username/repo/blob/main/LICENSE" }],
+    links: [
+      {
+        label: "License",
+        href: "https://github.com/username/repo/blob/main/LICENSE",
+      },
+    ],
   },
-});
+})
 ```
 
 ## Options
@@ -205,13 +210,13 @@ Each social link uses `label` as its accessible name.
 The `defineConfig` helper gives you full autocompletion:
 
 ```ts
-import { defineConfig, type OnedocsConfig } from "onedocs/config";
+import { defineConfig, type OnedocsConfig } from "onedocs/config"
 
 const config: OnedocsConfig = {
   title: "My Project",
-};
+}
 
-export default defineConfig(config);
+export default defineConfig(config)
 ```
 
 `defineConfig` returns a copy of the object you pass. It does not inject unused `docs` or `theme` defaults.

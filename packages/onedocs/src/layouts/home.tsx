@@ -1,35 +1,46 @@
-import { HomeLayout as FumaHomeLayout } from "fumadocs-ui/layouts/home";
-import type { OnedocsConfig } from "../config";
-import { createBaseOptions } from "./shared";
-import { InstallBlock } from "../components/install-block";
-import { Button } from "../components/button";
+import { HomeLayout as FumaHomeLayout } from "fumadocs-ui/layouts/home"
+import { Button } from "../components/button.tsx"
+import { InstallBlock } from "../components/install-block.tsx"
+import type { OnedocsConfig } from "../config.ts"
+import { createBaseOptions } from "./shared.tsx"
 
 interface HomeLayoutProps {
-  config: OnedocsConfig;
-  children?: React.ReactNode;
+  config: OnedocsConfig
+  children?: React.ReactNode
 }
 
+/**
+ * Render the home page navigation shell.
+ *
+ * @param props - Component content and presentation options.
+ * @returns The rendered component.
+ */
 export function HomeLayout({ config, children }: HomeLayoutProps) {
   return (
     <FumaHomeLayout {...createBaseOptions(config)}>{children}</FumaHomeLayout>
-  );
+  )
 }
 
 interface HomePageProps {
-  config: OnedocsConfig;
-  packageName?: string;
-  children?: React.ReactNode;
+  config: OnedocsConfig
+  packageName?: string
+  children?: React.ReactNode
 }
 
+/**
+ * Render the site hero, features and footer.
+ *
+ * @param props - Site configuration, package name and page content.
+ * @returns The rendered home page.
+ */
 export function HomePage({ config, packageName, children }: HomePageProps) {
-  const { homepage } = config;
-  const heroLeft = homepage?.hero?.left;
-  const heroRight = homepage?.hero?.right;
-  const currentYear = new Date().getFullYear();
+  const { homepage } = config
+  const heroLeft = homepage?.hero?.left
+  const heroRight = homepage?.hero?.right
+  const currentYear = new Date().getFullYear()
 
-  const renderedHeroLeft = typeof heroLeft === 'function'
-    ? heroLeft({})
-    : heroLeft;
+  const renderedHeroLeft =
+    typeof heroLeft === "function" ? heroLeft({}) : heroLeft
 
   return (
     <HomeLayout config={config}>
@@ -99,7 +110,6 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
                 </div>
               </section>
             )}
-
           </div>
           {children && (
             <div className="flex-1 flex items-center justify-center">
@@ -150,5 +160,5 @@ export function HomePage({ config, packageName, children }: HomePageProps) {
         </footer>
       </main>
     </HomeLayout>
-  );
+  )
 }

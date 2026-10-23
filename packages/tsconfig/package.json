@@ -2,5 +2,10 @@
   "name": "@onedocs/tsconfig",
   "private": true,
   "version": "0.1.0",
-  "files": ["base.json", "package-library.json"]
+  "files": [
+    "base.json",
+    "package-library.json"
+  ],
+  "type": "module",
+  "description": "Shared TypeScript configuration for OneDocs packages."
 }

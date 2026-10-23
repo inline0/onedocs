@@ -17,10 +17,10 @@ Search comes from Fumadocs. Onedocs adds helpers for the sitemap, robots.txt and
 Onedocs uses the built-in Orama search from Fumadocs. Create an API route:
 
 ```ts title="src/app/api/search/route.ts"
-import { source } from "@/lib/source";
-import { createFromSource } from "fumadocs-core/search/server";
+import { createFromSource } from "fumadocs-core/search/server"
+import { source } from "@/lib/source"
 
-export const { GET } = createFromSource(source);
+export const { GET } = createFromSource(source)
 ```
 
 The search dialog that `RootProvider` adds queries `/api/search` by default, so no other setup is needed.
@@ -30,16 +30,16 @@ The search dialog that `RootProvider` adds queries `/api/search` by default, so 
 Generate a sitemap at `/sitemap.xml`:
 
 ```ts title="src/app/sitemap.ts"
-import { generateSitemap } from "onedocs/seo";
-import meta from "../../content/docs/meta.json";
+import { generateSitemap } from "onedocs/seo"
+import meta from "../../content/docs/meta.json"
 
-const baseUrl = "https://yourdomain.com";
+const baseUrl = "https://yourdomain.com"
 
 export default function sitemap() {
   return generateSitemap({
     baseUrl,
     pages: meta.pages ?? [],
-  });
+  })
 }
 ```
 
@@ -50,12 +50,12 @@ export default function sitemap() {
 Generate a robots.txt at `/robots.txt`:
 
 ```ts title="src/app/robots.ts"
-import { generateRobots } from "onedocs/seo";
+import { generateRobots } from "onedocs/seo"
 
-const baseUrl = "https://yourdomain.com";
+const baseUrl = "https://yourdomain.com"
 
 export default function robots() {
-  return generateRobots({ baseUrl });
+  return generateRobots({ baseUrl })
 }
 ```
 
@@ -78,20 +78,20 @@ Sitemap: https://yourdomain.com/sitemap.xml
 Create `/llms.txt` with page titles and descriptions:
 
 ```ts title="src/app/llms.txt/route.ts"
-import { createLLMsSource, generateLLMsText } from "onedocs/llms";
-import { source } from "@/lib/source";
-import config from "../../../onedocs.config";
+import { createLLMsSource, generateLLMsText } from "onedocs/llms"
+import { source } from "@/lib/source"
+import config from "../../../onedocs.config"
 
 export async function GET() {
-  const llmsSource = createLLMsSource(source);
+  const llmsSource = createLLMsSource(source)
   const text = await generateLLMsText(llmsSource, {
     title: config.title,
     description: config.description,
-  });
+  })
 
   return new Response(text, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
+  })
 }
 ```
 
@@ -102,16 +102,16 @@ The file starts with the title and description, lists every page as `- Title: UR
 Create `/llms-full.txt` with complete documentation:
 
 ```ts title="src/app/llms-full.txt/route.ts"
-import { createLLMsSource, generateLLMsFullText } from "onedocs/llms";
-import { source } from "@/lib/source";
+import { createLLMsSource, generateLLMsFullText } from "onedocs/llms"
+import { source } from "@/lib/source"
 
 export async function GET() {
-  const llmsSource = createLLMsSource(source);
-  const text = await generateLLMsFullText(llmsSource);
+  const llmsSource = createLLMsSource(source)
+  const text = await generateLLMsFullText(llmsSource)
 
   return new Response(text, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
+  })
 }
 ```
 
@@ -120,7 +120,7 @@ Each page is written as its title, URL, description and processed Markdown, with
 Onedocs tries processed Markdown first, then falls back to raw Markdown when processed output is unavailable. The default Fumadocs MDX setup therefore includes page bodies. To prefer Markdown after MDX processing, enable `includeProcessedMarkdown` in `source.config.ts`:
 
 ```ts title="source.config.ts"
-import { defineDocs } from "fumadocs-mdx/config";
+import { defineDocs } from "fumadocs-mdx/config"
 
 export const docs = defineDocs({
   dir: "content/docs",
@@ -129,7 +129,7 @@ export const docs = defineDocs({
       includeProcessedMarkdown: true,
     },
   },
-});
+})
 ```
 
 ## Configuration options
@@ -141,7 +141,7 @@ generateSitemap({
   baseUrl: "https://yourdomain.com",
   pages: ["index", "getting-started", "configuration"],
   docsPath: "/docs", // Default: "/docs"
-});
+})
 ```
 
 ### Robots options
@@ -150,17 +150,17 @@ generateSitemap({
 generateRobots({
   baseUrl: "https://yourdomain.com",
   sitemapPath: "/sitemap.xml", // Default: "/sitemap.xml"
-});
+})
 ```
 
 ## What you get
 
 After setting up these routes:
 
-| URL | What it does |
-|-----|--------------|
-| `/api/search?query=...` | Search API endpoint |
-| `/sitemap.xml` | XML sitemap for search engines |
-| `/robots.txt` | Robots file with sitemap reference |
-| `/llms.txt` | Summary for AI assistants |
-| `/llms-full.txt` | Full docs for AI assistants |
+| URL                     | What it does                       |
+| ----------------------- | ---------------------------------- |
+| `/api/search?query=...` | Search API endpoint                |
+| `/sitemap.xml`          | XML sitemap for search engines     |
+| `/robots.txt`           | Robots file with sitemap reference |
+| `/llms.txt`             | Summary for AI assistants          |
+| `/llms-full.txt`        | Full docs for AI assistants        |

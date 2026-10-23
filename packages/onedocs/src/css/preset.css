@@ -16,7 +16,13 @@
   }
 
   body {
-    font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss08" 1;
+    font-feature-settings:
+      "calt" 1,
+      "cv02" 1,
+      "cv03" 1,
+      "cv04" 1,
+      "cv11" 1,
+      "ss08" 1;
   }
 
   h1,
@@ -25,7 +31,15 @@
   h4,
   h5,
   h6 {
-    font-feature-settings: "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss07" 1, "ss08" 1, "dlig" 1;
+    font-feature-settings:
+      "calt" 1,
+      "cv02" 1,
+      "cv03" 1,
+      "cv04" 1,
+      "cv11" 1,
+      "ss07" 1,
+      "ss08" 1,
+      "dlig" 1;
   }
 
   #nd-home-layout > header > div:first-child {
@@ -37,7 +51,6 @@
       display: none !important;
     }
   }
-
 }
 
 @media (min-width: 48rem) {

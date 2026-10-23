@@ -35,15 +35,15 @@ You also need Tailwind CSS v4, Node.js 20.9 or later, and about ten small files:
 
 ## Where things are configured
 
-| What | Where |
-|------|-------|
-| Site title, logo, navigation, footer | `onedocs.config.ts`, see [Configuration](/docs/configuration) |
-| Home page hero and features | `homepage` in `onedocs.config.ts`, rendered by `HomePage` in `src/app/page.tsx` |
-| Docs layout and pages | `src/app/docs/layout.tsx` and `src/app/docs/[[...slug]]/page.tsx`, see [Getting Started](/docs/getting-started) |
-| Content folder and sidebar order | `source.config.ts` and `content/docs/meta.json` |
-| MDX components | `mdxComponents`, see [Components](/docs/components) |
-| Search, sitemap, robots.txt, llms.txt | Route files under `src/app/`, see [SEO & Search](/docs/seo-search) |
-| Metadata and Open Graph images | `onedocs/metadata` and `onedocs/og`, see [API Reference](/docs/api-reference) |
+| What                                  | Where                                                                                                           |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Site title, logo, navigation, footer  | `onedocs.config.ts`, see [Configuration](/docs/configuration)                                                   |
+| Home page hero and features           | `homepage` in `onedocs.config.ts`, rendered by `HomePage` in `src/app/page.tsx`                                 |
+| Docs layout and pages                 | `src/app/docs/layout.tsx` and `src/app/docs/[[...slug]]/page.tsx`, see [Getting Started](/docs/getting-started) |
+| Content folder and sidebar order      | `source.config.ts` and `content/docs/meta.json`                                                                 |
+| MDX components                        | `mdxComponents`, see [Components](/docs/components)                                                             |
+| Search, sitemap, robots.txt, llms.txt | Route files under `src/app/`, see [SEO & Search](/docs/seo-search)                                              |
+| Metadata and Open Graph images        | `onedocs/metadata` and `onedocs/og`, see [API Reference](/docs/api-reference)                                   |
 
 ## Philosophy
 

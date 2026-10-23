@@ -47,7 +47,7 @@ npm install -D tailwindcss @tailwindcss/postcss typescript @types/react @types/r
 Create `onedocs.config.ts`:
 
 ```ts
-import { defineConfig } from "onedocs/config";
+import { defineConfig } from "onedocs/config"
 
 export default defineConfig({
   title: "My Project",
@@ -55,7 +55,7 @@ export default defineConfig({
   nav: {
     github: "username/repo",
   },
-});
+})
 ```
 
 Import the CSS preset in `src/app/globals.css`:
@@ -67,11 +67,11 @@ Import the CSS preset in `src/app/globals.css`:
 Create your homepage in `src/app/page.tsx`:
 
 ```tsx
-import { HomePage } from "onedocs";
-import config from "../../onedocs.config";
+import { HomePage } from "onedocs"
+import config from "../../onedocs.config"
 
 export default function Home() {
-  return <HomePage config={config} packageName="my-package" />;
+  return <HomePage config={config} packageName="my-package" />
 }
 ```
 
@@ -86,8 +86,8 @@ npm run dev
 Feature icons are React elements, so this config is `onedocs.config.tsx`:
 
 ```tsx
-import { defineConfig } from "onedocs/config";
-import { Package, Zap } from "lucide-react";
+import { Package, Zap } from "lucide-react"
+import { defineConfig } from "onedocs/config"
 
 export default defineConfig({
   title: "My Project",
@@ -120,7 +120,7 @@ export default defineConfig({
       },
     ],
   },
-});
+})
 ```
 
 ## Exports
@@ -128,9 +128,23 @@ export default defineConfig({
 ### Main (`onedocs`)
 
 ```ts
-import { DocsLayout, DocsPage, DocsBody, HomePage, HomeLayout } from "onedocs";
-import { InstallBlock, CodeBlock, Button, Logo, CTASection, FontHead, GitHubIcon } from "onedocs";
-import { mdxComponents, defineConfig, createSource, loader, createBaseOptions } from "onedocs";
+import { DocsLayout, DocsPage, DocsBody, HomePage, HomeLayout } from "onedocs"
+import {
+  InstallBlock,
+  CodeBlock,
+  Button,
+  Logo,
+  CTASection,
+  FontHead,
+  GitHubIcon,
+} from "onedocs"
+import {
+  mdxComponents,
+  defineConfig,
+  createSource,
+  loader,
+  createBaseOptions,
+} from "onedocs"
 ```
 
 SEO helpers live in `onedocs/seo`, `onedocs/llms`, `onedocs/metadata` and `onedocs/og`. See the [API Reference](https://onedocs.inline0.dev/docs/api-reference).
@@ -138,7 +152,7 @@ SEO helpers live in `onedocs/seo`, `onedocs/llms`, `onedocs/metadata` and `onedo
 ### Components (`onedocs/components`)
 
 ```ts
-import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components";
+import { Callout, Card, Tabs, Tab, Steps, Step } from "onedocs/components"
 ```
 
 ### CSS (`onedocs/css/preset.css`)
@@ -149,21 +163,63 @@ Includes Tailwind CSS v4, the Fumadocs UI styles, the Inter font variable that `
 
 For full documentation, visit [onedocs.inline0.dev](https://onedocs.inline0.dev).
 
+## Packages
+
+| Package                                          | Description                                                                                          |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| [onedocs](packages/onedocs/README.md)            | Zero-config documentation for Next.js + Fumadocs. Install one dependency, write markdown, ship docs. |
+| [@onedocs/tsconfig](packages/tsconfig/README.md) | Shared TypeScript configuration for OneDocs packages.                                                |
+
 ## Development
 
-```bash
-bun install
-bun run build
-bun run --cwd packages/onedocs test
-node scripts/check-package.mjs
-node scripts/check-consumer.mjs
+Repository development uses Node.js **26.12.0** and pnpm **12.14.0**. Applications
+using the published library continue to support Node.js **20.9 or newer**.
+
+```sh
+nvm use
+pnpm run setup
+pnpm verify
 ```
 
-The portable Markdown documentation lives in `docs/` at the repository root. Validate it with:
+| Command                | Purpose                                                   |
+| ---------------------- | --------------------------------------------------------- |
+| `pnpm run setup`       | Install the frozen dependency lockfile                    |
+| `pnpm build`           | Build workspace packages and declarations                 |
+| `pnpm format`          | Apply the shared Oxfmt style                              |
+| `pnpm format:check`    | Check formatting without changes                          |
+| `pnpm lint`            | Run type-aware Oxlint, workspace and portable docs audits |
+| `pnpm lint:fix`        | Apply supported lint fixes and run the audits             |
+| `pnpm typecheck`       | Check scripts, library source and consumer type fixtures  |
+| `pnpm test`            | Run library tests and lint-plugin regression tests        |
+| `pnpm test:scripts`    | Test portable documentation validation                    |
+| `pnpm test:lint-rules` | Test the shared documentation lint rules                  |
+| `pnpm test:package`    | Validate every published export and package contents      |
+| `pnpm test:consumer`   | Install and verify the real tarball in a temporary app    |
+| `pnpm audit:workspace` | Validate package docs and catalog/workspace dependencies  |
+| `pnpm audit:docs`      | Validate the six portable Markdown pages and navigation   |
+| `pnpm check`           | Run format, lint, types, tests and build                  |
+| `pnpm verify`          | Run `check` plus tarball and installed-consumer checks    |
 
-```bash
-node scripts/check-docs-content.mjs --expected-docs 6 --expected-nav 1
-```
+The `packages/*` workspace shares a pinned pnpm catalog, ES modules, explicit
+relative TypeScript imports and the formatting/linting conventions from
+[Bud](https://github.com/inline0/bud) and
+[Sleekos](https://github.com/inline0/sleekos). The local documentation lint
+plugin is adapted from Sleekos. See [AGENTS.md](AGENTS.md) for contribution rules.
+The portable documentation lives in `docs/`; it is validated in CI alongside
+the installed package, production build and regression tests.
+
+The consumer check builds a temporary Next.js app with the packed library,
+its CSS preset and exact catalog peers. To test another supported runtime,
+set `ONEDOCS_RUNTIME_NODE` to that Node executable. CI checks the Node.js 20.9
+minimum as well as the development runtime and removes the temporary apps.
+
+## Releases
+
+Changes belong in [CHANGELOG.md](CHANGELOG.md). GitHub release titles match their
+tag, and the release body contains only a link to the changelog for that tag.
+The shared `release-format.yml` workflow keeps this consistent with the other
+inline0 packages. Package publication is a separate release step after
+`pnpm verify` succeeds.
 
 ## License
 

@@ -6,49 +6,36 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint:
-    name: Lint
+  verify:
+    name: Verify workspace and published package
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v6.1.0
+      - name: Install the minimum consumer runtime
+        uses: actions/setup-node@v7.1.0
         with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bun run lint
-
-  typecheck:
-    name: Typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+          node-version: "20.9.0"
+      - name: Remember the minimum runtime
+        id: minimum-runtime
+        run: echo "node=$(command -v node)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v7.1.0
         with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bun run typecheck
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bun run --cwd packages/onedocs test
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bun run build
-      - run: node scripts/check-package.mjs
-      - run: node scripts/check-consumer.mjs
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm run setup
+      - run: pnpm verify
+      - name: Verify the package on the minimum runtime
+        run: pnpm test:consumer
+        env:
+          ONEDOCS_RUNTIME_NODE: ${{ steps.minimum-runtime.outputs.node }}
+      - run: pnpm audit --prod

@@ -1,16 +1,26 @@
-import type { Metadata } from "next";
-import type { OnedocsConfig } from "../config";
+import type { Metadata } from "next"
+import type { OnedocsConfig } from "../config.ts"
 
+/**
+ * Site URL and metadata overrides for the root layout.
+ */
 export type CreateMetadataOptions = {
-  baseUrl?: string;
-  additional?: Metadata;
-};
+  baseUrl?: string
+  additional?: Metadata
+}
 
+/**
+ * Build Next.js metadata from the site configuration.
+ *
+ * @param config - Site branding and navigation configuration.
+ * @param options - Site URL and metadata overrides.
+ * @returns Metadata for the root layout.
+ */
 export function createMetadata(
   config: OnedocsConfig,
   options: CreateMetadataOptions = {}
 ): Metadata {
-  const { baseUrl, additional } = options;
+  const { baseUrl, additional } = options
 
   const metadata: Metadata = {
     title: {
@@ -50,17 +60,23 @@ export function createMetadata(
       },
     }),
     ...additional,
-  };
+  }
 
-  return metadata;
+  return metadata
 }
 
+/**
+ * Build Next.js metadata for a documentation page.
+ *
+ * @param page - The page title and optional description.
+ * @returns Page metadata.
+ */
 export function createDocsPageMetadata(page: {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
 }): Metadata {
   return {
     title: page.title,
     description: page.description,
-  };
+  }
 }

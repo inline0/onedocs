@@ -3,8 +3,8 @@ node_modules/
 
 # Build outputs
 dist/
-.output/
-.vinxi/
+.next/
+*.tgz
 
 # Environment
 .env
@@ -28,9 +28,5 @@ npm-debug.log*
 # Test coverage
 coverage/
 
-# Bun
-bun.lockb
-
-# Copied from the repository root by npm prepack
-/packages/onedocs/README.md
+# Copied from the repository root by prepack
 /packages/onedocs/LICENSE

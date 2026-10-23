@@ -81,7 +81,7 @@ Let's create each file.
 Your main config file. Only `title` is required; see [Configuration](/docs/configuration) for the rest.
 
 ```ts title="onedocs.config.ts"
-import { defineConfig } from "onedocs/config";
+import { defineConfig } from "onedocs/config"
 
 export default defineConfig({
   title: "My Docs",
@@ -89,7 +89,7 @@ export default defineConfig({
   nav: {
     github: "username/repo",
   },
-});
+})
 ```
 
 ### source.config.ts
@@ -97,11 +97,11 @@ export default defineConfig({
 Tells Fumadocs MDX where your content lives. This is the only place the content folder is set:
 
 ```ts title="source.config.ts"
-import { defineDocs } from "fumadocs-mdx/config";
+import { defineDocs } from "fumadocs-mdx/config"
 
 export const docs = defineDocs({
   dir: "content/docs",
-});
+})
 ```
 
 ### next.config.mjs
@@ -109,14 +109,14 @@ export const docs = defineDocs({
 Enables MDX processing:
 
 ```js title="next.config.mjs"
-import { createMDX } from "fumadocs-mdx/next";
+import { createMDX } from "fumadocs-mdx/next"
 
-const withMDX = createMDX();
+const withMDX = createMDX()
 
 /** @type {import('next').NextConfig} */
-const config = {};
+const config = {}
 
-export default withMDX(config);
+export default withMDX(config)
 ```
 
 Fumadocs MDX generates a `.source/` folder from `source.config.ts` when Next.js starts. Add `.source` to `.gitignore`.
@@ -130,7 +130,7 @@ export default {
   plugins: {
     "@tailwindcss/postcss": {},
   },
-};
+}
 ```
 
 ### tsconfig.json
@@ -156,13 +156,13 @@ Next.js adds the remaining compiler options it needs to this file the first time
 Loads your docs content:
 
 ```ts title="src/lib/source.ts"
-import { loader } from "fumadocs-core/source";
-import { docs } from "../../.source/server";
+import { loader } from "fumadocs-core/source"
+import { docs } from "../../.source/server"
 
 export const source = loader({
   baseUrl: "/docs",
   source: docs.toFumadocsSource(),
-});
+})
 ```
 
 ## App files
@@ -172,20 +172,20 @@ export const source = loader({
 Your root layout:
 
 ```tsx title="src/app/layout.tsx"
-import type { Metadata } from "next";
-import { RootProvider } from "fumadocs-ui/provider/next";
-import { FontHead } from "onedocs";
-import "./globals.css";
+import { RootProvider } from "fumadocs-ui/provider/next"
+import type { Metadata } from "next"
+import { FontHead } from "onedocs"
+import "./globals.css"
 
 export const metadata: Metadata = {
   title: "My Docs",
   description: "Documentation for my project",
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -196,7 +196,7 @@ export default function RootLayout({
         <RootProvider>{children}</RootProvider>
       </body>
     </html>
-  );
+  )
 }
 ```
 
@@ -222,11 +222,11 @@ The preset loads Tailwind CSS, the Fumadocs UI styles and the Onedocs layout sty
 The home page. `HomePage` renders the hero, features and footer from your config:
 
 ```tsx title="src/app/page.tsx"
-import { HomePage } from "onedocs";
-import config from "../../onedocs.config";
+import { HomePage } from "onedocs"
+import config from "../../onedocs.config"
 
 export default function Home() {
-  return <HomePage config={config} packageName="my-package" />;
+  return <HomePage config={config} packageName="my-package" />
 }
 ```
 
@@ -237,17 +237,17 @@ export default function Home() {
 Docs layout with sidebar:
 
 ```tsx title="src/app/docs/layout.tsx"
-import { DocsLayout } from "onedocs";
-import type { ReactNode } from "react";
-import { source } from "@/lib/source";
-import config from "../../../onedocs.config";
+import { DocsLayout } from "onedocs"
+import type { ReactNode } from "react"
+import { source } from "@/lib/source"
+import config from "../../../onedocs.config"
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout config={config} pageTree={source.pageTree}>
       {children}
     </DocsLayout>
-  );
+  )
 }
 ```
 
@@ -256,41 +256,41 @@ export default function Layout({ children }: { children: ReactNode }) {
 Individual doc pages:
 
 ```tsx title="src/app/docs/[[...slug]]/page.tsx"
-import { source } from "@/lib/source";
-import { DocsPage, mdxComponents } from "onedocs";
-import { notFound } from "next/navigation";
+import { notFound } from "next/navigation"
+import { DocsPage, mdxComponents } from "onedocs"
+import { source } from "@/lib/source"
 
 export default async function Page(props: {
-  params: Promise<{ slug?: string[] }>;
+  params: Promise<{ slug?: string[] }>
 }) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  if (!page) notFound();
+  const params = await props.params
+  const page = source.getPage(params.slug)
+  if (!page) notFound()
 
-  const MDX = page.data.body;
+  const MDX = page.data.body
 
   return (
     <DocsPage toc={page.data.toc}>
       <MDX components={mdxComponents} />
     </DocsPage>
-  );
+  )
 }
 
 export async function generateStaticParams() {
-  return source.generateParams();
+  return source.generateParams()
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{ slug?: string[] }>;
+  params: Promise<{ slug?: string[] }>
 }) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  if (!page) notFound();
+  const params = await props.params
+  const page = source.getPage(params.slug)
+  if (!page) notFound()
 
   return {
     title: page.data.title,
     description: page.data.description,
-  };
+  }
 }
 ```
 

@@ -16,6 +16,6 @@
     "noEmit": true,
     "skipLibCheck": true,
     "incremental": false,
-    "baseUrl": "."
+    "rewriteRelativeImportExtensions": true
   }
 }

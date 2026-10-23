@@ -72,10 +72,11 @@
     "node": ">=20.9.0"
   },
   "scripts": {
-    "clean": "rm -rf dist",
-    "build": "bun run clean && tsc -p tsconfig.json",
+    "clean": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true })\"",
+    "build": "pnpm run clean && tsc -p tsconfig.json && node ../../scripts/prepare-declarations.ts",
     "dev": "tsc -w -p tsconfig.json",
-    "prepack": "bun run build && node ../../scripts/prepare-package.mjs",
+    "typecheck": "tsc-rs --noEmit -p tsconfig.json && tsc-rs --noEmit -p tsconfig.tests.json",
+    "prepack": "pnpm run build && node ../../scripts/prepare-package.ts",
     "test": "vitest run"
   },
   "peerDependencies": {
@@ -89,14 +90,20 @@
   },
   "devDependencies": {
     "@onedocs/tsconfig": "workspace:*",
-    "@types/react": "^19.2.8",
-    "@types/react-dom": "^19.2.3",
-    "fumadocs-core": "^16.4.7",
-    "fumadocs-mdx": "^14.2.6",
-    "fumadocs-ui": "^16.4.7",
-    "lucide-react": "^0.562.0",
-    "next": "^16.1.4",
-    "typescript": "^5.9.3",
-    "vitest": "^3.1.4"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "fumadocs-core": "catalog:",
+    "fumadocs-mdx": "catalog:",
+    "fumadocs-ui": "catalog:",
+    "lucide-react": "catalog:",
+    "next": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "@types/node": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "tsc-rs": "catalog:"
   }
 }
