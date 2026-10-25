@@ -15,7 +15,10 @@ The root [README](README.md#development) lists the supported pnpm commands.
 
 - `packages/onedocs` contains the published library, runtime tests and public CSS.
 - `packages/tsconfig` contains private shared TypeScript configuration.
-- `scripts` contains native TypeScript quality and packaging checks.
+- `scripts` contains native TypeScript quality and packaging checks. Use the
+  Effect CLI and injectable FileSystem/command services in `scripts/lib`, with
+  scoped cleanup for child processes and temporary consumer directories.
+  Preserve `--help`, `--json`, `--dry-run` and `--log-level` in new commands.
 - `docs` contains the portable Markdown documentation: six pages and one nav.
 
 Use ES modules, explicit relative `.ts`/`.tsx` imports and `workspace:*` for

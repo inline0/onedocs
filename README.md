@@ -224,3 +224,22 @@ inline0 packages. Package publication is a separate release step after
 ## License
 
 MIT
+
+### Repository scripts
+
+Repository tooling runs as native TypeScript on Node.js 26 through Effect.
+The `scripts/lib` CLI and command services follow SleekOS's setup: each command
+supports `--help`, `--json`, `--dry-run` and `--log-level`, reports failures with
+a nonzero exit code, and closes owned subprocesses when interrupted. File I/O
+uses the Effect FileSystem service; temporary consumer installs are scoped and
+removed on success, failure or interruption. Development Effect dependencies
+stay outside the published OneDocs package and its Node.js 20.9 runtime.
+
+`check-workspace.ts` and `check-docs-content.ts` power `pnpm audit:workspace`
+and `pnpm audit:docs`. `check-package.ts` powers `pnpm test:package` and
+`check-consumer.ts` powers `pnpm test:consumer`. The library build also runs
+`prepare-package.ts` and `prepare-declarations.ts`. The generated consumer's
+JavaScript files intentionally run on the supported minimum consumer runtime.
+
+`pnpm test:scripts` covers the CLI, docs regressions, declaration preparation,
+command failures, dry runs and interrupted-child cleanup.

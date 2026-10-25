@@ -8,6 +8,8 @@ allowBuilds:
   sharp: true
 
 catalog:
+  "effect": 4.0.5
+  "@effect/platform-node": 4.0.5
   tsc-rs: 0.7.0
   "@tailwindcss/postcss": 4.3.3
   "tailwindcss": 4.3.3
@@ -31,3 +33,6 @@ catalog:
 
 saveExact: true
 strictPeerDependencies: true
+
+overrides:
+  "@effect/platform-node-shared": 4.0.5

@@ -27,7 +27,7 @@
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "verify": "pnpm check && pnpm test:package && pnpm test:consumer",
     "test:lint-rules": "node --test scripts/oxlint-plugins/*.test.ts",
-    "test:scripts": "node --test scripts/*.test.ts"
+    "test:scripts": "node --test \"scripts/*.test.ts\" \"scripts/lib/*.test.ts\""
   },
   "devDependencies": {
     "@oxlint/plugins": "catalog:",
@@ -37,6 +37,8 @@
     "oxlint-tsgolint": "catalog:",
     "typescript": "catalog:",
     "yaml": "catalog:",
-    "tsc-rs": "catalog:"
+    "tsc-rs": "catalog:",
+    "effect": "catalog:",
+    "@effect/platform-node": "catalog:"
   }
 }

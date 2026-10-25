@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Run repository checks and package preparation through Effect TypeScript CLIs
+  with scoped subprocesses, injectable services and temporary-consumer cleanup.
+
 - Standardize development on Node.js 26.12.0, pnpm 12.14.0, catalog dependencies,
   Oxfmt, type-aware Oxlint and native TypeScript scripts.
 - Refresh compatible Next.js, React and Fumadocs development dependencies while
